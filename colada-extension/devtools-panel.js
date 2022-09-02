@@ -44,3 +44,5 @@ function constructOptions(buttonColors) {
 
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);
+
+// const store = document.body.querySelector()

@@ -5,4 +5,16 @@ chrome.devtools.panels.create(
   panel => {
     console.log('panel callback')
   }
-)
+);
+
+chrome.runtime.sendMessage(
+
+  {
+    message: "startListeners"
+  },
+
+  () => {
+    console.log("sentMessage")
+  }
+
+);
