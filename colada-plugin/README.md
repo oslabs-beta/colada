@@ -1,5 +1,6 @@
 # colada-plugin
 ```
+cd colada-plugin
 npm install
-npm run build (needs to be updated to dev)
+npm run dev
 ```

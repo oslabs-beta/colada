@@ -1,5 +1,5 @@
 cd ../colada-plugin
-npm run build
-cd ../hello-world
+npm run dev
+cd ../demo-project
 npm install ../colada-plugin
 npm run dev

@@ -5,7 +5,6 @@ const timelineLayerId = 'colada-plugin'
 const groupId = 'group-1'
 
 let piniaStore;
-let piniaLabels = []
 let piniaObjs = []
 
 
@@ -160,7 +159,8 @@ export function setupDevtools(app) {
           document.body.appendChild(storeEl)
           console.log('document.body', document.body)
 
-
+          // reset piniaObjs to empty array
+          piniaObjs = [];
 
           //for each proxy store in piniaStore, console it
           Object.values(piniaStore).forEach(store => {
@@ -170,8 +170,6 @@ export function setupDevtools(app) {
             //****************************** */
               console.log(`[STORE]${store.$id}'s state: `, store.$state)
 
-              //store the values in piniaLabels to use in Inspector tree
-              piniaLabels.push(store.$id)
 
               //create a object that will be pushed into the Inspector panel
               const proxyObj = {
@@ -245,7 +243,6 @@ export function setupDevtools(app) {
         api.on.getInspectorTree((payload, context) => {
           if(payload.inspectorId === inspectorId){
             console.log('getInspectorTree payload: ', payload)
-            console.log('piniaLabels is:', piniaLabels)
             // initialize rootNodes for Colada inspector tree
             payload.rootNodes = [
               {
@@ -254,7 +251,8 @@ export function setupDevtools(app) {
                 children: [],
               }
             ]
-            // iterate over piniaLabels to add children stores to root 
+
+            // iterate over piniaObjs to add children stores to root 
             piniaObjs.forEach(obj => {
               payload.rootNodes[0].children.push({
                 id: obj.key,
@@ -264,6 +262,8 @@ export function setupDevtools(app) {
 
           }
         })
+
+
         // TODO: add state to inspector
         api.on.getInspectorState(payload => {
           if(payload.inspectorId === 'test-inspector'){

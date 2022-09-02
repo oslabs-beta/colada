@@ -20,7 +20,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.mjs"
+    "dev": "rimraf dist && rollup -c rollup.config.mjs"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",

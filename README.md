@@ -18,7 +18,7 @@ npm install
 ```
 cd colada-plugin
 npm install
-npm run build (need to change to dev)
+npm run dev
 ```
 
 # demo-project
