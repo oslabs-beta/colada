@@ -306,6 +306,8 @@ export function setupDevtools(app) {
                 - can display getter's function definition if we want
                 - actions should be straightfoward, just like the state above
                 - for the children elements, can filter the stateArr/getterArr/actionArr by store_id
+                - add function definitions for getters to the inspector panel
+                - figure out how we can expose _pStores each time state changes (or on any event)
               */
 
 
