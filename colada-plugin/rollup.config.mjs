@@ -7,6 +7,9 @@ import pkg from './package.json' assert {type:'json'}
 import {terser} from 'rollup-plugin-terser'
 import ts from 'rollup-plugin-typescript2'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //const pkg = require('./package.json')
 const name = pkg.name
@@ -128,6 +131,7 @@ function createConfig (format, output, plugins = []) {
     external,
     plugins: [
       vuePlugin(),
+      //tsPlugin,
       createReplacePlugin(
         isProductionBuild,
         isBundlerESMBuild
