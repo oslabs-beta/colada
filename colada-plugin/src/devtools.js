@@ -5,7 +5,6 @@ const timelineLayerId = 'colada-plugin'
 const groupId = 'group-1'
 
 let piniaStore;
-let piniaLabels = []
 let piniaObjs = []
 
 
@@ -160,7 +159,8 @@ export function setupDevtools(app) {
           document.body.appendChild(storeEl)
           console.log('document.body', document.body)
 
-
+          // reset piniaObjs to empty array
+          piniaObjs = [];
 
           //for each proxy store in piniaStore, console it
           Object.values(piniaStore).forEach(store => {
@@ -168,16 +168,21 @@ export function setupDevtools(app) {
             //note: need to implement: adding data to inspector panel
             //use payload.instanceData.state.push ()
             //****************************** */
+              console.log('current store is:', store)
               console.log(`[STORE]${store.$id}'s state: `, store.$state)
+              console.log(`[STORE]${store.$id}'s getters: `, store._getters)
+              console.log(`[STORE]${store.$id}'s _hmrPayload: `, store._hmrPayload)
+              
 
-              //store the values in piniaLabels to use in Inspector tree
-              piniaLabels.push(store.$id)
 
               //create a object that will be pushed into the Inspector panel
               const proxyObj = {
                 type: `🥥 Store: ${store.$id}`,
                 key: `${store.$id}`,
                 value: store.$state,
+                state: store._hmrPayload.state,
+                getters: store._hmrPayload.getters,
+                actions: store._hmrPayload.actions,
                 editable: true
               }
 
@@ -245,7 +250,6 @@ export function setupDevtools(app) {
         api.on.getInspectorTree((payload, context) => {
           if(payload.inspectorId === inspectorId){
             console.log('getInspectorTree payload: ', payload)
-            console.log('piniaLabels is:', piniaLabels)
             // initialize rootNodes for Colada inspector tree
             payload.rootNodes = [
               {
@@ -254,7 +258,8 @@ export function setupDevtools(app) {
                 children: [],
               }
             ]
-            // iterate over piniaLabels to add children stores to root 
+
+            // iterate over piniaObjs to add children stores to root 
             piniaObjs.forEach(obj => {
               payload.rootNodes[0].children.push({
                 id: obj.key,
@@ -264,12 +269,121 @@ export function setupDevtools(app) {
 
           }
         })
+
+
         // TODO: add state to inspector
         api.on.getInspectorState(payload => {
-          if(payload.inspectorId === 'test-inspector'){
+          console.log('piniaObjs:',piniaObjs);
+
+          
+          if(payload.inspectorId === inspectorId){
+            
+            // initialize a state array
+            const stateArr = []
+            // initialize a getters array
+            const gettersArr = []
+            // initialize a actions array
+            const actionsArr = []
+
+            // iterate over piniaObjs
+            piniaObjs.forEach(obj => {
+              // iterate over properties in current obj's Proxy state
+              for(let [key, value] of Object.entries(obj.value)){
+                //create a stateObj 
+                const stateObj = {
+                  store_id: obj.key,
+                  key: key,
+                  value: value,
+                  editable: true
+                }
+                // add stateObj to stateArray
+                stateArr.push(stateObj)
+              }
+
+              ///TODOS as of 9-1-22
+              /*
+                - may need to access _pStores here and iterate to get the getters' values
+                - can display getter's function definition if we want
+                - actions should be straightfoward, just like the state above
+                - for the children elements, can filter the stateArr/getterArr/actionArr by store_id
+                - add function definitions for getters to the inspector panel
+                - figure out how we can expose _pStores each time state changes (or on any event)
+              */
+
+
+
+            // for(let key in Object.entries(obj.getters)){
+            //   //console.log('getters key: ', key)
+            //   // key is the label for the current getter
+            //   // obj is the current Proxy obj for the store 
+            //   const currentGetterValue = obj[key];
+            //   console.log('currentGetterValue is:.........', currentGetterValue)
+
+            //   //create a gettersObj
+            //   const gettersObj = {
+            //     store_id: obj.key,
+            //     key: key,
+            //     value: currentGetterValue,
+            //     editable: true
+            //   }
+            //   // add getter to getterArray
+            //   gettersArr.push(gettersObj)
+            // }
+              
+
+
+            })
+
+            console.log('stateArr: ', stateArr)
+              
+
+              
+              
+
+            
+              
+            
+              // iterate over current obj's getters
+                // go straight to Proxy.<getter_name>._value
+              // 
+
+
             // iterate over piniaObjs to add state to inspector panel
+            if(payload.nodeId === 'root'){
+              payload.state = {
+                'state': stateArr,
+                //'getters': gettersArr,
+                'actions': [
+                  {
+                    key: 'foo',
+                    value: 'root value',
+                    editable: true
+                  },
+                  {
+                    key: 'time',
+                    value: 'value',
+                    editable: true
+                  }
+                ]
+              }
+            } else {
+              payload.state = {
+                'child info': [
+                  {
+                    key: 'answer',
+                    value: {
+                      _custom: {
+                        display: '42!!!',
+                        value: 42,
+                        tooltip: 'The answer'
+                      }
+                    }
+                  }
+                ]
+            }
           }
-        })
+        }
+      })
 
   
 
