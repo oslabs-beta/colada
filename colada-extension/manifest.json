@@ -1,6 +1,6 @@
 {
   "name": "Colada DevTools",
-  "description": "",
+  "description": "MAKE SURE TO ADD SPECIFIC HOST PERMISSIONS!!",
   "version": "0.1",
   "manifest_version": 3,
   "background": {
@@ -10,5 +10,9 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "devtools_page": "devtools-background.html"
+  "devtools_page": "devtools-background.html",
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ]
 }
