@@ -20,7 +20,8 @@
   },
   "sideEffects": false,
   "scripts": {
-    "dev": "rimraf dist && rollup -c rollup.config.mjs"
+    "dev": "rimraf dist && rollup -c rollup.config.mjs",
+    "ts": "tsc --watch -d"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
@@ -32,6 +33,7 @@
     "rollup": "^2.79.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "^6.0.0",
+    "typescript": "^4.8.2",
     "vue": "^3.2.38"
   }
 }

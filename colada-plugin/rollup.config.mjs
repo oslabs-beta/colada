@@ -94,7 +94,8 @@ function createConfig (format, output, plugins = []) {
   const nodePlugins = [resolve(), commonjs()]
 
   return {
-    input: 'src/index.js',
+    input: 'src/index.ts',
+    //input: 'src/index.js',
     // Global and Browser ESM builds inlines everything so that they can be
     // used alone.
     external,
