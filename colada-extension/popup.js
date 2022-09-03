@@ -11,16 +11,21 @@ changeColor.addEventListener("click", async () => {
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: setPageBackgroundColor,
+    func: popupScript,
   });
 });
 
 // The body of this function will be executed as a content script inside the
 // current page
-function setPageBackgroundColor() {
-  console.log("enteredScript");
+function popupScript() {
+  console.log("running popupScript...");
   const store = document.body.querySelectorAll('script');
-  console.log("foundStore", store);
+  console.log("logging store data from popup:", store);
+  window.addEventListener("message", (event) => {
+    if (event.data.source === "colada") {
+      console.log('event received from plugin: ', event.data)
+    }
+  });
   chrome.storage.sync.get("color", ({ color }) => {
     document.body.style.backgroundColor = color;
   });
