@@ -2,7 +2,7 @@ import { setupDevtools } from './devtools'
 import {reactive, App} from 'vue'
 
 export default {
-  install (app: App, options = {}) {
+  install (app, options = {}) {
     //let devtools
     // Our Vue plugin logic
 
