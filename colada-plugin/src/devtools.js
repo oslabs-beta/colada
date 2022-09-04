@@ -1,16 +1,14 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
-// import {App} from 'vue'
-import { ProxyObject, StateObject } from './types'
 
-const inspectorId: string = 'colada-plugin'
-const timelineLayerId: string = 'colada-plugin'
-const groupId: string = 'group-1'
+const inspectorId = 'colada-plugin'
+const timelineLayerId = 'colada-plugin'
+const groupId = 'group-1'
 
 let piniaStore;
-let piniaObjs: ProxyObject[] = [];
+let piniaObjs = []
 
 
-export function setupDevtools(app: any) {
+export function setupDevtools(app) {
 
   // let devtoolsApi;
   // let trackId = 0
@@ -108,11 +106,7 @@ export function setupDevtools(app: any) {
       api.on.setPluginSettings(payload => {
         console.log('plugin settings changed', payload.settings,
         payload.key, payload.newValue, payload.oldValue);
-        const wrapper = document.querySelector('.wrapper') as HTMLElement | null
-        if(wrapper !== null){
-          wrapper.style.backgroundColor = "red"
-        }
-        //document.querySelector<HTMLElement>('.wrapper').style.backgroundColor = "red";
+        document.querySelector('.wrapper').style.backgroundColor = "red";
       })
 
 
@@ -133,7 +127,6 @@ export function setupDevtools(app: any) {
       api.on.visitComponentTree((payload, context) => {
         //console.log('payload is', payload);
         //console.log('context is', context);
-        //Maybe add a type to node?????
         const node = payload.treeNode;
         if (payload.componentInstance.type.meow) {
           node.tags.push({
@@ -161,7 +154,7 @@ export function setupDevtools(app: any) {
           //Creates a script element
           //stringify's the piniaStore obj
           //appends it to the document.body
-          const storeEl: HTMLElement = document.createElement('script')
+          const storeEl = document.createElement('script')
           storeEl.innerHTML = `${JSON.stringify(piniaStore)}`;
           document.body.appendChild(storeEl)
           console.log('document.body', document.body)
@@ -170,7 +163,7 @@ export function setupDevtools(app: any) {
           piniaObjs = [];
 
           //for each proxy store in piniaStore, console it
-          Object.values(piniaStore).forEach((store:any) => {
+          Object.values(piniaStore).forEach(store => {
             //***************************** */
             //note: need to implement: adding data to inspector panel
             //use payload.instanceData.state.push ()
@@ -183,7 +176,7 @@ export function setupDevtools(app: any) {
 
 
               //create a object that will be pushed into the Inspector panel
-              const proxyObj: ProxyObject = {
+              const proxyObj = {
                 type: `🥥 Store: ${store.$id}`,
                 key: `${store.$id}`,
                 value: store.$state,
@@ -211,18 +204,6 @@ export function setupDevtools(app: any) {
               //    - Is there even a more efficient way to "plug into" the Pinia store so we can access it in our plugin?
               // - 
           })
-
-          //send a messsage to the window for the extension to make use of
-          const messageObj: any = {
-            source: 'colada',
-            payload: "Message from Colada plugin <3"
-          }
-
-          window.postMessage(messageObj, "http://localhost:5173")
-          console.log("postMessage fired off")
-
-
-
         }
 
       })
@@ -266,7 +247,7 @@ export function setupDevtools(app: any) {
             ]
         })
 
-        api.on.getInspectorTree((payload: any, context) => {
+        api.on.getInspectorTree((payload, context) => {
           if(payload.inspectorId === inspectorId){
             console.log('getInspectorTree payload: ', payload)
             // initialize rootNodes for Colada inspector tree
@@ -279,7 +260,7 @@ export function setupDevtools(app: any) {
             ]
 
             // iterate over piniaObjs to add children stores to root 
-            piniaObjs.forEach((obj) => {
+            piniaObjs.forEach(obj => {
               payload.rootNodes[0].children.push({
                 id: obj.key,
                 label: `store: ${obj.key}`
@@ -298,18 +279,18 @@ export function setupDevtools(app: any) {
           if(payload.inspectorId === inspectorId){
             
             // initialize a state array
-            const stateArr: StateObject[] = []
+            const stateArr = []
             // initialize a getters array
-            //const gettersArr: any[] = []
+            //const gettersArr = []
             // initialize a actions array
-            //const actionsArr: any[] = []
+            //const actionsArr = []
 
             // iterate over piniaObjs
             piniaObjs.forEach(obj => {
               // iterate over properties in current obj's Proxy state
               for(let [key, value] of Object.entries(obj.value)){
                 //create a stateObj 
-                const stateObj: StateObject = {
+                const stateObj = {
                   store_id: obj.key,
                   key: key,
                   value: value,
@@ -372,7 +353,18 @@ export function setupDevtools(app: any) {
               payload.state = {
                 'state': stateArr,
                 //'getters': gettersArr,
-                //'actions': actionsArr
+                'actions': [
+                  {
+                    key: 'foo',
+                    value: 'root value',
+                    editable: true
+                  },
+                  {
+                    key: 'time',
+                    value: 'value',
+                    editable: true
+                  }
+                ]
               }
             } else {
               payload.state = {

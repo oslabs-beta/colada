@@ -131,7 +131,7 @@ function createConfig (format, output, plugins = []) {
     external,
     plugins: [
       vuePlugin(),
-      //tsPlugin,
+      tsPlugin,
       createReplacePlugin(
         isProductionBuild,
         isBundlerESMBuild
