@@ -1,3 +1,5 @@
+"use strict"
+
 chrome.devtools.panels.create(
   'Colada DevTools',
   '',
@@ -40,8 +42,9 @@ function popupScript() {
   window.addEventListener("message", (event) => {
     if (event.data.source === "colada") {
       console.log('event received from plugin: ', event.data);
-      chrome.storage.local.set({data: event.data.payload}, function() {
-        console.log('Value is set to ' + event.data.payload);
+      const date = Date.now().toString();
+      chrome.storage.local.set({ [date] : event.data.payload}, function() {
+        console.log('Value is set to ' + event.data.payload, 'key is set to' + date);
       });
 
     }

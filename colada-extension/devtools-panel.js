@@ -4,10 +4,10 @@ function getMessage() {
 let msgDisplay = document.getElementById("message");
 let message = document.createElement("div");
 
-chrome.storage.local.get(['data'], function(result) {
-  console.log('Value currently is ' + result.data);
+chrome.storage.local.get(null, function(result) {
+  console.log('Value currently is ' + JSON.stringify(result));
 
-  message.innerText = result.data;
+  message.innerText = JSON.stringify(result);
   msgDisplay.appendChild(message);
 
 
