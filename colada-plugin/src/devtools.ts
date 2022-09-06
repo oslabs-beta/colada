@@ -8,6 +8,7 @@ const groupId: string = 'group-1'
 
 let piniaStore;
 let piniaObjs: ProxyObject[] = [];
+let allPiniaObjs: ProxyObject[][] = []
 
 
 export function setupDevtools(app: any) {
@@ -148,13 +149,18 @@ export function setupDevtools(app: any) {
         console.log('running inspectComponent')
         // console.log('componentInstance is:', payload.componentInstance)
         //console.log('proxy._pStores is:', payload.componentInstance.proxy._pStores)
-        console.log('instanceData: ', payload.instanceData)
+        //console.log('instanceData: ', payload.instanceData)
 
         // checking to see if proxy contains _pStores property
         if(payload.componentInstance.proxy._pStores){
+          //console.log('_pStores: ', payload.componentInstance.proxy._pStores)
+          //console.log('_pStores typeof: ', typeof payload.componentInstance.proxy._pStores)
+          //const pStore = JSON.parse(JSON.stringify(payload.componentInstance.proxy._pStores))
+          //const pStore = JSON.stringify(payload.componentInstance.proxy._pStores)
+          //console.log('stringify pStore: ', pStore)
           // reassign piniaStore to proxy._pStores
           piniaStore = payload.componentInstance.proxy._pStores
-          console.log('piniaStore: ', piniaStore)
+          //console.log('piniaStore: ', piniaStore)
 
 
 
@@ -164,7 +170,7 @@ export function setupDevtools(app: any) {
           const storeEl: HTMLElement = document.createElement('script')
           storeEl.innerHTML = `${JSON.stringify(piniaStore)}`;
           document.body.appendChild(storeEl)
-          console.log('document.body', document.body)
+          //console.log('document.body', document.body)
 
           // reset piniaObjs to empty array
           piniaObjs = [];
@@ -175,16 +181,16 @@ export function setupDevtools(app: any) {
             //note: need to implement: adding data to inspector panel
             //use payload.instanceData.state.push ()
             //****************************** */
-              console.log('current store is:', store)
-              console.log(`[STORE]${store.$id}'s state: `, store.$state)
-              console.log(`[STORE]${store.$id}'s getters: `, store._getters)
-              console.log(`[STORE]${store.$id}'s _hmrPayload: `, store._hmrPayload)
+            //********The below console logs are useful to see each of the stores*********
+              //console.log('current store is:', store)
+              // console.log(`[STORE]${store.$id}'s state: `, store.$state)
+              // console.log(`[STORE]${store.$id}'s getters: `, store._getters)
+              // console.log(`[STORE]${store.$id}'s _hmrPayload: `, store._hmrPayload)
               
-
 
               //create a object that will be pushed into the Inspector panel
               const proxyObj: ProxyObject = {
-                type: `🥥 Store: ${store.$id}`,
+                type: `Store: ${store.$id}`,
                 key: `${store.$id}`,
                 value: store.$state,
                 state: store._hmrPayload.state,
@@ -192,6 +198,10 @@ export function setupDevtools(app: any) {
                 actions: store._hmrPayload.actions,
                 editable: true
               }
+
+              //after creating a proxyObj, we need to determine if it strictly equal to the last element of the array, memoization??
+                //if it doesn't match, change property "store_changed" to true
+              
 
               //proxyObj should now show up in the Inspector panel
               payload.instanceData.state.push(proxyObj)
@@ -210,19 +220,39 @@ export function setupDevtools(app: any) {
               // - (Stretch) Look into how _pStores is created and see if we can replicate it (otherwise, we're 100% dependent on _pStores for our plugin to work)
               //    - Is there even a more efficient way to "plug into" the Pinia store so we can access it in our plugin?
               // - 
+
+              // *************** end of forEach loop ******************
           })
 
           //send a messsage to the window for the extension to make use of
           const messageObj: any = {
             source: 'colada',
-            payload: "Message from Colada plugin <3"
+            payload: JSON.stringify(piniaObjs)
+            // TODO: add event so extension can link event with state change (need to implement event listeners first)
           }
 
-          window.postMessage(messageObj, "http://localhost:5173")
-          console.log("postMessage fired off")
+          // console.log('piniaObjs: ',JSON.stringify(piniaObjs))
+          
+          // const previousObj = JSON.stringify(allPiniaObjs[allPiniaObjs.length - 1])
+          // console.log('last el of allPiniaObjs: ', previousObj)
 
+          //if the current piniaObjs array is strictly equal to the last element in allPiniaObjs, storeChanged = true
+          // const storeChanged: boolean = JSON.stringify(piniaObjs) === previousObj ? false : true
+          // console.log('storeChanged?: ', storeChanged)
 
+          //post a message only if store has been changed
+          // if(storeChanged){
+          //   window.postMessage(messageObj, "http://localhost:5173")
+          //   console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
+          // }
+          window.postMessage(messageObj, "http://localhost:5173")   
+          console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
 
+           //after piniaObjs array is populated, push piniaObjs into our big boy array (allPiniaObjs)
+           allPiniaObjs.push(piniaObjs)
+          //  console.log('piniaObjs: ', piniaObjs)
+
+          //********* end of checking if _pStores exists************* */
         }
 
       })
