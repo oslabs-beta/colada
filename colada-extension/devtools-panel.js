@@ -14,8 +14,6 @@ chrome.storage.local.get(['data'], function(result) {
 });
 
 
-
-
 }
 
 
