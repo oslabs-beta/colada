@@ -1,0 +1,36 @@
+{
+    "include": [
+      "src/**/*.ts"
+    ],
+    "compilerOptions": {
+      "outDir": "dist",
+      "rootDir": "src",
+      "sourceMap": false,
+  
+      "target": "ES6",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "allowJs": true,
+      "skipLibCheck": true,
+  
+      "noUnusedLocals": true,
+      "strictNullChecks": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "noImplicitReturns": false,
+      "strict": true,
+      "isolatedModules": true,
+  
+      "experimentalDecorators": false,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "removeComments": false,
+      "lib": [
+        "es6",
+        "dom"
+      ],
+      "types": [
+        "node"
+      ]
+    }
+}

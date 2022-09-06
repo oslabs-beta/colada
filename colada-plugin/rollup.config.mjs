@@ -5,6 +5,11 @@ import commonjs from '@rollup/plugin-commonjs'
 import pascalcase from 'pascalcase'
 import pkg from './package.json' assert {type:'json'}
 import {terser} from 'rollup-plugin-terser'
+import ts from 'rollup-plugin-typescript2'
+import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //const pkg = require('./package.json')
 const name = pkg.name
@@ -28,6 +33,9 @@ const banner = `/*!
   * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
   * @license MIT
   */`
+
+// ensure TS checks only once for each build
+let hasTSChecked = false
 
 const outputConfigs = {
   // each file name has the format: `dist/${name}.${format}.js`
@@ -86,6 +94,28 @@ function createConfig (format, output, plugins = []) {
 
   if (isGlobalBuild) output.name = pascalcase(pkg.name)
 
+
+  // **************
+  const shouldEmitDeclarations = !hasTSChecked
+
+  const tsPlugin = ts({
+    check: !hasTSChecked,
+    tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+    cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
+    tsconfigOverride: {
+      compilerOptions: {
+        sourceMap: output.sourcemap,
+        declaration: shouldEmitDeclarations,
+        declarationMap: shouldEmitDeclarations,
+      },
+      exclude: ['__tests__', 'test-dts'],
+    },
+  })
+  // we only need to check TS and generate declarations once for each build.
+  // it also seems to run into weird issues when checking multiple times
+  // during a single build.
+  hasTSChecked = true
+
   const external = ['vue', '@vue/composition-api']
   if (!isGlobalBuild) {
     external.push('@vue/devtools-api')
@@ -94,12 +124,14 @@ function createConfig (format, output, plugins = []) {
   const nodePlugins = [resolve(), commonjs()]
 
   return {
-    input: 'src/index.js',
+    input: 'src/index.ts',
+    //input: 'src/index.js',
     // Global and Browser ESM builds inlines everything so that they can be
     // used alone.
     external,
     plugins: [
       vuePlugin(),
+      //tsPlugin,
       createReplacePlugin(
         isProductionBuild,
         isBundlerESMBuild

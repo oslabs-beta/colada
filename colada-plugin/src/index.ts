@@ -1,12 +1,12 @@
 import { setupDevtools } from './devtools'
-import {reactive, App} from 'vue'
+// import {App} from 'vue'
 
 export default {
-  install (app, options = {}) {
+  install (app: any, options = {}) {
     //let devtools
     // Our Vue plugin logic
 
-    console.log('index.js installed')
+    console.log('index.ts installed')
 
 
     //EVENTS from the package
