@@ -1,3 +1,30 @@
+
+
+function getMessage() {
+let msgDisplay = document.getElementById("message");
+let message = document.createElement("div");
+
+chrome.storage.local.get(['data'], function(result) {
+  console.log('Value currently is ' + result.data);
+
+  message.innerText = result.data;
+  msgDisplay.appendChild(message);
+
+
+});
+
+
+
+
+}
+
+
+
+
+
+
+
+
 let page = document.getElementById("buttonDiv");
 let selectedClassName = "current";
 const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
@@ -46,3 +73,4 @@ function constructOptions(buttonColors) {
 constructOptions(presetButtonColors);
 
 // const store = document.body.querySelector()
+getMessage();
