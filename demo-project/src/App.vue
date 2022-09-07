@@ -4,13 +4,13 @@ import Main from "./components/Main.vue";
 import { useStore } from "./stores/store.js";
 import {useCounterStore} from './stores/counter.js'
 import Counter from './components/Counter.vue';
-
+import DoubleStore from './components/DoubleStore.vue';
 
 const store = useStore();
 const counter = useCounterStore();
+
 //assign the store property in the store
 //window.store = {state}
-
 </script>
 
 <template>
@@ -26,4 +26,7 @@ const counter = useCounterStore();
   </main>
 
   <Counter @btn-click = "counter.increment" :num="counter.count" />
+
+  <DoubleStore @dbl-store-count="counter.increment" @dbl-store-text="store.addPerson(store.myStr)" :num="counter.count"/>
+
 </template>
