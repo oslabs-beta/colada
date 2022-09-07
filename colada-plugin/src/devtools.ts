@@ -1,7 +1,5 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
-// import {App} from 'vue'
 import { ProxyObject, StateObject } from './types'
-
 
 
 //*************************************************************************** */
@@ -15,7 +13,6 @@ let piniaObjs: ProxyObject[] = [];
 //let allPiniaObjs: ProxyObject[][] = []
 const storeCache = {};
 
-//DOM references
 //*************************************************************************** */
 
 
@@ -53,7 +50,7 @@ export function PiniaColadaPlugin(context: any){
         payload: JSON.stringify(proxyObj)
       }
       window.postMessage(messageObj, "http://localhost:5173")   
-      console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
+      //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
 
   })
 //     context.store.$onAction(() => {
@@ -77,42 +74,8 @@ export function setupDevtools(app: any) {
         homepage: 'https://vuejs.org',
         app,
         enableEarlyProxy: true,
-        settings: {
-            test1: {
-              label: 'I like vue devtools',
-              type: 'boolean',
-              defaultValue: true
-            },
-            test2: {
-              label: 'Quick choice',
-              type: 'choice',
-              defaultValue: 'a',
-              options: [
-                { value: 'a', label: 'A' },
-                { value: 'b', label: 'B' },
-                { value: 'c', label: 'C' }
-              ],
-              component: 'button-group'
-            },
-            test3: {
-              label: 'Long choice',
-              type: 'choice',
-              defaultValue: 'a',
-              options: [
-                { value: 'a', label: 'A' },
-                { value: 'b', label: 'B' },
-                { value: 'c', label: 'C' },
-                { value: 'd', label: 'D' },
-                { value: 'e', label: 'E' }
-              ]
-            },
-            test4: {
-              label: 'What is your name?',
-              type: 'text',
-              defaultValue: ''
-            }
-          },
-    }, api =>{
+        settings: {}
+    }, api => {
 
       //********************************************************************** */
       // ************ EVENT LISTENERS *****************************************
@@ -120,11 +83,12 @@ export function setupDevtools(app: any) {
 
       //add event listener to the window for 'addTimeLineEvent'
       window.addEventListener('addTimelineEvent', (e: any) => {
-        console.log('addTimelineEvent e is: ', e)
+        //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
         // TODO: add logic for sending state and keeping track of state 
 
         //Create a timeline event with the timelineEvent emitted in the $subscribe
+        //If possible, color code/group by store
         api.addTimelineEvent({
           layerId: timelineLayerId,
           event:{
@@ -137,6 +101,7 @@ export function setupDevtools(app: any) {
           }
         })
 
+
         // logic for saving store 'snapshots' 
         // if eventId exists in storeCache, push timelineEvent (current store) to storeCache
         if (storeCache.hasOwnProperty(e.id)) {
@@ -147,7 +112,6 @@ export function setupDevtools(app: any) {
 
 
         //END OF window.addEventListener
-        
       })
 
 
@@ -160,38 +124,16 @@ export function setupDevtools(app: any) {
       // })
       
 
-      //********************************************************************** */
-      // ************ PLUGIN SETTINGS *****************************************
-      //********************************************************************** */
-      api.on.setPluginSettings(payload => {
-        console.log('plugin settings changed', payload.settings,
-        payload.key, payload.newValue, payload.oldValue);
-        const wrapper = document.querySelector('.wrapper') as HTMLElement | null
-        if(wrapper !== null){
-          wrapper.style.backgroundColor = "red"
-        }
-        //document.querySelector<HTMLElement>('.wrapper').style.backgroundColor = "red";
-      })
-
-
-
 
       //********************************************************************** */
       // ************ COMPONENT SETTINGS *****************************************
       //********************************************************************** */
-      // api.on.hookNameHere((payload, context) => {
-      //   // maybe make this ^ async?
-      //   console.log('hookNameHere running')
-      //   console.log('payload is', payload);
-      //   console.log('context is', context);
-      // })
 
       //Adds a tag to next to the component in the Inspector -> Components Tree
       //NOTE: we had to add export default {meow: true}, to the component we want the tag to show on
       api.on.visitComponentTree((payload, context) => {
         //console.log('payload is', payload);
         //console.log('context is', context);
-        //Maybe add a type to node?????
         const node = payload.treeNode;
         if (payload.componentInstance.type.meow) {
           node.tags.push({
@@ -204,37 +146,20 @@ export function setupDevtools(app: any) {
 
       api.on.inspectComponent((payload, context) => {
         console.log('running inspectComponent')
-        // console.log('componentInstance is:', payload.componentInstance)
-        //console.log('proxy._pStores is:', payload.componentInstance.proxy._pStores)
+        //console.log('componentInstance is:', payload.componentInstance)
         //console.log('instanceData: ', payload.instanceData)
 
         // checking to see if proxy contains _pStores property
         if(payload.componentInstance.proxy._pStores){
           //console.log('_pStores: ', payload.componentInstance.proxy._pStores)
-          //console.log('_pStores typeof: ', typeof payload.componentInstance.proxy._pStores)
-          //const pStore = JSON.parse(JSON.stringify(payload.componentInstance.proxy._pStores))
-          //const pStore = JSON.stringify(payload.componentInstance.proxy._pStores)
-          //console.log('stringify pStore: ', pStore)
+
           // reassign piniaStore to proxy._pStores
           piniaStore = payload.componentInstance.proxy._pStores
-          //console.log('piniaStore: ', piniaStore)
-
-
-
-          //Creates a script element
-          //stringify's the piniaStore obj
-          //appends it to the document.body
-          const storeEl: HTMLElement = document.createElement('script')
-          storeEl.innerHTML = `${JSON.stringify(piniaStore)}`;
-          document.body.appendChild(storeEl)
-          //console.log('document.body', document.body)
 
           // reset piniaObjs to empty array
           piniaObjs = [];
 
-          //reset all the timeline events?
-
-          //for each proxy store in piniaStore, console it
+          //for each proxy store in piniaStore...
           Object.values(piniaStore).forEach((store:any) => {
             //***************************** */
             //note: need to implement: adding data to inspector panel
@@ -256,11 +181,7 @@ export function setupDevtools(app: any) {
                 getters: store._hmrPayload.getters,
                 actions: store._hmrPayload.actions,
                 editable: true
-              }
-
-              //after creating a proxyObj, we need to determine if it strictly equal to the last element of the array, memoization??
-                //if it doesn't match, change property "store_changed" to true
-              
+              }    
 
               //proxyObj should now show up in the Inspector panel
               payload.instanceData.state.push(proxyObj)
@@ -268,34 +189,17 @@ export function setupDevtools(app: any) {
               //push a copy of each proxyObj into piniaObjs
               piniaObjs.push(proxyObj)
 
-
-              
-             
-              /////////////////////////////////////////////////////
-              //Notes as of 8/31/22
-              //TO DO:
-              // - Essentially replicate the Pinia inspector panels 
-              // - Display the stores on our Colada inspector, similar to how Pinia inspector does 
-              // - Display pinia store changes in the Timeline with groupings based on which store
-              // - Add buttons to top of timeline (or potential hot keys to traverse through previous states) --> if not possible, the user should be able to click (and hover?) on a dot to set the app's state on the DOM to the corresponding state "snapshot" 
-              // - (Stretch) Look into if we can also add the full component tree (currently, the Pinia plugin ONLY lists stores, not the component tree)
-              // - (Stretch) Look into how _pStores is created and see if we can replicate it (otherwise, we're 100% dependent on _pStores for our plugin to work)
-              //    - Is there even a more efficient way to "plug into" the Pinia store so we can access it in our plugin?
-              // - 
-
               // *************** end of forEach loop ******************
           })
 
-          //********* end of checking if _pStores exists************* */
+          //********* end of checking if _pStores exists ************* */
         }
 
+        //********* end of checking api.on.inspectComponent  ************* */
       })
 
       //refreshes the component 
       api.notifyComponentUpdate()
-
-
-
 
 
       //********************************************************************** */
@@ -358,7 +262,6 @@ export function setupDevtools(app: any) {
         api.on.getInspectorState(payload => {
           console.log('piniaObjs:',piniaObjs);
 
-          
           if(payload.inspectorId === inspectorId){
             
             // initialize a state array
@@ -383,18 +286,6 @@ export function setupDevtools(app: any) {
                 stateArr.push(stateObj)
               }
 
-              ///TODOS as of 9-1-22
-              /*
-                - may need to access _pStores here and iterate to get the getters' values
-                - can display getter's function definition if we want
-                - actions should be straightfoward, just like the state above
-                - for the children elements, can filter the stateArr/getterArr/actionArr by store_id
-                - add function definitions for getters to the inspector panel
-                - figure out how we can expose _pStores each time state changes (or on any event)
-              */
-
-
-
             // for(let key in Object.entries(obj.getters)){
             //   //console.log('getters key: ', key)
             //   // key is the label for the current getter
@@ -413,23 +304,8 @@ export function setupDevtools(app: any) {
             //   gettersArr.push(gettersObj)
             // }
               
-
-
+              // End of forEach piniaObjs
             })
-
-            console.log('stateArr: ', stateArr)
-              
-
-              
-              
-
-            
-              
-            
-              // iterate over current obj's getters
-                // go straight to Proxy.<getter_name>._value
-              // 
-
 
             // iterate over piniaObjs to add state to inspector panel
             if(payload.nodeId === 'root'){
@@ -458,16 +334,6 @@ export function setupDevtools(app: any) {
       })
 
   
-
-        
-
-
-
-
-
-
-
-
         
 
       //********************************************************************** */
@@ -486,23 +352,10 @@ export function setupDevtools(app: any) {
         api.on.timelineCleared(() => {
           console.log('Timeline cleared')
         })
-
-        //Add a time line event everytime a pinia store is mutated
-        //If possible, color code/group by store
-        
-       //Add hook to be called when a timeline event is selected
-       api.on.inspectTimelineEvent(payload => {
-        if(payload.layerId === 'colada-plugin'){
-          console.log('inspectTimelineEvent payload: ', payload)
-        }
-       })
        
-
-
       
       //*********** end of setupDevToolsPlugin ********** */
     })
 
 
-   // return devtools
 }
