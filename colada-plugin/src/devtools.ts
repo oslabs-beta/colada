@@ -4,14 +4,41 @@ import { ProxyObject, StateObject } from './types'
 
 const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
-const groupId: string = 'group-1'
 
 let piniaStore;
 let piniaObjs: ProxyObject[] = [];
 let allPiniaObjs: ProxyObject[][] = []
 
 
+export function ColadaPiniaPlugin(context: any){
+  console.log("devtools.js ColadaPiniaPlugin context.store: ", context.store)
+  context.store.$subscribe(() => {
+      console.log('main.js context.store.$subscribe executed')
+      //whenever store changes, $subscribe detects it and....
+
+      //******
+      //we want to create a new timeline event
+
+      //******
+      //post a message with the piniaObjs as the payload
+  })
+//     context.store.$onAction(() => {
+//       console.log('main.js context.store.$onAction executed')
+//   })
+  return {secret: 'colada, the best companion for pinia <3'}
+}
+
 export function setupDevtools(app: any) {
+
+    console.log('devtools app input: ', app)
+
+  
+    // //test out pinia.$subscribe on each store
+    // pinia.use(({store}) => {
+    //   store.$subscribe(() => {
+    //     console.log('pinia.use, store.$subscribe')
+    //   })
+    // })
 
   // let devtoolsApi;
   // let trackId = 0
@@ -175,6 +202,8 @@ export function setupDevtools(app: any) {
           // reset piniaObjs to empty array
           piniaObjs = [];
 
+          //reset all the timeline events?
+
           //for each proxy store in piniaStore, console it
           Object.values(piniaStore).forEach((store:any) => {
             //***************************** */
@@ -208,6 +237,20 @@ export function setupDevtools(app: any) {
 
               //push a copy of each proxyObj into piniaObjs
               piniaObjs.push(proxyObj)
+
+
+              ///Create a timeline event with the proxyObj
+              api.addTimelineEvent({
+                layerId: timelineLayerId,
+                event:{
+                  time: api.now(),
+                  title: proxyObj.key,
+                  data: {
+                    state: proxyObj.value
+                  },
+                  groupId: proxyObj.key
+                }
+              })
              
               /////////////////////////////////////////////////////
               //Notes as of 8/31/22
@@ -445,75 +488,28 @@ export function setupDevtools(app: any) {
             color: 0xff984f,
             label: 'Colada 🥥',
         })
-        
-        ///*************** */
-        // //THESE ARE DEMO EVENTS
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now(),
-            data: {
-              label: 'group test'
-            },
-            title: 'group test',
-            groupId
-          }
+
+        //Are we able to add UI buttons??
+
+        // api.on.timelineCleared --> triggers when the user clears the timeline from the timeline panel 
+        api.on.timelineCleared(() => {
+          console.log('Timeline cleared')
         })
 
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now() + 10,
-            data: {
-              label: 'group test (event 2)',
-            },
-            title: 'group test',
-            groupId
-          }
-        })
+        //Add a time line event everytime a pinia store is mutated
+        //If possible, color code/group by store
         
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now() + 20,
-            data: {
-              label: 'group test (event 3)',
-            },
-            title: 'group test',
-            groupId
-          }
-        })
-        //******************************* */
-        //END OF DEMO EVENTS**************
+       //Add hook to be called when a timeline event is selected
+       api.on.inspectTimelineEvent(payload => {
+        if(payload.layerId === 'colada-plugin'){
+          console.log('inspectTimelineEvent payload: ', payload)
+        }
+       })
        
 
 
-
-
-        
-
-        
-
-        
-        
-        
-
-        
-
       
-
-
-
-
-      
-
-      
-
-
-      
-      
-      
-      
+      //*********** end of setupDevToolsPlugin ********** */
     })
 
 

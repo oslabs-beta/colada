@@ -8,6 +8,7 @@ import Counter from './components/Counter.vue';
 
 const store = useStore();
 const counter = useCounterStore();
+
 //assign the store property in the store
 //window.store = {state}
 
