@@ -11,7 +11,7 @@ const timelineLayerId: string = 'colada-plugin'
 let piniaStore;
 let piniaObjs: ProxyObject[] = [];
 //let allPiniaObjs: ProxyObject[][] = []
-const storeCache = {};
+const storeCache: any = {}; // an object where keys are store_id's and values are arrays of states
 
 //*************************************************************************** */
 
@@ -23,7 +23,19 @@ const storeCache = {};
 export function PiniaColadaPlugin(context: any){
   //console.log("devtools.js PiniaColadaPlugin context.store: ", context.store)
   const store: any = context.store
-  store.$subscribe(() => {
+
+  // *** new stuff here
+  // add initial values to storeCache here upon pageload
+  storeCache[store.$id] = [
+    {
+      [Date.now()] : store.$state
+    }
+  ];
+  // console.log('storeCache is:', storeCache)
+  // *** 
+
+  store.$subscribe((mutation: any, state: any) => {
+
     const proxyObj: ProxyObject = {
       type: `Store: ${store.$id}`,
       key: `${store.$id}`,
@@ -33,24 +45,34 @@ export function PiniaColadaPlugin(context: any){
       actions: store._hmrPayload.actions,
       editable: true
     }
-      //console.log('main.js context.store.$subscribe executed')
-      //whenever store changes, $subscribe detects it and....
+    //console.log('main.js context.store.$subscribe executed')
+    //whenever store changes, $subscribe detects it and....
 
-      //******
-      //we want to create a new timeline event
-      //emit a custom event with the proxyObj as a payload
-      const event: any = new CustomEvent('addTimelineEvent', {detail: proxyObj})
-      window.dispatchEvent(event)
+    // *********** new stuff here
+    // console.log('mutation from $subscribe method is:', mutation)
+    // console.log('state from $subscribe method is:', state)
+    // push to storeCache the updated state (which is the state argument)
+    storeCache[store.$id].push({
+      [Date.now()] : state // could also use store.$state here
+    })
+    console.log('updated storeCache is:', storeCache)
+    // ***********
 
-      //******
-      //post a message with the piniaObjs as the payload
-      //send a messsage to the window for the extension to make use of
-      const messageObj: any = {
-        source: 'colada',
-        payload: JSON.stringify(proxyObj)
-      }
-      window.postMessage(messageObj, "http://localhost:5173")   
-      //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
+    //******
+    //we want to create a new timeline event
+    //emit a custom event with the proxyObj as a payload
+    const event: any = new CustomEvent('addTimelineEvent', {detail: proxyObj})
+    window.dispatchEvent(event)
+
+    //******
+    //post a message with the piniaObjs as the payload
+    //send a messsage to the window for the extension to make use of
+    const messageObj: any = {
+      source: 'colada',
+      payload: JSON.stringify(proxyObj)
+    }
+    window.postMessage(messageObj, "http://localhost:5173")   
+    //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
 
   })
 //     context.store.$onAction(() => {
@@ -112,6 +134,13 @@ export function setupDevtools(app: any) {
 
 
         //END OF window.addEventListener
+      })
+
+      window.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM CONTENT LOADEDDDDD');
+        // ! can we get the initial Pinia store from the app? 
+        console.log('app looks like: ', app)
+        // ! Can we put initial pstores logic in here? 
       })
 
 
