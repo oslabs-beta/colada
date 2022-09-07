@@ -1,5 +1,6 @@
-import { setupDevtools } from './devtools'
+import { setupDevtools, PiniaColadaPlugin} from './devtools'
 // import {App} from 'vue'
+// import { createPinia } from "pinia";
 
 export default {
   install (app: any, options = {}) {
@@ -8,6 +9,9 @@ export default {
 
     console.log('index.ts installed')
 
+    // const pinia = createPinia()
+    // pinia.use(colodaPiniaPlugin)
+
 
     //EVENTS from the package
     // app.mixin({
@@ -15,6 +19,8 @@ export default {
     //     $doSomething () {
     //       const trackEnd = devtools ? devtools.trackStart('$doSomething') : null
     //       console.log('$doSomething executed')
+
+
     //       return new Promise(resolve => {
     //         setTimeout(() => {
     //           if(trackEnd) trackEnd()
@@ -30,3 +36,7 @@ export default {
     //devtools = setupDevtools(app)
   }
 }
+
+export { PiniaColadaPlugin }
+
+

@@ -2,56 +2,72 @@ import { setupDevtoolsPlugin } from '@vue/devtools-api'
 // import {App} from 'vue'
 import { ProxyObject, StateObject } from './types'
 
+
+
+//*************************************************************************** */
+//************* global variables that are used throughout file ************** */
+//*************************************************************************** */
 const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
-const groupId: string = 'group-1'
 
 let piniaStore;
 let piniaObjs: ProxyObject[] = [];
-let allPiniaObjs: ProxyObject[][] = []
+//let allPiniaObjs: ProxyObject[][] = []
+const storeCache = {};
+
+//DOM references
+//*************************************************************************** */
 
 
+//******************************** */
+//******** This function acts as a plugin, and is exported to be used in main.js *********** */
+//******** Ex. pinia.use(PiniaColadaPlugin) *********** */
+//******************************** */
+export function PiniaColadaPlugin(context: any){
+  //console.log("devtools.js PiniaColadaPlugin context.store: ", context.store)
+  const store: any = context.store
+  store.$subscribe(() => {
+    const proxyObj: ProxyObject = {
+      type: `Store: ${store.$id}`,
+      key: `${store.$id}`,
+      value: store.$state,
+      state: store._hmrPayload.state,
+      getters: store._hmrPayload.getters,
+      actions: store._hmrPayload.actions,
+      editable: true
+    }
+      //console.log('main.js context.store.$subscribe executed')
+      //whenever store changes, $subscribe detects it and....
+
+      //******
+      //we want to create a new timeline event
+      //emit a custom event with the proxyObj as a payload
+      const event: any = new CustomEvent('addTimelineEvent', {detail: proxyObj})
+      window.dispatchEvent(event)
+
+      //******
+      //post a message with the piniaObjs as the payload
+      //send a messsage to the window for the extension to make use of
+      const messageObj: any = {
+        source: 'colada',
+        payload: JSON.stringify(proxyObj)
+      }
+      window.postMessage(messageObj, "http://localhost:5173")   
+      console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
+
+  })
+//     context.store.$onAction(() => {
+//       console.log('main.js context.store.$onAction executed')
+//   })
+  return {secret: 'colada, the best companion for pinia <3'}
+}
+
+
+
+//******************************** */
+//******************************** */
+//******************************** */
 export function setupDevtools(app: any) {
-
-  // let devtoolsApi;
-  // let trackId = 0
-
-  // const devtools = {
-  //   //our helpers go here
-  //   trackStart: (label) => {
-  //     const groupId = 'track' + trackId++
-
-  //     //Start
-  //     devtoolsApi.addTimelineEvent({
-  //       layerId: timelineLayerId,
-  //       event: {
-  //         time: api.now(),
-  //         data: {
-  //           label
-  //         },
-  //         title: label,
-  //         groupId
-  //       }
-  //     })
-
-  //     return () => {
-  //       //End
-  //       devtoolsApi.addTimelineEvent({
-  //         layerId: timelineLayerId,
-  //         event: {
-  //           time: api.now(),
-  //           data: {
-  //             label,
-  //             done: true
-  //           },
-  //           title: label,
-  //           groupId
-  //         }
-  //       })
-  //     }
-  //   }
-  // }
-
 
 
     setupDevtoolsPlugin({
@@ -98,10 +114,51 @@ export function setupDevtools(app: any) {
           },
     }, api =>{
 
-      //devtoolsApi = api
+      //********************************************************************** */
+      // ************ EVENT LISTENERS *****************************************
+      //********************************************************************** */
+
+      //add event listener to the window for 'addTimeLineEvent'
+      window.addEventListener('addTimelineEvent', (e: any) => {
+        console.log('addTimelineEvent e is: ', e)
+        const timelineEvent = e.detail
+        // TODO: add logic for sending state and keeping track of state 
+
+        //Create a timeline event with the timelineEvent emitted in the $subscribe
+        api.addTimelineEvent({
+          layerId: timelineLayerId,
+          event:{
+            time: api.now(),
+            title: timelineEvent.key,
+            data: {
+              state: timelineEvent.value
+            },
+            groupId: timelineEvent.key
+          }
+        })
+
+        // logic for saving store 'snapshots' 
+        // if eventId exists in storeCache, push timelineEvent (current store) to storeCache
+        if (storeCache.hasOwnProperty(e.id)) {
+          // storeCache[e.id].push(timelineEvent)
+        } else { // else, add new property to storeCache where key is eventId and value is array with timelineEvenet
+          // storeCache[e.id] = [timelineEvent];
+        }
 
 
+        //END OF window.addEventListener
+        
+      })
 
+
+      // ******** BEGINNING OF LOGIC FOR TIME TRAVEL DEBUGGING (clicking on events to change state of application)********
+      // api.on.inspectTimelineEvent(payload => {
+      //   if (payload.layerId === 'colada-plugin'){
+      //     // if stores cache contains key associated with eventId 
+      //       // push 
+      //   }
+      // })
+      
 
       //********************************************************************** */
       // ************ PLUGIN SETTINGS *****************************************
@@ -175,6 +232,8 @@ export function setupDevtools(app: any) {
           // reset piniaObjs to empty array
           piniaObjs = [];
 
+          //reset all the timeline events?
+
           //for each proxy store in piniaStore, console it
           Object.values(piniaStore).forEach((store:any) => {
             //***************************** */
@@ -208,6 +267,9 @@ export function setupDevtools(app: any) {
 
               //push a copy of each proxyObj into piniaObjs
               piniaObjs.push(proxyObj)
+
+
+              
              
               /////////////////////////////////////////////////////
               //Notes as of 8/31/22
@@ -223,34 +285,6 @@ export function setupDevtools(app: any) {
 
               // *************** end of forEach loop ******************
           })
-
-          //send a messsage to the window for the extension to make use of
-          const messageObj: any = {
-            source: 'colada',
-            payload: JSON.stringify(piniaObjs)
-            // TODO: add event so extension can link event with state change (need to implement event listeners first)
-          }
-
-          // console.log('piniaObjs: ',JSON.stringify(piniaObjs))
-          
-          // const previousObj = JSON.stringify(allPiniaObjs[allPiniaObjs.length - 1])
-          // console.log('last el of allPiniaObjs: ', previousObj)
-
-          //if the current piniaObjs array is strictly equal to the last element in allPiniaObjs, storeChanged = true
-          // const storeChanged: boolean = JSON.stringify(piniaObjs) === previousObj ? false : true
-          // console.log('storeChanged?: ', storeChanged)
-
-          //post a message only if store has been changed
-          // if(storeChanged){
-          //   window.postMessage(messageObj, "http://localhost:5173")
-          //   console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
-          // }
-          window.postMessage(messageObj, "http://localhost:5173")   
-          console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
-
-           //after piniaObjs array is populated, push piniaObjs into our big boy array (allPiniaObjs)
-           allPiniaObjs.push(piniaObjs)
-          //  console.log('piniaObjs: ', piniaObjs)
 
           //********* end of checking if _pStores exists************* */
         }
@@ -445,75 +479,28 @@ export function setupDevtools(app: any) {
             color: 0xff984f,
             label: 'Colada 🥥',
         })
-        
-        ///*************** */
-        // //THESE ARE DEMO EVENTS
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now(),
-            data: {
-              label: 'group test'
-            },
-            title: 'group test',
-            groupId
-          }
+
+        //Are we able to add UI buttons??
+
+        // api.on.timelineCleared --> triggers when the user clears the timeline from the timeline panel 
+        api.on.timelineCleared(() => {
+          console.log('Timeline cleared')
         })
 
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now() + 10,
-            data: {
-              label: 'group test (event 2)',
-            },
-            title: 'group test',
-            groupId
-          }
-        })
+        //Add a time line event everytime a pinia store is mutated
+        //If possible, color code/group by store
         
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event: {
-            time: api.now() + 20,
-            data: {
-              label: 'group test (event 3)',
-            },
-            title: 'group test',
-            groupId
-          }
-        })
-        //******************************* */
-        //END OF DEMO EVENTS**************
+       //Add hook to be called when a timeline event is selected
+       api.on.inspectTimelineEvent(payload => {
+        if(payload.layerId === 'colada-plugin'){
+          console.log('inspectTimelineEvent payload: ', payload)
+        }
+       })
        
 
 
-
-
-        
-
-        
-
-        
-        
-        
-
-        
-
       
-
-
-
-
-      
-
-      
-
-
-      
-      
-      
-      
+      //*********** end of setupDevToolsPlugin ********** */
     })
 
 
