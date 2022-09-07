@@ -1,54 +1,68 @@
 "use strict"
 
+async function onShownListener() {
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: devPanelScript,
+  });
+};
+
+// function messageListener(event) {
+//   if (event.data.source === "colada") {
+//     console.log('message received from plugin...');
+//     const date = Date.now().toString();
+//     chrome.storage.local.set({ [date] : event.data.payload}, () => {
+//       console.log('event data saved at key ', date)
+//     });
+
+//   }
+// }
+
 chrome.devtools.panels.create(
   'Colada DevTools',
   '',
   'devtools-panel.html',
-  panel => {
-    console.log('panel callback');
-    panel.onShown.addListener(async () => {
-      console.log("panelOnShown");
-      let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: popupScript,
-  });
-
-
-// The body of this function will be executed as a content script inside the
-// current page
-
-    })
-  }
-);
-
-chrome.runtime.sendMessage(
-
-  {
-    message: "startListeners"
-  },
-
   () => {
-    console.log("sentMessage")
+    console.log("panel created at", new Date());
+    onShownListener();
   }
-
 );
 
-function popupScript() {
-  console.log("running popupScript...");
-  const store = document.body.querySelectorAll('script');
-  console.log("logging store data from popup:", store);
-  window.addEventListener("message", (event) => {
-    if (event.data.source === "colada") {
-      console.log('event received from plugin: ', event.data);
-      const date = Date.now().toString();
-      chrome.storage.local.set({ [date] : event.data.payload}, function() {
-        console.log('Value is set to ' + event.data.payload, 'key is set to' + date);
-      });
+function devPanelScript() {
+  console.log("running injected devPanelScript...");
 
+  function ping() {
+    chrome.runtime.sendMessage('ping', response => {
+      if (chrome.runtime.lastError) {
+        console.log('trying to connect to chrome runtime again')
+        setTimeout(ping, 1000);
+      } else {
+        console.log('no more runtime last error')
+        chrome.runtime.onDisconnect.addListener(handleDisconnect) 
+      }
+    });
+  }
+  
+  ping();
+
+  function messageListener(event) {
+    if (event.data.source === "colada") {
+      console.log('message received from plugin...');
+      const date = Date.now().toString();
+      chrome.storage.local.set({ [date] : event.data.payload}, () => {
+        console.log('event data saved at key ', date)
+      });
     }
-  });
-  // chrome.storage.sync.get("color", ({ color }) => {
-  //   document.body.style.backgroundColor = color;
   };
+
+  function handleDisconnect() {
+    console.log('handle disconnect')
+    window.removeEventListener("message", messageListener);
+  }
+
+  window.addEventListener("message", messageListener);
+  
+  }
+
+  
