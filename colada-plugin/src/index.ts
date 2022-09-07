@@ -1,4 +1,4 @@
-import { setupDevtools, ColadaPiniaPlugin} from './devtools'
+import { setupDevtools, PiniaColadaPlugin} from './devtools'
 // import {App} from 'vue'
 // import { createPinia } from "pinia";
 
@@ -37,6 +37,6 @@ export default {
   }
 }
 
-export { ColadaPiniaPlugin }
+export { PiniaColadaPlugin }
 
 
