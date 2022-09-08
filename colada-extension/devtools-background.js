@@ -51,8 +51,13 @@ function devPanelScript() {
       console.log('message received from plugin...');
       const date = Date.now().toString();
       chrome.storage.local.set({ [date] : event.data.payload}, () => {
-        console.log('event data saved at key ', date)
+        console.log('event data saved at key ', date);
+        console.log('event.data.payload: ', event.data.payload)
       });
+      // chrome.storage.local.set(event.data.payload, () => {
+      //   console.log('event data saved at key ', date);
+      //   console.log('event.data.payload: ', event.data.payload)
+      // });
     }
   };
 
