@@ -1,6 +1,7 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { ProxyObject, StateObject } from './types'
 
+// declare type for application window
 declare const window: any;
 
 
@@ -214,7 +215,8 @@ export function setupDevtools(app: any) {
                   // tempStoreObj[key] = snapshot.state;
                   // update the pinia stores 
                   window.store[key].$state = snapshot.state;
-                  window.store[key].$patch()
+                  // potentially use $patch with payload to specify mutation type?
+                  // window.store[key].$patch()
                 }
 
               }
