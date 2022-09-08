@@ -1,6 +1,8 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { ProxyObject, StateObject } from './types'
 
+declare const window: any;
+
 
 //*************************************************************************** */
 //************* global variables that are used throughout file ************** */
@@ -21,8 +23,24 @@ const storeCache: any = {}; // an object where keys are store_id's and values ar
 //******** Ex. pinia.use(PiniaColadaPlugin) *********** */
 //******************************** */
 export function PiniaColadaPlugin(context: any){
-  //console.log("devtools.js PiniaColadaPlugin context.store: ", context.store)
+  console.log("devtools.js PiniaColadaPlugin context.store: ", context.store)
   const store: any = context.store
+
+  // ***** Experimenting to see how we can update pinia store directly
+  // store.$state.count = 99999;
+  // console.log("devtools.js PiniaColadaPlugin context.store AFTER UPDATE.......: ", context.store)
+
+  // const pinia: any = context.pinia;
+  // const app: any = context.app;
+  // console.log('pinia is: ', pinia)
+  // console.log('app is:', app)
+
+  // pinia.use(({ store }: any) => {
+  //   store.myStr = 'TESTINGGGGG'
+  // })
+
+  // console.log('pinia is NOW......: ', pinia)
+  // ***********
 
   // *** new stuff here
   // add initial values to storeCache here upon pageload
@@ -181,7 +199,7 @@ export function setupDevtools(app: any) {
           // use PiniaColadaPlugin to replace app's stores with these seleceted stores 
           console.log('tempStoreArray is: ', tempStoreArray);
           // set store using tempStoreArray (we could also do this in the nested forEach loop)
-          
+          window.store.counter.$state.count = 555;
         }
       })
       
