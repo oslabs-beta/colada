@@ -10,6 +10,7 @@ Types to define for the ProxyObject (and to be used elsewhere):
 // - type for piniaStore 
 
 export type ProxyObject = {
+  timestamp?: number,
   type: string,
   key: string,
   value: any,

@@ -43,6 +43,7 @@ export function PiniaColadaPlugin(context: any){
   // ***********
 
   // *** new stuff here
+  // {counter: {timeStamp: ____, state: {____}}}
   // add initial values to storeCache here upon pageload
   storeCache[store.$id] = [
     {
@@ -54,8 +55,10 @@ export function PiniaColadaPlugin(context: any){
   // *** 
 
   store.$subscribe((mutation: any, state: any) => {
+    const currentTimestamp = Date.now();
 
     const proxyObj: ProxyObject = {
+      timestamp: currentTimestamp,
       type: `Store: ${store.$id}`,
       key: `${store.$id}`,
       value: store.$state,
@@ -68,11 +71,12 @@ export function PiniaColadaPlugin(context: any){
     //whenever store changes, $subscribe detects it and....
 
     // *********** new stuff here
+    console.log('currentTimestamp IS: ', currentTimestamp)
     // console.log('mutation from $subscribe method is:', mutation)
     // console.log('state from $subscribe method is:', state)
     // push to storeCache the updated state (which is the state argument)
     storeCache[store.$id].push({
-      timeStamp: Date.now(),
+      timeStamp: currentTimestamp,
       state: {...state} // could also use store.$state here
     })
     console.log(`updated storeCache for [STORE] ${store.$id} is:`, storeCache)
@@ -81,7 +85,7 @@ export function PiniaColadaPlugin(context: any){
     //******
     //we want to create a new timeline event
     //emit a custom event with the proxyObj as a payload
-    const event: any = new CustomEvent('addTimelineEvent', {detail: proxyObj})
+    const event: any = new CustomEvent('addTimelineEvent', {detail: {...proxyObj, currentTimestamp}})
     window.dispatchEvent(event)
 
     //******
@@ -89,9 +93,9 @@ export function PiniaColadaPlugin(context: any){
     //send a messsage to the window for the extension to make use of
     const messageObj: any = {
       source: 'colada',
-      payload: JSON.stringify(proxyObj)
+      payload: proxyObj
     }
-    window.postMessage(messageObj, "http://localhost:5173")   
+    window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")   
     //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
 
   })
@@ -129,12 +133,13 @@ export function setupDevtools(app: any) {
         const timelineEvent = e.detail
         // TODO: add logic for sending state and keeping track of state 
 
+        console.log('TIMELINEEVENT.currentTimestamp IS: ', timelineEvent.currentTimestamp)
         //Create a timeline event with the timelineEvent emitted in the $subscribe
         //If possible, color code/group by store
         api.addTimelineEvent({
           layerId: timelineLayerId,
           event:{
-            time: Date.now(),// api.now(),
+            time: timelineEvent.currentTimestamp,// api.now(),
             title: timelineEvent.key,
             data: {
               state: timelineEvent.value
@@ -169,11 +174,12 @@ export function setupDevtools(app: any) {
             // push 
           // console.log('payload is: ', payload);
           // get corresponding states from storeCache based on payload.event.time
+
           const timelineEventTimestamp: any = payload.event.time;
           console.log('timelineEventTimestamp', timelineEventTimestamp)
 
           // initialize array to store objects with states
-          const tempStoreArray: any = [];
+          const tempStoreObj: any = {};
 
           // iterate over properites of storeCache  
           // ultimately, we need an object with as many properties as there are stores. 
@@ -181,30 +187,25 @@ export function setupDevtools(app: any) {
             console.log(`key is ${key}, value is ${value}`)
             // iterate over the value array if array is not null
             if (Array.isArray(value) && value !== null) {
-              value.forEach((snapshot, index) => {
-                // if timelineEventTimestamp is less than the zeroth timestamp, reset to default state
-                // TODO: exit loop early if found
-                if (index === 0 && timelineEventTimestamp < snapshot.timestamp) {
-                  tempStoreArray[key] = value[index].state;
+              for (let i = 0; i < value.length; i++) {
+                const snapshot = value[i];
+                if (snapshot.timeStamp === timelineEventTimestamp) {
+                  console.log("FOUND ITTTTT")
+                  // tempStoreObj[key] = snapshot.state;
+                  // update the pinia stores 
+                  window.store[key].$state = snapshot.state;
                 }
-                // if current timestamp is greater than timelineEventTimestamp, use the previous snapshot to update app's stores
-                else if (snapshot.timeStamp > timelineEventTimestamp) {
-                  tempStoreArray[key] = value[index - 1].state;
-                }
-                // if we've reached end, use this value
-                else if (index === value.length){
-                  tempStoreArray[key] = value[index].state;
-                }
+
               }
-            )
+
+            
+
             }
             // the key should be the store.$id (key of storeCache)
             // the value should be the store.$state from the corresponding snapshot (from the value of storeCache)
           }
           // use PiniaColadaPlugin to replace app's stores with these seleceted stores 
-          console.log('tempStoreArray is: ', tempStoreArray);
-          // set store using tempStoreArray (we could also do this in the nested forEach loop)
-          window.store.counter.$state.count = 555;
+          console.log('tempStoreObj is: ', tempStoreObj);
         }
       })
       
