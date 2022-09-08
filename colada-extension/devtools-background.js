@@ -1,32 +1,16 @@
-"use strict"
+// loaded by devtools-background.html, which is the the "background" page for the devtools-panel
+// this is declared in manifest.json. note that this does not actually represent the UI, that is the devtools "panel") 
 
-async function onShownListener() {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: devPanelScript,
-  });
-};
-
-// function messageListener(event) {
-//   if (event.data.source === "colada") {
-//     console.log('message received from plugin...');
-//     const date = Date.now().toString();
-//     chrome.storage.local.set({ [date] : event.data.payload}, () => {
-//       console.log('event data saved at key ', date)
-//     });
-
-//   }
-// }
+// async function onShownListener() {
+//   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+//   chrome.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     func: devPanelScript,
+//   });
+// };
 
 chrome.devtools.panels.create(
-  'Colada DevTools',
-  '',
-  'devtools-panel.html',
-  () => {
-    console.log("panel created at", new Date());
-    onShownListener();
-  }
+  'Colada DevTools', '', 'devtools-panel.html', () => onShownListener()
 );
 
 function devPanelScript() {
@@ -51,8 +35,13 @@ function devPanelScript() {
       console.log('message received from plugin...');
       const date = Date.now().toString();
       chrome.storage.local.set({ [date] : event.data.payload}, () => {
-        console.log('event data saved at key ', date)
+        console.log('event data saved at key ', date);
+        console.log('event.data.payload: ', event.data.payload)
       });
+      // chrome.storage.local.set(event.data.payload, () => {
+      //   console.log('event data saved at key ', date);
+      //   console.log('event.data.payload: ', event.data.payload)
+      // });
     }
   };
 
