@@ -182,8 +182,13 @@ export function setupDevtools(app: any) {
             // iterate over the value array if array is not null
             if (Array.isArray(value) && value !== null) {
               value.forEach((snapshot, index) => {
+                // if timelineEventTimestamp is less than the zeroth timestamp, reset to default state
+                // TODO: exit loop early if found
+                if (index === 0 && timelineEventTimestamp < snapshot.timestamp) {
+                  tempStoreArray[key] = value[index].state;
+                }
                 // if current timestamp is greater than timelineEventTimestamp, use the previous snapshot to update app's stores
-                if (snapshot.timeStamp > timelineEventTimestamp) {
+                else if (snapshot.timeStamp > timelineEventTimestamp) {
                   tempStoreArray[key] = value[index - 1].state;
                 }
                 // if we've reached end, use this value
