@@ -1,6 +1,7 @@
 <template>
     <div class="timeline">
         <h3>Timeline goes here</h3>
+        <HorzTimeline />
         <div class="btn-container">
             <BackButton @step-back="stepBack" />
             <ForwardButton @step-forward="stepForward"/>
@@ -9,6 +10,7 @@
 </template>
 
 <script>
+    import HorzTimeline from '../components/HorzTimeline.vue'
     import BackButton from '../components/BackButton.vue'
     import ForwardButton from '../components/ForwardButton.vue'
 
@@ -18,6 +20,7 @@
 
         },
         components: {
+            HorzTimeline,
             BackButton,
             ForwardButton
         },
