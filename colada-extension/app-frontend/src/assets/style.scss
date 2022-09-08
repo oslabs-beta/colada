@@ -1,0 +1,172 @@
+//VARIABLES
+$primary-color:rgb(96, 202, 140);
+$background-color: rgb(13,16,21);
+$nav-icon:white;
+$nav-hover:rgb(48,61,78);
+$nav-click:rgb(71, 91, 118);
+
+//****************** Below is App.vue styling ***************
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      background-color:$background-color;
+      color:rgb(182,193,201);
+    }
+    .main{
+        display:flex;
+        flex-direction:column;
+        justify-content: space-around;
+        align-items:center;
+        gap:1rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: 30px auto;
+      overflow: auto;
+      min-height: 300px;
+      border: 1px solid steelblue;
+      padding: 30px;
+      border-radius: 5px;
+    }
+//****************** Above is App.vue styling ***************
+
+//****************** Below is Button styling ***************
+    .btn {
+      display: inline-block;
+      background: $primary-color;
+      color: $background-color;
+      border: none;
+      padding: 5px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 20px;
+      font-family: inherit;
+      transition:0.25s;
+      border:2px solid $primary-color;
+    }
+
+    .btn:hover{
+        background-color:$background-color;
+        color: $primary-color;
+    }
+
+    .btn:focus {
+      outline: none;
+    }
+    .btn:active {
+      transform: scale(0.9);
+    }
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+//****************** Above is Button styling ***************
+
+//****************** Below is Navbar.vue styling ***************
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:2rem;
+}
+
+.nav-icon{
+    width:48px;
+    height:48px;
+    color:$nav-icon;
+    transition:0.2s;
+   
+    border-radius:8px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.nav-icon:hover{
+    background-color:$nav-hover;
+}
+
+.nav-icon:active{
+    background-color:$nav-click;
+}
+//****************** Above is Navbar.vue styling ***************
+
+//****************** Below is HorzTimeline.vue styling ***************
+
+    .timeline {
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .li{
+        display:flex;
+        flex-direction:column;
+        justify-content:space-evenly;
+        gap:16px;
+        transition: all 200ms ease-in;
+    }
+
+    .timestamp{
+        margin-bottom: 20px;
+        padding: 0px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 100;
+    }
+    .status{
+        padding: 0px 40px;
+        display: flex;
+        justify-content: center;
+        border-top: 2px solid #D6DCE0;
+        position: relative;
+        transition: all 200ms ease-in;
+        h4{
+            font-weight:600;
+            padding-top:16px;
+        }
+        &:before{
+            content: '';
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            position: absolute;
+            top: -15px;
+            left: 42%;
+            transition: all 200ms ease-in;
+        }
+    }
+
+    .li.complete{
+        .status{
+            border-top: 2px solid $primary-color;
+            &:before{
+                background-color: $primary-color;
+                border: none;
+                transition: all 200ms ease-in ;
+            }
+        }
+         h4 {
+            padding-top:16px;
+            color: $primary-color;
+        }
+    }
+
+//****************** Above is HorzTimeline.vue styling ***************
+
+   
