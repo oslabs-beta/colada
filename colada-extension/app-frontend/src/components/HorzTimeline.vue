@@ -37,6 +37,15 @@
                 <h4> addPerson </h4>
                 </div>
             </li>
+            <li class="li">
+                <div class="timestamp">
+                <span class="author">Store - elements: ["Bob", "Tim", "Sam"]</span>
+                <span class="date">9/7/22</span>
+                </div>
+                <div class="status">
+                <h4> addPerson </h4>
+                </div>
+            </li>
         </ul>     
     </div>
 </template>

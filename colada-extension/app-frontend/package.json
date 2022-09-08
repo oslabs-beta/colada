@@ -16,6 +16,7 @@
     "bootstrap-icons": "^1.9.1",
     "dotenv": "^16.0.2",
     "sass": "^1.54.9",
+    "swiper": "^8.3.2",
     "vite": "^3.1.0",
     "vue": "^3.2.38",
     "vue-router": "^4.1.5"
