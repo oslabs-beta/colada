@@ -28,7 +28,8 @@ export function PiniaColadaPlugin(context: any){
   // add initial values to storeCache here upon pageload
   storeCache[store.$id] = [
     {
-      [Date.now()] : store.$state
+      timeStamp: Date.now(),
+      state: {...store.$state}
     }
   ];
   // console.log('storeCache is:', storeCache)
@@ -53,9 +54,10 @@ export function PiniaColadaPlugin(context: any){
     // console.log('state from $subscribe method is:', state)
     // push to storeCache the updated state (which is the state argument)
     storeCache[store.$id].push({
-      [Date.now()] : state // could also use store.$state here
+      timeStamp: Date.now(),
+      state: {...state} // could also use store.$state here
     })
-    console.log('updated storeCache is:', storeCache)
+    console.log(`updated storeCache for [STORE] ${store.$id} is:`, storeCache)
     // ***********
 
     //******
@@ -114,7 +116,7 @@ export function setupDevtools(app: any) {
         api.addTimelineEvent({
           layerId: timelineLayerId,
           event:{
-            time: api.now(),
+            time: Date.now(),// api.now(),
             title: timelineEvent.key,
             data: {
               state: timelineEvent.value
@@ -137,20 +139,51 @@ export function setupDevtools(app: any) {
       })
 
       window.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM CONTENT LOADEDDDDD');
-        // ! can we get the initial Pinia store from the app? 
-        console.log('app looks like: ', app)
-        // ! Can we put initial pstores logic in here? 
+        // console.log('DOM CONTENT LOADEDDDDD');
+        // ! Add functionality upon initial page load? like initial state? we may be able to add this to PiniaColadaPlugin as well which has access to initial store 
       })
 
 
       // ******** BEGINNING OF LOGIC FOR TIME TRAVEL DEBUGGING (clicking on events to change state of application)********
-      // api.on.inspectTimelineEvent(payload => {
-      //   if (payload.layerId === 'colada-plugin'){
-      //     // if stores cache contains key associated with eventId 
-      //       // push 
-      //   }
-      // })
+      api.on.inspectTimelineEvent(payload => {
+        if (payload.layerId === 'colada-plugin'){
+          // if stores cache contains key associated with eventId 
+            // push 
+          // console.log('payload is: ', payload);
+          // get corresponding states from storeCache based on payload.event.time
+          const timelineEventTimestamp: any = payload.event.time;
+          console.log('timelineEventTimestamp', timelineEventTimestamp)
+
+          // initialize array to store objects with states
+          const tempStoreArray: any = [];
+
+          // iterate over properites of storeCache  
+          // ultimately, we need an object with as many properties as there are stores. 
+          for (const [key, value] of Object.entries(storeCache)) {
+            console.log(`key is ${key}, value is ${value}`)
+            // iterate over the value array if array is not null
+            if (Array.isArray(value) && value !== null) {
+              value.forEach((snapshot, index) => {
+                // if current timestamp is greater than timelineEventTimestamp, use the previous snapshot to update app's stores
+                if (snapshot.timeStamp > timelineEventTimestamp) {
+                  tempStoreArray[key] = value[index - 1].state;
+                }
+                // if we've reached end, use this value
+                else if (index === value.length){
+                  tempStoreArray[key] = value[index].state;
+                }
+              }
+            )
+            }
+            // the key should be the store.$id (key of storeCache)
+            // the value should be the store.$state from the corresponding snapshot (from the value of storeCache)
+          }
+          // use PiniaColadaPlugin to replace app's stores with these seleceted stores 
+          console.log('tempStoreArray is: ', tempStoreArray);
+          // set store using tempStoreArray (we could also do this in the nested forEach loop)
+          
+        }
+      })
       
 
 
