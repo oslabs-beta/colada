@@ -93,21 +93,21 @@
                     const lastComplete = completes[completes.length-1]
                     lastComplete.classList.toggle('complete');
                     this.index--
-                    console.log('this.index stepBack: ', this.index)
+                    //console.log('this.index stepBack: ', this.index)
 
                     //set the currNode 
                     this.currNode = this.nodes[this.index]
                 }
             },
             stepForward(){
-                console.log('Step Forward clicked')
+                //console.log('Step Forward clicked')
                 const allLi = document.querySelectorAll(".li")
-                console.log("allLi: ", allLi)
+                //console.log("allLi: ", allLi)
                 //only allow stepForward to execute if the index is less than the total length
                 if(this.index < allLi.length - 1){
                     //increment the index
                     this.index++
-                    console.log('this.index stepForward: ', this.index)
+                    //console.log('this.index stepForward: ', this.index)
                     
                     //initialize lastLi to the allLi at the key of this.index
                     const lastLi = allLi[this.index]
@@ -119,24 +119,96 @@
                 }
             },
             fetchNodes(){
+                // const nodeData = [
+                //     {
+                //         timestamp: "1",
+                //         value: "hello"
+                //     },
+                //     {
+                //         timestamp: "2",
+                //         value: "there"
+                //     },
+                //     {
+                //         timestamp: "3",
+                //         value: "Bobby"
+                //     },
+                //     {
+                //         timestamp: "4",
+                //         value: "Hadz"
+                //     }
+                // ]
+
                 const nodeData = [
                     {
-                        timestamp: "1",
-                        value: "hello"
+                        "1662748551668": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551668,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "j"
+                            }
+                        }
                     },
                     {
-                        timestamp: "2",
-                        value: "there"
+                        "1662748551763": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551763,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "jo"
+                            }
+                        }
                     },
                     {
-                        timestamp: "3",
-                        value: "Bobby"
+                        "1662748551897": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551897,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "jon"
+                            }
+                        }
                     },
                     {
-                        timestamp: "4",
-                        value: "Hadz"
+                        "1662748552723": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": ""
+                            }
+                        }
                     }
                 ]
+
+                //Get data from chrome local storage
+                // chrome.storage.local.get(null, (result) => {
+                //     if(result){
+                //         const data = JSON.stringify(result)
+                //         console.log("Timeline.vue chrome data: ", data)
+                //     }
+                // })
+
                 return nodeData
             },
         }

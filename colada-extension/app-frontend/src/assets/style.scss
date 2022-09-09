@@ -131,12 +131,14 @@ $nav-click:rgb(71, 91, 118);
         padding: 0px 40px;
         display: flex;
         justify-content: center;
+        align-items:center;
         border-top: 2px solid #D6DCE0;
         position: relative;
         transition: all 200ms ease-in;
         h4{
             font-weight:600;
             padding-top:16px;
+            // transform: rotate(-20deg) translateX(-20px);
         }
         &:before{
             content: '';

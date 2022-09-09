@@ -5,11 +5,11 @@
         <ul class="timeline" id="timeline">
             <li class="li complete">
                 <div class="timestamp">
-                    <span class="author">{{nodes[0].value}}</span>
-                    <span class="date">{{nodes[0].timestamp}}</span>
+                    <span class="author">{{nodes[0][Object.keys(nodes[0])[0]].value}}</span>
+                    <span class="date">{{nodes[0][Object.keys(nodes[0])[0]].key}}</span>
                 </div>
                 <div class="status">
-                    <h4>{{nodes[0].timestamp}}</h4>
+                    <h4>{{nodes[0][Object.keys(nodes[0])[0]].timestamp}}</h4>
                 </div>
             </li>
             <div :key="node.timestamp" v-for="node in nodes.slice(1)" >
@@ -35,7 +35,8 @@
            
         },
         mounted(){
-            console.log("HorzTimeline.vue this.nodes: ", this.nodes)
+            //console.log("HorzTimeline.vue this.nodes: ", this.nodes)
+            
         }
     }
 </script>

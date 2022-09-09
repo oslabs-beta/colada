@@ -1,8 +1,10 @@
 <template>
     <div class="current-node-container">
         <h4>Current Node</h4>
-        <p>Value: {{node.value}}</p>
-        <p>Timestamp: {{node.timestamp}}</p>
+        <p>Store: {{node[Object.keys(node)[0]].key}}</p>
+        <!-- <p>Value: {{node.value}}</p> -->
+        <p>State: {{node[Object.keys(node)[0]].value}}</p>
+        <p>Timestamp: {{node[Object.keys(node)[0]].timestamp}}</p>
     </div>
 </template>
 
