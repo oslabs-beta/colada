@@ -10,7 +10,7 @@
 // };
 
 chrome.devtools.panels.create(
-  'Colada DevTools', '', 'devtools-panel.html', () => onShownListener()
+  'Colada DevTools', '', 'devtools-panel.html'
 );
 
 function devPanelScript() {
@@ -34,9 +34,9 @@ function devPanelScript() {
     if (event.data.source === "colada") {
       console.log('message received from plugin...');
       const date = Date.now().toString();
-      chrome.storage.local.set({ [date] : event.data.payload}, () => {
-        console.log('event data saved at key ', date);
-        console.log('event.data.payload: ', event.data.payload)
+      chrome.storage.local.set({ [date] : event.data}, () => {
+        // console.log('event data saved at key ', date);
+        console.log('event.data: ', event.data)
       });
       // chrome.storage.local.set(event.data.payload, () => {
       //   console.log('event data saved at key ', date);
