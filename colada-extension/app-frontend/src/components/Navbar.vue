@@ -21,33 +21,4 @@
     }
 </script>
 
-<style scoped>
-    .navbar{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        gap:2rem;
-    }
-
-    .nav-icon{
-        width:48px;
-        height:48px;
-        color:white;
-        transition:0.2s;
-       
-        border-radius:8px;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
-
-    .nav-icon:hover{
-        background-color:rgb(48,61,78);
-    }
-
-    .nav-icon:active{
-        background-color:rgb(71, 91, 118);
-    }
-</style>
-
 
