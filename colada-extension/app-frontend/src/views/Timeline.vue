@@ -60,20 +60,20 @@
         },
         components: {
             HorzTimeline,
-            Swiper,
-            SwiperSlide
+            // Swiper,
+            // SwiperSlide
         },
-        mounted(){
-            const swiper = new Swiper('.swiper-container', {
-                //pagination: '.swiper-pagination',
-                slidesPerView: 4,
-                paginationClickable: true,
-                grabCursor: true,
-                paginationClickable: true,
-                nextButton: '.next-slide',
-                prevButton: '.prev-slide',
-            });  
-        },
+        // mounted(){
+        //     const swiper = new Swiper('.swiper-container', {
+        //         //pagination: '.swiper-pagination',
+        //         slidesPerView: 4,
+        //         paginationClickable: true,
+        //         grabCursor: true,
+        //         paginationClickable: true,
+        //         nextButton: '.next-slide',
+        //         prevButton: '.prev-slide',
+        //     });  
+        // },
         methods: {
             stepBack(){
                 if(this.index > 0){
