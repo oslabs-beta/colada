@@ -1,5 +1,5 @@
 <template>
-     <button @click="onClick()" class="btn">Count: {{num}}</button>
+     <!-- <button @click="onClick()" class="btn">Count: {{num}}</button> -->
 </template>
 
 <script>
@@ -15,3 +15,11 @@
         }
     }
 </script>
+
+<style scoped>
+    .btn {
+        font-size: 32px;
+        margin: 5px;
+    }
+
+</style>
