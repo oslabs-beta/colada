@@ -1,6 +1,10 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
-import { ProxyObject, StateObject } from './types'
+import { StateObject } from '../types'
 
+import { getUnsubscribeMethods, getPiniaStores } from '../PiniaColadaPlugin/index'
+
+const unsubscribes = getUnsubscribeMethods();
+const piniaObjs = getPiniaStores();
 // declare type for application window
 declare const window: any;
 
@@ -10,129 +14,14 @@ declare const window: any;
 //*************************************************************************** */
 const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
-let unsubscribes: Array<() => void> = [];
-  
-let piniaStore;
-let piniaObjs: ProxyObject[] = [];
-//let allPiniaObjs: ProxyObject[][] = []
+
 const storeCache: any = {}; // an object where keys are store_id's and values are arrays of states
 
-//*************************************************************************** */
-
-
-//******************************** */
-//******** This function acts as a plugin, and is exported to be used in main.js *********** */
-//******** Ex. pinia.use(PiniaColadaPlugin) *********** */
-//******************************** */
-export function PiniaColadaPlugin(context: any){
-  console.log("devtools.js PiniaColadaPlugin context.store: ", context.store)
-  const store: any = context.store
-
-  // ***** Experimenting to see how we can update pinia store directly
-  // store.$state.count = 99999;
-  // console.log("devtools.js PiniaColadaPlugin context.store AFTER UPDATE.......: ", context.store)
-
-  // const pinia: any = context.pinia;
-  // const app: any = context.app;
-  // console.log('pinia is: ', pinia)
-  // console.log('app is:', app)
-
-  // pinia.use(({ store }: any) => {
-  //   store.myStr = 'TESTINGGGGG'
-  // })
-
-  // console.log('pinia is NOW......: ', pinia)
-  // ***********
-
-  // *** new stuff here
-  const currentTimestamp = Date.now();
-  const proxyObj: ProxyObject = {
-    timestamp: currentTimestamp,
-    type: `Store: ${store.$id}`,
-    key: `${store.$id}`,
-    value: store.$state,
-    state: store._hmrPayload.state,
-    getters: store._hmrPayload.getters,
-    actions: store._hmrPayload.actions,
-    editable: true
-  }
-  // {counter: {timeStamp: ____, state: {____}}}
-  // add initial values to storeCache here upon pageload
-  storeCache[store.$id] = [
-    {
-      timeStamp: currentTimestamp,
-      state: {...store.$state}
-    }
-  ];
-  // dispatch event upon pageload
-  window.addEventListener('DOMContentLoaded', () => { 
-    console.log('in DOMContentLoaded listener')
-    const event: any = new CustomEvent('addTimelineEvent', {detail: {...proxyObj, currentTimestamp}})
-    window.dispatchEvent(event)
-  })  
-  // console.log('storeCache is:', storeCache)
-  // ***
-
-  const unsubscribeFunc: (() => void) = store.$subscribe((mutation: any, state: any) => {
-
-    console.log('mutation is:', mutation)
-
-    const currentTimestamp = Date.now();
-
-    const proxyObj: ProxyObject = {
-      timestamp: currentTimestamp,
-      type: `Store: ${store.$id}`,
-      key: `${store.$id}`,
-      value: store.$state,
-      state: store._hmrPayload.state,
-      getters: store._hmrPayload.getters,
-      actions: store._hmrPayload.actions,
-      editable: true
-    }
-    //console.log('main.js context.store.$subscribe executed')
-    //whenever store changes, $subscribe detects it and....
-
-    // *********** new stuff here
-    // console.log('currentTimestamp IS: ', currentTimestamp)
-    // console.log('mutation from $subscribe method is:', mutation)
-    // console.log('state from $subscribe method is:', state)
-    // push to storeCache the updated state (which is the state argument)
-    storeCache[store.$id].push({
-      timeStamp: currentTimestamp,
-      state: {...state} // could also use store.$state here
-    })
-    console.log(`updated storeCache for [STORE] ${store.$id} is:`, storeCache)
-    // ***********
-
-    //******
-    //we want to create a new timeline event
-    //emit a custom event with the proxyObj as a payload
-    const event: any = new CustomEvent('addTimelineEvent', {detail: {...proxyObj, currentTimestamp}})
-    window.dispatchEvent(event)
-
-    //******
-    //post a message with the piniaObjs as the payload
-    //send a messsage to the window for the extension to make use of
-    const messageObj: any = {
-      source: 'colada',
-      payload: proxyObj
-    }
-    window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")   
-    //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
-
-  })
-  unsubscribes.push(unsubscribeFunc)
-//     context.store.$onAction(() => {
-//       console.log('main.js context.store.$onAction executed')
-//   })
-  return {secret: 'colada, the best companion for pinia <3'}
-}
 
 
 
-//******************************** */
-//******************************** */
-//******************************** */
+
+
 export function setupDevtools(app: any) {
 
 
@@ -170,41 +59,21 @@ export function setupDevtools(app: any) {
             groupId: timelineEvent.key
           }
         })
-
-
-        // logic for saving store 'snapshots' 
-        // if eventId exists in storeCache, push timelineEvent (current store) to storeCache
-        if (storeCache.hasOwnProperty(e.id)) {
-          // storeCache[e.id].push(timelineEvent)
-        } else { // else, add new property to storeCache where key is eventId and value is array with timelineEvenet
-          // storeCache[e.id] = [timelineEvent];
-        }
-
-
         //END OF window.addEventListener
-      })
-
-      window.addEventListener('DOMContentLoaded', () => {
-        // console.log('DOM CONTENT LOADEDDDDD');
-        // ! Add functionality upon initial page load? like initial state? we may be able to add this to PiniaColadaPlugin as well which has access to initial store 
       })
 
 
       // ******** BEGINNING OF LOGIC FOR TIME TRAVEL DEBUGGING (clicking on events to change state of application)********
       api.on.inspectTimelineEvent(payload => {
         if (payload.layerId === 'colada-plugin'){
-          // if stores cache contains key associated with eventId 
-            // push 
-          // get corresponding states from storeCache based on payload.event.time
           // call unsubscribe method for each store when the user clicks on a timeline event
           unsubscribes.forEach(func => func());
           const timelineEventTimestamp: any = payload.event.time;
 
           // initialize array to store objects with states
-          const tempStoreObj: any = {};
+          // const tempStoreObj: any = {};
 
           // iterate over properites of storeCache  
-          // ultimately, we need an object with as many properties as there are stores. 
           for (const [key, value] of Object.entries(storeCache)) {
             console.log(`key is ${key}, value is ${value}`)
             // iterate over the value array if array is not null
@@ -218,17 +87,10 @@ export function setupDevtools(app: any) {
                   // potentially use $patch with payload to specify mutation type?
                   // window.store[key].$patch()
                 }
-
               }
-
-            
-
             }
-            // the key should be the store.$id (key of storeCache)
-            // the value should be the store.$state from the corresponding snapshot (from the value of storeCache)
           }
-          // use PiniaColadaPlugin to replace app's stores with these seleceted stores 
-          console.log('tempStoreObj is: ', tempStoreObj);
+          // console.log('tempStoreObj is: ', tempStoreObj);
         }
       })
       
@@ -241,7 +103,7 @@ export function setupDevtools(app: any) {
       //Adds a tag to next to the component in the Inspector -> Components Tree
       //NOTE: we had to add export default {meow: true}, to the component we want the tag to show on
       api.on.visitComponentTree((payload, context) => {
-        //console.log('payload is', payload);
+        console.log('visitComponentTree running');
         //console.log('context is', context);
         const node = payload.treeNode;
         if (payload.componentInstance.type.meow) {
@@ -252,63 +114,6 @@ export function setupDevtools(app: any) {
           })
         }
       })
-
-      api.on.inspectComponent((payload, context) => {
-        console.log('running inspectComponent')
-        //console.log('componentInstance is:', payload.componentInstance)
-        //console.log('instanceData: ', payload.instanceData)
-
-        // checking to see if proxy contains _pStores property
-        if(payload.componentInstance.proxy._pStores){
-          //console.log('_pStores: ', payload.componentInstance.proxy._pStores)
-
-          // reassign piniaStore to proxy._pStores
-          piniaStore = payload.componentInstance.proxy._pStores
-
-          // reset piniaObjs to empty array
-          piniaObjs = [];
-
-          //for each proxy store in piniaStore...
-          Object.values(piniaStore).forEach((store:any) => {
-            //***************************** */
-            //note: need to implement: adding data to inspector panel
-            //use payload.instanceData.state.push ()
-            //****************************** */
-            //********The below console logs are useful to see each of the stores*********
-              //console.log('current store is:', store)
-              // console.log(`[STORE]${store.$id}'s state: `, store.$state)
-              // console.log(`[STORE]${store.$id}'s getters: `, store._getters)
-              // console.log(`[STORE]${store.$id}'s _hmrPayload: `, store._hmrPayload)
-              
-
-              //create a object that will be pushed into the Inspector panel
-              const proxyObj: ProxyObject = {
-                type: `Store: ${store.$id}`,
-                key: `${store.$id}`,
-                value: store.$state,
-                state: store._hmrPayload.state,
-                getters: store._hmrPayload.getters,
-                actions: store._hmrPayload.actions,
-                editable: true
-              }    
-
-              //proxyObj should now show up in the Inspector panel
-              payload.instanceData.state.push(proxyObj)
-
-              //push a copy of each proxyObj into piniaObjs
-              piniaObjs.push(proxyObj)
-
-              // *************** end of forEach loop ******************
-          })
-
-          //********* end of checking if _pStores exists ************* */
-        }
-
-        //********* end of checking api.on.inspectComponent  ************* */
-      })
-
-      //refreshes the component 
-      api.notifyComponentUpdate()
 
 
       //********************************************************************** */
@@ -453,19 +258,18 @@ export function setupDevtools(app: any) {
             id: timelineLayerId,
             color: 0xff984f,
             label: 'Colada 🥥',
-            skipScreenshots: false,
+            skipScreenshots: true, // doesn't work :(
         })
 
         //Are we able to add UI buttons??
 
         // api.on.timelineCleared --> triggers when the user clears the timeline from the timeline panel 
         api.on.timelineCleared(() => {
+          // TODO: clear our global timeline data when this is triggered
           console.log('Timeline cleared')
         })
        
       
       //*********** end of setupDevToolsPlugin ********** */
     })
-
-
 }
