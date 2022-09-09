@@ -16,16 +16,16 @@ const paragraph = document.createElement('p')
 
 chrome.storage.local.get(null, function(result) {
 
-  let text = "";
+  // let text = "";
 
-  for (let key of Object.keys(result)) {
+  // for (let key of Object.keys(result)) {
 
-    text += result[key]["key"] + '\n';
+  //   text += result[key]["key"] + '\n';
 
-  }
+  // }
 
-  paragraph.textContent = text
-  msgDisplay.appendChild(paragraph);
+  // paragraph.textContent = text
+  // msgDisplay.appendChild(paragraph);
   message.innerText = JSON.stringify(result);
   msgDisplay.appendChild(message);
 })

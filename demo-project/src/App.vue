@@ -27,6 +27,6 @@ window.store = {store, counter}
 
   <Counter @btn-click = "counter.increment" :num="counter.count" />
 
-  <DoubleStore @dbl-store-count="counter.increment" @dbl-store-text="store.addPerson(store.myStr)" :num="counter.count"/>
+  <!-- <DoubleStore @dbl-store-count="counter.increment" @dbl-store-text="store.addPerson(store.myStr)" :num="counter.count"/> -->
 
 </template>
