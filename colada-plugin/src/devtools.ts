@@ -1,6 +1,7 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { ProxyObject, StateObject } from './types'
 
+// declare type for application window
 declare const window: any;
 
 
@@ -9,7 +10,8 @@ declare const window: any;
 //*************************************************************************** */
 const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
-
+let unsubscribes: Array<() => void> = [];
+  
 let piniaStore;
 let piniaObjs: ProxyObject[] = [];
 //let allPiniaObjs: ProxyObject[][] = []
@@ -43,18 +45,38 @@ export function PiniaColadaPlugin(context: any){
   // ***********
 
   // *** new stuff here
+  const currentTimestamp = Date.now();
+  const proxyObj: ProxyObject = {
+    timestamp: currentTimestamp,
+    type: `Store: ${store.$id}`,
+    key: `${store.$id}`,
+    value: store.$state,
+    state: store._hmrPayload.state,
+    getters: store._hmrPayload.getters,
+    actions: store._hmrPayload.actions,
+    editable: true
+  }
   // {counter: {timeStamp: ____, state: {____}}}
   // add initial values to storeCache here upon pageload
   storeCache[store.$id] = [
     {
-      timeStamp: Date.now(),
+      timeStamp: currentTimestamp,
       state: {...store.$state}
     }
   ];
+  // dispatch event upon pageload
+  window.addEventListener('DOMContentLoaded', () => { 
+    console.log('in DOMContentLoaded listener')
+    const event: any = new CustomEvent('addTimelineEvent', {detail: {...proxyObj, currentTimestamp}})
+    window.dispatchEvent(event)
+  })  
   // console.log('storeCache is:', storeCache)
-  // *** 
+  // ***
 
-  store.$subscribe((mutation: any, state: any) => {
+  const unsubscribeFunc: (() => void) = store.$subscribe((mutation: any, state: any) => {
+
+    console.log('mutation is:', mutation)
+
     const currentTimestamp = Date.now();
 
     const proxyObj: ProxyObject = {
@@ -71,7 +93,7 @@ export function PiniaColadaPlugin(context: any){
     //whenever store changes, $subscribe detects it and....
 
     // *********** new stuff here
-    console.log('currentTimestamp IS: ', currentTimestamp)
+    // console.log('currentTimestamp IS: ', currentTimestamp)
     // console.log('mutation from $subscribe method is:', mutation)
     // console.log('state from $subscribe method is:', state)
     // push to storeCache the updated state (which is the state argument)
@@ -99,6 +121,7 @@ export function PiniaColadaPlugin(context: any){
     //console.log("postMessage fired off:payload ", JSON.parse(messageObj.payload))
 
   })
+  unsubscribes.push(unsubscribeFunc)
 //     context.store.$onAction(() => {
 //       console.log('main.js context.store.$onAction executed')
 //   })
@@ -172,11 +195,10 @@ export function setupDevtools(app: any) {
         if (payload.layerId === 'colada-plugin'){
           // if stores cache contains key associated with eventId 
             // push 
-          // console.log('payload is: ', payload);
           // get corresponding states from storeCache based on payload.event.time
-
+          // call unsubscribe method for each store when the user clicks on a timeline event
+          unsubscribes.forEach(func => func());
           const timelineEventTimestamp: any = payload.event.time;
-          console.log('timelineEventTimestamp', timelineEventTimestamp)
 
           // initialize array to store objects with states
           const tempStoreObj: any = {};
@@ -190,10 +212,11 @@ export function setupDevtools(app: any) {
               for (let i = 0; i < value.length; i++) {
                 const snapshot = value[i];
                 if (snapshot.timeStamp === timelineEventTimestamp) {
-                  console.log("FOUND ITTTTT")
                   // tempStoreObj[key] = snapshot.state;
                   // update the pinia stores 
                   window.store[key].$state = snapshot.state;
+                  // potentially use $patch with payload to specify mutation type?
+                  // window.store[key].$patch()
                 }
 
               }
@@ -430,6 +453,7 @@ export function setupDevtools(app: any) {
             id: timelineLayerId,
             color: 0xff984f,
             label: 'Colada 🥥',
+            skipScreenshots: false,
         })
 
         //Are we able to add UI buttons??
