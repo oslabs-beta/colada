@@ -1,0 +1,14 @@
+{   "scripts": {
+
+  "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --env=local --config=node_modules/laravel-mix/setup/webpack.config.js"
+
+},
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "laravel-mix": "^6.0.49",
+    "vue": "^3.2.39",
+    "vue-loader": "^17.0.0",
+    "vue-router": "^4.1.5",
+    "vue-template-compiler": "^2.7.10"
+  }
+}
