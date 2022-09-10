@@ -11,7 +11,9 @@
 console.log('test1');
 import {createApp} from 'vue';
 console.log('test2');
-import Popup from './components/Popup.vue';
+import App from '../../app-frontend/src/App.vue';
+import router from '../../app-frontend/src/router';
+
 console.log('test3');
 
 // const app = new Vue({
@@ -19,5 +21,6 @@ console.log('test3');
 //   render: creatElement => createElement(Popup)
 // })
 
-const app = createApp(Popup);
+const app = createApp(App);
+app.use(router);
 app.mount('#app');

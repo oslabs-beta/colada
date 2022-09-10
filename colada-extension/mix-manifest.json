@@ -1,4 +1,5 @@
 {
     "/dist/js/background.js": "/dist/js/background.js",
-    "/dist/js/popup.js": "/dist/js/popup.js"
+    "/dist/js/popup.js": "/dist/js/popup.js",
+    "/dist/css/style.css": "/dist/css/style.css"
 }
