@@ -1,5 +1,6 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { StateObject } from '../types'
+import { getState } from './stateHandler'
 
 import { getUnsubscribeMethods, getPiniaStores } from '../PiniaColadaPlugin/index'
 
@@ -16,9 +17,6 @@ const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
 
 const storeCache: any = {}; // an object where keys are store_id's and values are arrays of states
-
-
-
 
 
 
@@ -41,6 +39,8 @@ export function setupDevtools(app: any) {
 
       //add event listener to the window for 'addTimeLineEvent'
       window.addEventListener('addTimelineEvent', (e: any) => {
+        // * invoking getState
+        getState();
         //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
         // TODO: add logic for sending state and keeping track of state 
