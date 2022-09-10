@@ -3,6 +3,11 @@ import { subscribe } from "../PiniaColadaPlugin/index"
 // create storeHistory array and type it
 const storeHistory: any = [];
 
+window.addEventListener("DOMContentLoaded", () => {
+  // get current state
+  // pass current state into handleStoreChange
+})
+
 const handleStoreChange = (snapshot: any) => {
   
   console.log('handling store change')
