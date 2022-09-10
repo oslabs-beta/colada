@@ -6,12 +6,14 @@ const routes = [
     {
         path: '/',
         name: 'Timeline',
-        component: Timeline
+        component: Timeline,
+        meta: {transition: 'slide-right'}
     },
     {
         path: '/chart',
         name: 'Chart',
-        component: Chart
+        component: Chart,
+        meta: {transition: 'slide-left'}
     }
 ]
 

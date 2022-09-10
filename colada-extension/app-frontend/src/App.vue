@@ -2,7 +2,11 @@
     <div class="main">
         <h2>Colada Dev Tool</h2>
         <Navbar />
-        <router-view></router-view>
+        <router-view v-slot="{Component, route}">
+            <transition :name="route.meta.transition || 'fade'">
+                <component :is="Component" />
+            </transition>
+        </router-view>
     </div>
 </template>
 
@@ -21,4 +25,5 @@ export default {
 
 <style lang="scss">
   @import "./assets/style.scss";
+  
 </style>
