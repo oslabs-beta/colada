@@ -171,6 +171,45 @@ $nav-click:rgb(71, 91, 118);
 
 //****************** Above is HorzTimeline.vue styling ***************
 
+//****************** Below is Animations ***************
+
+.slide-right-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-right-leave-active {
+  opacity:0;
+}
+
+.slide-right-enter-from, .slide-right-leave-to {
+  transform: translateX(-200px);
+  opacity: 0;
+}
+
+.slide-left-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-left-leave-active {
+  opacity:0;
+}
+
+.slide-left-enter-from, .slide-left-leave-to {
+  transform: translateX(200px);
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+//****************** Above is Animations ***************
+
+
 //****************** Below is Swiper styling ***************
 .timeline-swiper {
     margin: 50px 0;
