@@ -8,19 +8,19 @@
 //     func: () => {},
 // });
 // });
-console.log('test1');
-import {createApp} from 'vue';
-console.log('test2');
-import App from '../../app-frontend/src/App.vue';
-import router from '../../app-frontend/src/router';
+// console.log('test1');
+// import {createApp} from 'vue';
+// console.log('test2');
+// import App from '../../app-frontend/src/App.vue';
+// import router from '../../app-frontend/src/router';
 
-console.log('test3');
+// console.log('test3');
 
-// const app = new Vue({
-//   el: '#app',
-//   render: creatElement => createElement(Popup)
-// })
+// // const app = new Vue({
+// //   el: '#app',
+// //   render: creatElement => createElement(Popup)
+// // })
 
-const app = createApp(App);
-app.use(router);
-app.mount('#app');
+// const app = createApp(App);
+// app.use(router);
+// app.mount('#app');
