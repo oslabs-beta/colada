@@ -1,4 +1,5 @@
 import { piniaStores } from "../PiniaColadaPlugin/index"
+import * as _ from "lodash"
 
 // create storeHistory array and type it
 const storeHistory: any = [];
@@ -6,26 +7,27 @@ const storeHistory: any = [];
 const handleStoreChange = (snapshot: any) => {
   
   console.log('handling store change')
+  const snapshotClone = _.cloneDeep(snapshot)
 
   // ! Added: variable that is a deep clone of snapshot
 
   // push to storeCache the updated state (which is the state argument)
   storeHistory.push({
-    [snapshot.timestamp]: {
-      store: {...snapshot}
+    [snapshotClone.timestamp]: {
+      [snapshotClone.key]: snapshotClone
     }
   })
 
   //we want to create a new timeline event
   //emit a custom event with the proxyObj as a payload
-  const event: any = new CustomEvent('addTimelineEvent', {detail: {...snapshot}})
+  const event: any = new CustomEvent('addTimelineEvent', {detail: snapshotClone})
   window.dispatchEvent(event)
 
   //post a message with the piniaObjs as the payload
   //send a messsage to the window for the extension to make use of
   const messageObj: any = {
     source: 'colada',
-    payload: snapshot
+    payload: snapshotClone
   }
   window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")   
 
