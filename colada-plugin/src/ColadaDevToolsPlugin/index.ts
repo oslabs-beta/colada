@@ -2,10 +2,10 @@ import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { StateObject } from '../types'
 import { getState } from './stateHandler'
 
-import { getUnsubscribeMethods, getPiniaStores } from '../PiniaColadaPlugin/index'
+import { piniaStores } from '../PiniaColadaPlugin/index'
 
-const unsubscribes = getUnsubscribeMethods();
-const piniaObjs = getPiniaStores();
+// const unsubscribes = piniaStores.getUnsubscribeMethods();
+const piniaObjs = piniaStores.getPiniaStores();
 // declare type for application window
 declare const window: any;
 
@@ -37,21 +37,28 @@ export function setupDevtools(app: any) {
       // ************ EVENT LISTENERS *****************************************
       //********************************************************************** */
 
+      window.addEventListener("DOMContentLoaded", () => {
+        console.log('dom content has been loaded');
+        getState();
+      })
+
       //add event listener to the window for 'addTimeLineEvent'
       window.addEventListener('addTimelineEvent', (e: any) => {
         // * invoking getState
-        getState();
+        console.log('addTimelineEvent listener has been triggered')
+        
         //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
+        console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
         // TODO: add logic for sending state and keeping track of state 
 
-        console.log('TIMELINEEVENT.currentTimestamp IS: ', timelineEvent.currentTimestamp)
+        console.log('TIMELINEEVENT.timestamp IS: ', timelineEvent.timestamp)
         //Create a timeline event with the timelineEvent emitted in the $subscribe
         //If possible, color code/group by store
         api.addTimelineEvent({
           layerId: timelineLayerId,
           event:{
-            time: timelineEvent.currentTimestamp,// api.now(),
+            time: timelineEvent.timestamp,
             title: timelineEvent.key,
             data: {
               state: timelineEvent.value
@@ -67,7 +74,7 @@ export function setupDevtools(app: any) {
       api.on.inspectTimelineEvent(payload => {
         if (payload.layerId === 'colada-plugin'){
           // call unsubscribe method for each store when the user clicks on a timeline event
-          unsubscribes.forEach(func => func());
+          // unsubscribes.forEach((func: any) => func());
           const timelineEventTimestamp: any = payload.event.time;
 
           // initialize array to store objects with states
@@ -161,7 +168,7 @@ export function setupDevtools(app: any) {
             ]
 
             // iterate over piniaObjs to add children stores to root 
-            piniaObjs.forEach((obj) => {
+            piniaObjs.forEach((obj: any) => {
               payload.rootNodes[0].children.push({
                 id: obj.key,
                 label: `store: ${obj.key}`
@@ -186,7 +193,7 @@ export function setupDevtools(app: any) {
             //const actionsArr: any[] = []
 
             // iterate over piniaObjs
-            piniaObjs.forEach(obj => {
+            piniaObjs.forEach((obj: any) => {
               // iterate over properties in current obj's Proxy state
               for(let [key, value] of Object.entries(obj.value)){
                 //create a stateObj 

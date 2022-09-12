@@ -1,4 +1,4 @@
-import { subscribe } from "../PiniaColadaPlugin/index"
+import { piniaStores } from "../PiniaColadaPlugin/index"
 
 // create storeHistory array and type it
 const storeHistory: any = [];
@@ -39,7 +39,7 @@ const handleStoreChange = (snapshot: any) => {
 // import the subscribe method and implement associated functionality 
 const getState = () => {
   console.log('invoking getState!')
-  subscribe(handleStoreChange)
+  piniaStores.subscribe(handleStoreChange)
 }
 
 // create setter to push new snapshot to storeHistory
