@@ -127,6 +127,66 @@
                                 "myStr": ""
                             }
                         }
+                    },
+                    {
+                        "1662748552723": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "1"
+                            }
+                        }
+                    },
+                    {
+                        "1662748552723": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "2"
+                            }
+                        }
+                    },
+                    {
+                        "1662748552723": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "3"
+                            }
+                        }
+                    },
+                    {
+                        "1662748552723": {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon", "123"],
+                                "myStr": ""
+                            }
+                        }
                     }
                 ]
 
