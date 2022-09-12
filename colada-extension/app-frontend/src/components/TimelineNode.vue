@@ -1,14 +1,11 @@
 <template>
     <li class="li">
-        <div class="timestamp">
-            <!-- <span class="author">{{node.value}}</span>
-            <span class="date">{{node.timestamp}}</span> -->
-            <span class="author">{{node[Object.keys(node)[0]].value}}</span>
-            <span class="date">{{node[Object.keys(node)[0]].key}}</span> 
-            
-        </div>
         <div class="status">
-            <h4>{{node[Object.keys(node)[0]].timestamp}}</h4>
+            <span class="type">{{node[Object.keys(node)[0]].type}}</span> 
+        </div>
+        <div class="timestamp">
+            <!-- <span class="author">{{node[Object.keys(node)[0]].value}}</span> -->
+            <h4>{{timestamp}}</h4>
         </div>
     </li>
 </template>
@@ -20,8 +17,21 @@
         props:{
             node: Object
         },
+        data(){
+            return{
+                data:{},
+                timestamp: ""
+            }
+        },
         mounted(){
-            //console.log("TimelineNode.vue this.node: ", this.node)
+            this.data = this.node
+            this.timestamp = this.convertTime(this.data[Object.keys(this.data)[0]].timestamp)
+        },
+        methods: {
+            convertTime (unixTimestamp) {
+                const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US")
+                return date
+            }
         }
     }
 

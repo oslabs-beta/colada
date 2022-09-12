@@ -1,7 +1,7 @@
 <template>
     <div class="main">
-        <h2>Colada Dev Tool</h2>
-        <Navbar />
+        <!-- <h2>Colada Dev Tool</h2> -->
+        <!-- <Navbar /> -->
         <router-view v-slot="{Component, route}">
             <transition :name="route.meta.transition || 'fade'">
                 <component :is="Component" />

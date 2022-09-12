@@ -4,8 +4,8 @@
     --swiper-theme-color: rgb(96, 202, 140);
   }
 .swiper {
-    width: 100vw;
-    height: 250px;
+    width: 50vw;
+    height: 100vh;
     /* margin: 50px 0; */
     overflow: hidden;
     /* padding: 0 20px 30px 20px; */
@@ -34,8 +34,8 @@
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   object-fit: cover;
 }
 

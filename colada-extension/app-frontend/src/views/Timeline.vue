@@ -1,17 +1,19 @@
 <template>
     <div class="timeline-container">
-        <CurrentNode :node="currNode"/>
-        <HorzTimeline :nodes="nodes"/>
-        <div class="btn-container">
-            <button @click="stepBack" id="back-btn" class="btn">&lt-</button>
-            <button @click="stepForward" id="forward-btn" class="btn">-&gt</button>
+        <div class="vertical-left">
+            <VertTimeline :nodes="nodes" />
+            <div class="btn-container">
+                <button @click="stepBack" id="back-btn" class="btn">^</button>
+                <button @click="stepForward" id="forward-btn" class="btn">v</button>
+            </div>
         </div>
+        <CurrentNode :node="currNode"/>
     </div>
 </template>
 
 <script>
-    //Import HorzTimeline.vue components
-    import HorzTimeline from '../components/HorzTimeline.vue'
+    //Import VertTimeline.vue components
+    import VertTimeline from '../components/VertTimeline.vue'
     import CurrentNode from '../components/CurrentNode.vue'
 
     export default {
@@ -24,7 +26,7 @@
             }
         },
         components: {
-            HorzTimeline,
+            VertTimeline,
             CurrentNode,
            
         },
@@ -207,16 +209,23 @@
 <style scoped>
     .timeline-container{
         display:flex;
-        flex-direction:column;
+        flex-direction:row;
         justify-content:space-between;
-        align-items:center;
+        align-items:flex-start;
         gap:1rem;
+    }
+
+    .vertical-left{
+        display:flex;
+        justify-content:flex-start;
+        align-items:flex-start;
     }
 
     .btn-container{
         display:flex;
-        justify-content:space-evenly;
+        flex-direction: column;
+        justify-content:center;
         align-items:center;
-        gap:2rem;
+        gap:1rem;
     }
 </style>
