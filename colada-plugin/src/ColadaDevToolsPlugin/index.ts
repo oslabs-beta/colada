@@ -1,6 +1,7 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 import { StateObject } from '../types'
 import { getState } from './stateHandler'
+import { addPiniaStoreLabels } from './inspector'
 
 import { piniaStores } from '../PiniaColadaPlugin/index'
 
@@ -156,26 +157,32 @@ export function setupDevtools(app: any) {
         })
 
         api.on.getInspectorTree((payload: any, context) => {
+          console.log('running getInspectorTree')
+          // testing invocation of addPiniaStoreLabels
           if(payload.inspectorId === inspectorId){
-            console.log('getInspectorTree payload: ', payload)
-            // initialize rootNodes for Colada inspector tree
-            payload.rootNodes = [
-              {
-                id: 'root',
-                label: '🥥 Root',
-                children: [],
-              }
-            ]
-
-            // iterate over piniaObjs to add children stores to root 
-            piniaObjs.forEach((obj: any) => {
-              payload.rootNodes[0].children.push({
-                id: obj.key,
-                label: `store: ${obj.key}`
-              })
-            })
-
+            addPiniaStoreLabels(payload, context, inspectorId);
           }
+
+          // if(payload.inspectorId === inspectorId){
+          //   console.log('getInspectorTree payload: ', payload)
+          //   // initialize rootNodes for Colada inspector tree
+          //   payload.rootNodes = [
+          //     {
+          //       id: 'root',
+          //       label: '🥥 Root',
+          //       children: [],
+          //     }
+          //   ]
+
+          //   // iterate over piniaObjs to add children stores to root 
+          //   piniaObjs.forEach((obj: any) => {
+          //     payload.rootNodes[0].children.push({
+          //       id: obj.key,
+          //       label: `store: ${obj.key}`
+          //     })
+          //   })
+
+          // }
         })
 
 
