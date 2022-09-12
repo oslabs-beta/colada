@@ -3,16 +3,10 @@ import { piniaStores } from "../PiniaColadaPlugin/index"
 // create storeHistory array and type it
 const storeHistory: any = [];
 
-window.addEventListener("DOMContentLoaded", () => {
-  // get current state
-  // pass current state into handleStoreChange
-})
-
 const handleStoreChange = (snapshot: any) => {
   
   console.log('handling store change')
 
-  // *********** new stuff here
   // push to storeCache the updated state (which is the state argument)
   storeHistory.push({
     [snapshot.timestamp]: {
@@ -42,9 +36,10 @@ const getState = () => {
   piniaStores.subscribe(handleStoreChange)
 }
 
-// create setter to push new snapshot to storeHistory
+// create getter to access a specified snapshot from storeHistory for time travelling
 
-// create getter to access a snapshot from storeHistory
+// create getter to access a the MOST RECENT snapshot from storeHistory for inspector
+
 export {
   getState
 }

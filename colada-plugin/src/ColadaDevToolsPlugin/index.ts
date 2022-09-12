@@ -32,7 +32,7 @@ export function setupDevtools(app: any) {
         enableEarlyProxy: true,
         settings: {}
     }, api => {
-
+      console.log('api in setupDevtools is', api);
       //********************************************************************** */
       // ************ EVENT LISTENERS *****************************************
       //********************************************************************** */
