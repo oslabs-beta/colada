@@ -9,8 +9,6 @@ const handleStoreChange = (snapshot: any) => {
   console.log('handling store change')
   const snapshotClone = _.cloneDeep(snapshot)
 
-  // ! Added: variable that is a deep clone of snapshot
-
   // push to storeCache the updated state (which is the state argument)
   storeHistory.push({
     [snapshotClone.timestamp]: {
@@ -43,13 +41,21 @@ const getState = () => {
 // create getter to access a specified snapshot from storeHistory for time travelling
 
 // create getter to access a the MOST RECENT snapshot from storeHistory for inspector
-const getCurrentStore = () => {
-  // depends on how we store the data
+/*
+ @params: includeTimestamps: boolean --> if you want your output to include timestamps. Defaults to false
+*/
+const getCurrentStores = (includeTimestamps: boolean = false) => {
+  if (includeTimestamps) {
+    return [storeHistory[storeHistory.length - 1]]; 
+  }
+  else {
+    return Object.values(storeHistory[storeHistory.length - 1])
+  }
   // we need a snapshot of ALL stores, which would ideally all be wrapped within the same element in our storeHistory array 
-  return [storeHistory[storeHistory.length - 1]];
+  
 }
 
 export {
   getState,
-  getCurrentStore
+  getCurrentStores
 }

@@ -1,8 +1,7 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
-import { StateObject } from '../types'
+// import { StateObject } from '../types'
 import { getState } from './stateHandler'
-import { addPiniaStoreLabels } from './inspector'
-
+import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
 import { piniaStores } from '../PiniaColadaPlugin/index'
 
 // const unsubscribes = piniaStores.getUnsubscribeMethods();
@@ -158,111 +157,22 @@ export function setupDevtools(app: any) {
 
         api.on.getInspectorTree((payload: any, context) => {
           console.log('running getInspectorTree')
-          // testing invocation of addPiniaStoreLabels
+          // if payload's inspector id matches our custom Colada inspectorId, add our store labels to the inspector
           if(payload.inspectorId === inspectorId){
-            addPiniaStoreLabels(payload, context, inspectorId);
+            addPiniaStoreLabels(payload, context);
           }
-
-          // if(payload.inspectorId === inspectorId){
-          //   console.log('getInspectorTree payload: ', payload)
-          //   // initialize rootNodes for Colada inspector tree
-          //   payload.rootNodes = [
-          //     {
-          //       id: 'root',
-          //       label: '🥥 Root',
-          //       children: [],
-          //     }
-          //   ]
-
-          //   // iterate over piniaObjs to add children stores to root 
-          //   piniaObjs.forEach((obj: any) => {
-          //     payload.rootNodes[0].children.push({
-          //       id: obj.key,
-          //       label: `store: ${obj.key}`
-          //     })
-          //   })
-
-          // }
         })
 
 
-        // TODO: add state to inspector
-        api.on.getInspectorState(payload => {
+        api.on.getInspectorState((payload: any) => {
           console.log('piniaObjs:',piniaObjs);
-
+          
+          // if payload inspectorId matches the Colada inspectorId, add the relevant Pinia store data to the inspector panel
           if(payload.inspectorId === inspectorId){
-            
-            // initialize a state array
-            const stateArr: StateObject[] = []
-            // initialize a getters array
-            //const gettersArr: any[] = []
-            // initialize a actions array
-            //const actionsArr: any[] = []
-
-            // iterate over piniaObjs
-            piniaObjs.forEach((obj: any) => {
-              // iterate over properties in current obj's Proxy state
-              for(let [key, value] of Object.entries(obj.value)){
-                //create a stateObj 
-                const stateObj: StateObject = {
-                  store_id: obj.key,
-                  key: key,
-                  value: value,
-                  editable: true
-                }
-                // add stateObj to stateArray
-                stateArr.push(stateObj)
-              }
-
-            // for(let key in Object.entries(obj.getters)){
-            //   //console.log('getters key: ', key)
-            //   // key is the label for the current getter
-            //   // obj is the current Proxy obj for the store 
-            //   const currentGetterValue = obj[key];
-            //   console.log('currentGetterValue is:.........', currentGetterValue)
-
-            //   //create a gettersObj
-            //   const gettersObj = {
-            //     store_id: obj.key,
-            //     key: key,
-            //     value: currentGetterValue,
-            //     editable: true
-            //   }
-            //   // add getter to getterArray
-            //   gettersArr.push(gettersObj)
-            // }
-              
-              // End of forEach piniaObjs
-            })
-
-            // iterate over piniaObjs to add state to inspector panel
-            if(payload.nodeId === 'root'){
-              payload.state = {
-                'state': stateArr,
-                //'getters': gettersArr,
-                //'actions': actionsArr
-              }
-            } else {
-              payload.state = {
-                'child info': [
-                  {
-                    key: 'answer',
-                    value: {
-                      _custom: {
-                        display: '42!!!',
-                        value: 42,
-                        tooltip: 'The answer'
-                      }
-                    }
-                  }
-                ]
-            }
-          }
+            addPiniaStoreData(payload);
         }
       })
 
-  
-        
 
       //********************************************************************** */
       // ************ TIMELINE SETTINGS *****************************************
