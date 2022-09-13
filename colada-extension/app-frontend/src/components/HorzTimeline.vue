@@ -2,7 +2,7 @@
     <div class="horz-timeline">
         <!-- note, I am hard coding the first node, since it needs to have the clas 'complete' -->
         <!-- this needs to be changed so when iterating, the first node will already have complete -->
-        <!-- <ul class="timeline" id="timeline">
+        <ul class="timeline" id="timeline">
             <li class="li complete">
                 <div class="timestamp">
                     <span class="author">{{nodes[0][Object.keys(nodes[0])[0]].value}}</span>
@@ -15,8 +15,8 @@
             <div :key="node.timestamp" v-for="node in nodes.slice(1)" >
                 <TimelineNode :node="node" />
             </div>
-        </ul>      -->
-        <ul class="timeline" id="timeline">
+        </ul>     
+        <!-- <ul class="timeline" id="timeline">
             <li class="li complete">
                 <div class="timestamp">
                     <span class="author">{{nodes[0].value}}</span>
@@ -29,7 +29,7 @@
             <div :key="node.timestamp" v-for="node in nodes.slice(1)" >
                 <TimelineNode :node="node" />
             </div>
-        </ul>   
+        </ul>    -->
     </div>
 </template>
 

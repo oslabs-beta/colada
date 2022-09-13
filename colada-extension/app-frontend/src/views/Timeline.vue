@@ -72,7 +72,7 @@
         },
         created(){
             console.log('entered created')
-            this.nodes = this.fetchNodes()
+            this.nodes = Object.assign({},this.fetchNodes());
             console.log("Timeline.vue this.nodes: ", this.nodes)
             this.currNode = {...this.nodes[0]}
             console.log("currNode", this.currNode)
@@ -121,84 +121,131 @@
                 }
             },
             fetchNodes(){
-                const nodeData = [
-                    {
-                        "1662748551668": {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551668,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "j"
-                            }
-                        }
-                    },
-                    {
-                        "1662748551763": {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551763,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "jo"
-                            }
-                        }
-                    },
-                    {
-                        "1662748551897": {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551897,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "jon"
-                            }
-                        }
-                    },
-                    {
-                        "1662748552723": {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon"],
-                                "myStr": ""
-                            }
-                        }
-                    }
-                ]
-
-                // let nodeDataObj;
-                // const nodeData = []
-                // //Get data from chrome local storage
-                // chrome.storage.local.get(null, (result) => {
-                //     if(result){
-                //         // nodeData = JSON.parse(JSON.stringify(result))
-                //         nodeDataObj= result
-                //         //const data = JSON.stringify(result)
-                //         console.log("Timeline.vue chrome data test: ", nodeDataObj)
-                //         for(let key in nodeDataObj){
-                //             nodeData.push(nodeDataObj[key])
+                // const nodeData = [
+                //     {
+                //         "1662748551668": {
+                //             "actions":{},
+                //             "editable": true,
+                //             "getters": {},
+                //             "key": "store",
+                //             "state": ["myStr","elements"],
+                //             "timestamp": 1662748551668,
+                //             "type": "Store: store",
+                //             "value": {
+                //                 "elements": [],
+                //                 "myStr": "j"
+                //             }
                 //         }
-                //         console.log('nodeData array: ', nodeData)
+                //     },
+                //     {
+                //         "1662748551763": {
+                //             "actions":{},
+                //             "editable": true,
+                //             "getters": {},
+                //             "key": "store",
+                //             "state": ["myStr","elements"],
+                //             "timestamp": 1662748551763,
+                //             "type": "Store: store",
+                //             "value": {
+                //                 "elements": [],
+                //                 "myStr": "jo"
+                //             }
+                //         }
+                //     },
+                //     {
+                //         "1662748551897": {
+                //             "actions":{},
+                //             "editable": true,
+                //             "getters": {},
+                //             "key": "store",
+                //             "state": ["myStr","elements"],
+                //             "timestamp": 1662748551897,
+                //             "type": "Store: store",
+                //             "value": {
+                //                 "elements": [],
+                //                 "myStr": "jon"
+                //             }
+                //         }
+                //     },
+                //     {
+                //         "1662748552723": {
+                //             "actions":{},
+                //             "editable": true,
+                //             "getters": {},
+                //             "key": "store",
+                //             "state": ["myStr","elements"],
+                //             "timestamp": 1662748552723,
+                //             "type": "Store: store",
+                //             "value": {
+                //                 "elements": ["jon"],
+                //                 "myStr": ""
+                //             }
+                //         }
                 //     }
-                // })
+                // ]
+
+                let nodeDataObj;
+                const nodeData = []
+                // Get data from chrome local storage
+                chrome.storage.local.get(null, (result) => {
+                    if(result){
+                        // nodeData = JSON.parse(JSON.stringify(result))
+                        nodeDataObj= result
+                        //const data = JSON.stringify(result)
+                        console.log("Timeline.vue chrome data test: ", nodeDataObj)
+                        for(let key in nodeDataObj){
+                            nodeData.push(nodeDataObj[key])
+                        }
+                        console.log('nodeData array: ', nodeData)
+                    }
+                    else {
+                        nodeDataObj = {};
+                        nodeData.push(nodeDataObj);
+                    }
+                })
+
+    //             function getAllStorageData() {
+    //                 // Immediately return a promise and start asynchronous work
+    //             return new Promise((resolve, reject) => {
+    // // Asynchronously fetch all data from storage.sync.
+    //                 chrome.storage.local.get(null, (items) => {
+    //   // Pass any observed errors down the promise chain.
+    //                 if (chrome.runtime.lastError) {
+    //                  return reject(chrome.runtime.lastError);
+    //                 }
+    //   // Pass the data retrieved from storage down the promise chain.
+    //                 resolve(items);
+    //                  });
+    //                  });
+    //             };
+
+    //             const nodeDataObj = {};
+    //             const nodeData = [];
+
+    //             console.log("reached before getAllStorageData")
+
+    //             getAllStorageData()
+    //               .then(items => {
+    //                 Object.assign(nodeDataObj, items)
+    //               }).catch(
+    //                 err => console.log(err)
+    //               )
+
+
+    //             if (Object.keys(nodeDataObj).length === 0) {
+    //                 return nodeData
+    //             }
+
+    //             console.log("reached before forLoop")
+
+                
+
+    //             for (let key in nodeDataObj) {
+    //                 nodeData.push(nodeDataObj[key])
+    //             }
+            
+
+    //             console.log("reached afterForLoop")
 
 
                 return nodeData
