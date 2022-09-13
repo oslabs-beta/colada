@@ -33,32 +33,34 @@ const handleStoreChange = (snapshot: any) => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import the subscribe method and implement associated functionality 
 const getState = () => {
   console.log('invoking getState!')
   piniaStores.subscribe(handleStoreChange)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // create getter to access a specified snapshot from storeHistory for time travelling
 
