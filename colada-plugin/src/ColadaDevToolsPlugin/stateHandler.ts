@@ -32,6 +32,28 @@ const handleStoreChange = (snapshot: any) => {
   console.log('storeHistory at end of handleStoreChange', storeHistory)
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import the subscribe method and implement associated functionality 
 const getState = () => {
   console.log('invoking getState!')
