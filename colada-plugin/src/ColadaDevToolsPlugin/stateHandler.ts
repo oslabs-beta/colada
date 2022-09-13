@@ -40,21 +40,13 @@ const getState = () => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// NOTE: currently 0(n) ... consider refactoring to use binary search
+const getSnapshotbyTimestamp = (timestamp: number) => {
+  for (const e of storeHistory){
+    console.log(e)
+    if (parseInt(Object.keys(e)[0]) === timestamp) return e;
+  } 
+}
 
 
 // create getter to access a specified snapshot from storeHistory for time travelling
@@ -76,5 +68,6 @@ const getCurrentStores = (includeTimestamps: boolean = false) => {
 
 export {
   getState,
-  getCurrentStores
+  getCurrentStores,
+  getSnapshotbyTimestamp
 }

@@ -7,8 +7,8 @@ let piniaProxies: ProxyObject[] = [];
 // declare object where methods will be stored and exported
 const piniaStores: any = {};
 
-piniaStores.getUnsubscribeMethods = (): Array<(any)> => {
-  return unsubscribeMethods
+piniaStores.unsubscribe = () => {
+  console.log(unsubscribeMethods)
 }
 
 piniaStores.getPiniaStores = (): any => { 
@@ -29,14 +29,12 @@ piniaStores.subscribe = (callback: any) => {
       actions: store._hmrPayload.actions,
       editable: true
     }
-    store.$subscribe(() => {
-      console.log('in unsubscribe push')
+    const unsubscribeMethod = store.$subscribe(() => {
       snapshot.timestamp = Date.now()
       // we can also access mutation and state here
       callback(snapshot)
     })
-    //unsubscribeMethods.push(unsubscribeMethod)
-    // invoke callback (handleStoreChange), passing in most recent snapshot
+    unsubscribeMethods.push(unsubscribeMethod)
     callback(snapshot)
   }) 
 }
