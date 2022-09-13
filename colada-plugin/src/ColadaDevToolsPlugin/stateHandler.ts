@@ -57,11 +57,6 @@ const getState = () => {
 
 
 
-
-
-
-
-
 // create getter to access a specified snapshot from storeHistory for time travelling
 
 // create getter to access a the MOST RECENT snapshot from storeHistory for inspector
