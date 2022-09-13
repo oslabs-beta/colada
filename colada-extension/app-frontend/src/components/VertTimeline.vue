@@ -13,14 +13,9 @@
             @swiper="onSwiper"
             @slideChange="onSlideChange"
         >
-            <swiper-slide class="node" :key="node.timestamp" v-for="node in nodes.slice(1)" >
+            <swiper-slide class="node" :key="node.timestamp" v-for="node in nodes" >
                 <TimelineNode :node="node" />
             </swiper-slide>
-            <!-- <swiper-slide>------Slide 1------</swiper-slide><swiper-slide>------Slide 2------</swiper-slide>
-            <swiper-slide>------Slide 3------</swiper-slide><swiper-slide>------Slide 4------</swiper-slide>
-            <swiper-slide>------Slide 5------</swiper-slide><swiper-slide>------Slide 6------</swiper-slide>
-            <swiper-slide>------Slide 7------</swiper-slide><swiper-slide>------Slide 8------</swiper-slide>
-            <swiper-slide>------Slide 9------</swiper-slide> -->
         </swiper>
         <!-- note, I am hard coding the first node, since it needs to have the clas 'complete' -->
         <!-- this needs to be changed so when iterating, the first node will already have complete -->
@@ -63,6 +58,11 @@
         props:{
             nodes: Array
         },
+        data(){
+            return{
+
+            }
+        },
         components: {
             TimelineNode,
             Swiper,
@@ -73,10 +73,10 @@
         },
         setup(){
             const onSwiper = (swiper) => {
-                console.log('onSwiper: ',swiper)
+                //console.log('onSwiper: ',swiper)
             }
             const onSlideChange = (swiper) => {
-                console.log('current page: ', swiper.activeIndex)
+                //console.log('current page: ', swiper.activeIndex)
             }
             
             return{
@@ -86,13 +86,10 @@
             }
         },
         mounted(){
-            //console.log("HorzTimeline.vue this.nodes: ", this.nodes)
-            const nodes = document.getElementsByClassName('node')
-            console.log(nodes)
-            for(let i = 0; i < nodes.length; i++){
-                console.log(nodes[i])
-                nodes[i].addEventListener('click', (e) => {
-                    console.log('clicked on node: ', e.target)
+            const timelineNodes = document.getElementsByClassName('timeline-node')
+            for(let i = 0; i < timelineNodes.length; i++){
+                timelineNodes[i].addEventListener('click', (e) => {
+                    console.log('clicked on li, e.target: ', e.target)
                 })
             }
             

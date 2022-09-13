@@ -1,13 +1,12 @@
 <template>
-    <li class="li">
+    <div class="timeline-node">
         <div class="status">
-            <span class="type">{{node[Object.keys(node)[0]].type}}</span> 
+            <span class="type">{{node[Object.keys(node)[0]].key}}</span> 
         </div>
         <div class="timestamp">
-            <!-- <span class="author">{{node[Object.keys(node)[0]].value}}</span> -->
             <h4>{{timestamp}}</h4>
         </div>
-    </li>
+    </div>
 </template>
 
 <script>
@@ -15,7 +14,7 @@
     export default {
         name: "TimelineNode",
         props:{
-            node: Object
+            node: Object,
         },
         data(){
             return{

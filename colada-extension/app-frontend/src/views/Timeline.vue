@@ -35,6 +35,11 @@
             console.log("Timeline.vue this.nodes: ", this.nodes)
             this.currNode = this.nodes[0]
         },
+        mounted(){
+            //set the first timeline node class to complete
+            const firstNode = document.querySelector(".timeline-node")
+            firstNode.classList.toggle('complete')
+        },
         methods: {
             stepBack(){
                 if(this.index > 0){
@@ -50,18 +55,18 @@
             },
             stepForward(){
                 //console.log('Step Forward clicked')
-                const allLi = document.querySelectorAll(".li")
-                //console.log("allLi: ", allLi)
+                const allNodes = document.querySelectorAll(".timeline-node")
+
                 //only allow stepForward to execute if the index is less than the total length
-                if(this.index < allLi.length - 1){
+                if(this.index < allNodes.length - 1){
                     //increment the index
                     this.index++
                     //console.log('this.index stepForward: ', this.index)
                     
                     //initialize lastLi to the allLi at the key of this.index
-                    const lastLi = allLi[this.index]
+                    const lastNode = allNodes[this.index]
                     //toggle 'complete' from the class
-                    lastLi.classList.toggle('complete')
+                    lastNode.classList.toggle('complete')
 
                     //set the currNode
                     this.currNode = this.nodes[this.index]
@@ -71,7 +76,7 @@
 
                 const nodeData = [
                     {
-                        "1662748551668": {
+                        0: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -86,7 +91,7 @@
                         }
                     },
                     {
-                        "1662748551763": {
+                        1: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -101,7 +106,7 @@
                         }
                     },
                     {
-                        "1662748551897": {
+                        2: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -116,7 +121,7 @@
                         }
                     },
                     {
-                        "1662748552723": {
+                        3: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -131,7 +136,7 @@
                         }
                     },
                     {
-                        "1662748552723": {
+                        4: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -146,7 +151,7 @@
                         }
                     },
                     {
-                        "1662748552723": {
+                        5: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -161,7 +166,7 @@
                         }
                     },
                     {
-                        "1662748552723": {
+                        6: {
                             "actions":{},
                             "editable": true,
                             "getters": {},
@@ -176,7 +181,7 @@
                         }
                     },
                     {
-                        "1662748552723": {
+                        7: {
                             "actions":{},
                             "editable": true,
                             "getters": {},

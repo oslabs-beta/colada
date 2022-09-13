@@ -4,6 +4,8 @@ $background-color: rgb(13,16,21);
 $nav-icon:white;
 $nav-hover:rgb(48,61,78);
 $nav-click:rgb(71, 91, 118);
+$store-color:rgb(199, 165, 243);
+$pinia-color:rgb(250,217,111);
 
 //****************** Below is App.vue styling ***************
 
@@ -83,7 +85,15 @@ $nav-click:rgb(71, 91, 118);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:2rem;
+    border-bottom: 3px double rgb(71, 91, 118);
+    width:100vw;
+    padding: 0rem 0.5rem;
+}
+
+.navbar-icons{
+  display:flex;
+  justify-content:space-evenly;
+  align-items:center;
 }
 
 .nav-icon{
@@ -91,7 +101,6 @@ $nav-click:rgb(71, 91, 118);
     height:48px;
     color:$nav-icon;
     transition:0.2s;
-   
     border-radius:8px;
     display:flex;
     justify-content:center;
@@ -192,7 +201,7 @@ $nav-click:rgb(71, 91, 118);
   flex-direction:column;
 }
 
-.li{
+.timeline-node{
   display:flex;
   // flex-direction:column;
   justify-content:space-evenly;
@@ -201,11 +210,11 @@ $nav-click:rgb(71, 91, 118);
   border-radius:0.25rem;
 }
 
-.li:hover{
+.timeline-node:hover{
   background-color:$nav-hover;
 }
 
-.li:focus, .li:active{
+.timeline-node:focus, .li:active{
   background-color:$nav-click;
   cursor:pointer;
 }
@@ -244,9 +253,10 @@ $nav-click:rgb(71, 91, 118);
   }
 }
 
-.li.complete{
+.timeline-node.complete{
   .status{
       border-right: 2px solid $primary-color;
+      color: $store-color;
       &:before{
           background-color: $primary-color;
           border: none;
