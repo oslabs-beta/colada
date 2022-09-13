@@ -38,10 +38,18 @@ const getState = () => {
   piniaStores.subscribe(handleStoreChange)
 }
 
-// create getter to access a specified snapshotClone from storeHistory for time travelling
+
+// NOTE: currently 0(n) ... consider refactoring to use binary search
+const getSnapshotbyTimestamp = (timestamp: number) => {
+  for (const e of storeHistory){
+    console.log(e)
+    if (parseInt(Object.keys(e)[0]) === timestamp) return e;
+  } 
+}
 
 // create getter to access a the MOST RECENT snapshotClone from storeHistory for inspector
 
 export {
-  getState
+  getState,
+  getSnapshotbyTimestamp
 }

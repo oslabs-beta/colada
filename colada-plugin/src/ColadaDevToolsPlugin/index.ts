@@ -3,8 +3,8 @@ import { StateObject } from '../types'
 import { getState } from './stateHandler'
 
 import { piniaStores } from '../PiniaColadaPlugin/index'
+import { handleInspectTimelineEvent } from './timeline';
 
-// const unsubscribes = piniaStores.getUnsubscribeMethods();
 const piniaObjs = piniaStores.getPiniaStores();
 // declare type for application window
 declare const window: any;
@@ -16,7 +16,6 @@ declare const window: any;
 const inspectorId: string = 'colada-plugin'
 const timelineLayerId: string = 'colada-plugin'
 
-const storeCache: any = {}; // an object where keys are store_id's and values are arrays of states
 
 
 
@@ -44,7 +43,6 @@ export function setupDevtools(app: any) {
 
       //add event listener to the window for 'addTimeLineEvent'
       window.addEventListener('addTimelineEvent', (e: any) => {
-        // * invoking getState
         console.log('addTimelineEvent listener has been triggered')
         
         //console.log('addTimelineEvent e is: ', e)
@@ -69,38 +67,7 @@ export function setupDevtools(app: any) {
         //END OF window.addEventListener
       })
 
-
-      // ******** BEGINNING OF LOGIC FOR TIME TRAVEL DEBUGGING (clicking on events to change state of application)********
-      api.on.inspectTimelineEvent(payload => {
-        if (payload.layerId === 'colada-plugin'){
-          // call unsubscribe method for each store when the user clicks on a timeline event
-          // unsubscribes.forEach((func: any) => func());
-          const timelineEventTimestamp: any = payload.event.time;
-
-          // initialize array to store objects with states
-          // const tempStoreObj: any = {};
-
-          // iterate over properites of storeCache  
-          for (const [key, value] of Object.entries(storeCache)) {
-            console.log(`key is ${key}, value is ${value}`)
-            // iterate over the value array if array is not null
-            if (Array.isArray(value) && value !== null) {
-              for (let i = 0; i < value.length; i++) {
-                const snapshot = value[i];
-                if (snapshot.timeStamp === timelineEventTimestamp) {
-                  // tempStoreObj[key] = snapshot.state;
-                  // update the pinia stores 
-                  window.store[key].$state = snapshot.state;
-                  // potentially use $patch with payload to specify mutation type?
-                  // window.store[key].$patch()
-                }
-              }
-            }
-          }
-          // console.log('tempStoreObj is: ', tempStoreObj);
-        }
-      })
-      
+      api.on.inspectTimelineEvent(handleInspectTimelineEvent)
 
 
       //********************************************************************** */
