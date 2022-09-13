@@ -58,7 +58,7 @@ const addPiniaStoreData = (payload: any) => {
     const currentLabel = Object.keys(store)[0];
     console.log('current store in forEach', store)
 
-    const {key, value, getters, actions } = store[currentLabel];
+    const { key, value, getters, actions } = store[currentLabel];
     // add state to stateArry, getters to gettersArray, and actions to actionsArray
     const stateObj: StateObject = {
       key: key,

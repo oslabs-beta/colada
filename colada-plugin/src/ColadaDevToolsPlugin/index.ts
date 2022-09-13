@@ -64,6 +64,8 @@ export function setupDevtools(app: any) {
             groupId: timelineEvent.key
           }
         })
+        // refresh inspector state after adding element to timeline
+        api.sendInspectorState(inspectorId);
         //END OF window.addEventListener
       })
 
@@ -115,8 +117,8 @@ export function setupDevtools(app: any) {
             ],
             nodeActions: [
               {
-                icon:'star',
-                tooltip: 'Test node custom action',
+                icon:'sentiment_satisfied',
+                tooltip: 'Have a great day!',
                 action: (nodeId) => console.log('Node action: ', nodeId)
               }
             ]

@@ -9,6 +9,8 @@ const handleStoreChange = (snapshot: any) => {
   console.log('handling store change')
   const snapshotClone = _.cloneDeep(snapshot)
 
+  console.log('CURRENT TIMESTAMP OF RUNNING HANDLESTORECHANG IS', snapshotClone.timestamp)
+
   // push to storeCache the updated state (which is the state argument)
   storeHistory.push({
     [snapshotClone.timestamp]: {
