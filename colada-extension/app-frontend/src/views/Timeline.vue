@@ -1,7 +1,7 @@
 <template>
     <div class="timeline-container">
         <div class="vertical-left">
-            <VertTimeline :nodes="nodes" />
+            <VertTimeline :key="componentKey" :nodes="nodes" />
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
@@ -15,8 +15,8 @@
     //Import VertTimeline.vue components
     import VertTimeline from '../components/VertTimeline.vue'
     import CurrentNode from '../components/CurrentNode.vue'
-    import { toRaw } from 'vue';
-import { addListener } from 'process';
+    import { toRaw, ref } from 'vue';
+    import { addListener } from 'process';
 
     export default {
         name: 'Timeline',
@@ -24,13 +24,13 @@ import { addListener } from 'process';
             return{
                 index: 0,
                 nodes: [],
-                currNode: {}
+                currNode: {},
+                componentKey: 0
             }
         },
         components: {
             VertTimeline,
             CurrentNode,
-           
         },
        
         
@@ -56,11 +56,11 @@ import { addListener } from 'process';
             //setInterval(() => {placeHolder = this.fetchNodes();},300);
             
             //this.nodes = await placeHolder
-            setInterval(() => {this.nodes = placeHolder; },500);
+            setTimeout(() => {this.nodes = placeHolder; },200);
             // console.log("this.nodes: ", this.nodes);
             // console.log("raw", toRaw(this.nodes));
 
-            setInterval(() => {this.currNode = this.nodes[0];},600);
+            setTimeout(() => {this.currNode = this.nodes[0];},500);
             //setTimeout(() => {this.currNode = this.nodes[0]; console.log("currNode",this.currNode) },1000);
             //setTimeout(() => {this.currNode = this.nodes[0];},1000);
           
@@ -74,12 +74,15 @@ import { addListener } from 'process';
             //window.addEventListener('message', this.updateData)
             
             //access the current tab
-            let [tab] = await chrome.tabs.query({active:true, currentWindow: true})
-            console.log('[tab]: ', [tab])
+            // let [tab] = await chrome.tabs.query({active:true, currentWindow: true})
+            // console.log('[tab]: ', [tab])
             // chrome.scripting.executeScript({
             //     target: {tabId: tab.id},
             //     func: this.addListener
             // })
+
+            //add listener for chrome storage on change
+            this.addListener()
 
         },
         methods: {
@@ -133,20 +136,19 @@ import { addListener } from 'process';
 
                 return nodeData
             },
-            async updateData(event){
-                //we want to run fetch nodes to get the most recent data
-                const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
-                console.log('updateData parsed.source: ', parsed.source)
-                if (parsed && parsed.source === "colada") {
-                    let placeHolder = await this.fetchNodes()
-                    this.nodes = await placeHolder
-                    this.currNode = this.nodes[0]
-                    console.log('updateData this.nodes: ', this.nodes)
-                }
-            },
-            addListener(){
+             addListener(){
                 console.log('addListener executed')
-                window.addEventListener('message',this.updateData)
+                chrome.storage.onChanged.addListener(async () => {
+                    console.log('chrome storage changed')
+                    let data = await this.fetchNodes()
+                    setTimeout(() => {this.nodes = data; },200);
+                    console.log('chrome store changed this.nodes: ', this.nodes)
+                    this.forceRerender()
+                })
+            },
+            forceRerender(){
+                this.componentKey += 1
+                console.log('forceRerender this.componentKey: ', this.componentKey)
             }
         }
     }
