@@ -4,7 +4,7 @@
             <span class="type">{{node.key}}</span> 
         </div>
         <div class="timestamp">
-            <h4>{{timestamp}}</h4>
+            <h4>{{node.timestamp}}</h4>
         </div>
     </div>
 </template>

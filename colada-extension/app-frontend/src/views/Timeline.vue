@@ -16,6 +16,7 @@
     import VertTimeline from '../components/VertTimeline.vue'
     import CurrentNode from '../components/CurrentNode.vue'
     import { toRaw } from 'vue';
+import { addListener } from 'process';
 
     export default {
         name: 'Timeline',
@@ -49,31 +50,37 @@
             //                 }
             //             }
             //         }
+
             // console.log('entered mounted');
-            let placeHolder = await this.fetchNodes();
-            // console.log("placeHolder", placeHolder);
-            // this.nodes = await placeHolder
-            setTimeout(() => {this.nodes = placeHolder; console.log("this.nodes: ",this.nodes) },1000);
+            let placeHolder = await this.fetchNodes()
+            //setInterval(() => {placeHolder = this.fetchNodes();},300);
+            
+            //this.nodes = await placeHolder
+            setInterval(() => {this.nodes = placeHolder; },500);
             // console.log("this.nodes: ", this.nodes);
             // console.log("raw", toRaw(this.nodes));
-            // setTimeout(() => {console.log("raw[0]", toRaw(this.nodes)[0])},1000);
-            // setTimeout(() => {console.log("currNode", this.nodes[0]) },1000);
-            setTimeout(() => {this.currNode = this.nodes[0]; console.log("currNode",this.currNode) },1200);
-            
+
+            setInterval(() => {this.currNode = this.nodes[0];},600);
+            //setTimeout(() => {this.currNode = this.nodes[0]; console.log("currNode",this.currNode) },1000);
+            //setTimeout(() => {this.currNode = this.nodes[0];},1000);
           
-           
-            
-            // console.log("first", {...this.nodes});
-            // this.currNode =  {...this.nodes[0]}          
-                 
-                     
-            // console.log("currNode", this.currNode);
-           // console.log('mounted ...this.node', [...this.nodes])
             //set the first timeline node class to complete
             // const firstNode = document.querySelector(".timeline-node")
             // if(firstNode){
             //     firstNode.classList.toggle('complete')
             // }
+
+            //add an event listener for messages, to update the data and re-render the timeline
+            //window.addEventListener('message', this.updateData)
+            
+            //access the current tab
+            let [tab] = await chrome.tabs.query({active:true, currentWindow: true})
+            console.log('[tab]: ', [tab])
+            // chrome.scripting.executeScript({
+            //     target: {tabId: tab.id},
+            //     func: this.addListener
+            // })
+
         },
         methods: {
             stepBack(){
@@ -108,69 +115,6 @@
                 }
             },
             fetchNodes(){
-
-                // const nodeData = [
-                //     {
-                //         "1662748551668": {
-                //             "actions":{},
-                //             "editable": true,
-                //             "getters": {},
-                //             "key": "store",
-                //             "state": ["myStr","elements"],
-                //             "timestamp": 1662748551668,
-                //             "type": "Store: store",
-                //             "value": {
-                //                 "elements": [],
-                //                 "myStr": "j"
-                //             }
-                //         }
-                //     },
-                //     {
-                //         "1662748551763": {
-                //             "actions":{},
-                //             "editable": true,
-                //             "getters": {},
-                //             "key": "store",
-                //             "state": ["myStr","elements"],
-                //             "timestamp": 1662748551763,
-                //             "type": "Store: store",
-                //             "value": {
-                //                 "elements": [],
-                //                 "myStr": "jo"
-                //             }
-                //         }
-                //     },
-                //     {
-                //         "1662748551897": {
-                //             "actions":{},
-                //             "editable": true,
-                //             "getters": {},
-                //             "key": "store",
-                //             "state": ["myStr","elements"],
-                //             "timestamp": 1662748551897,
-                //             "type": "Store: store",
-                //             "value": {
-                //                 "elements": [],
-                //                 "myStr": "jon"
-                //             }
-                //         }
-                //     },
-                //     {
-                //         "1662748552723": {
-                //             "actions":{},
-                //             "editable": true,
-                //             "getters": {},
-                //             "key": "store",
-                //             "state": ["myStr","elements"],
-                //             "timestamp": 1662748552723,
-                //             "type": "Store: store",
-                //             "value": {
-                //                 "elements": ["jon"],
-                //                 "myStr": ""
-                //             }
-                //         }
-                //     }
-                // ]
                 let nodeDataObj;
                 const nodeData = []
                 // Get data from chrome local storage
@@ -187,55 +131,23 @@
                     }}
                 })
 
-    //             function getAllStorageData() {
-    //                 // Immediately return a promise and start asynchronous work
-    //             return new Promise((resolve, reject) => {
-    // // Asynchronously fetch all data from storage.sync.
-    //                 chrome.storage.local.get(null, (items) => {
-    //   // Pass any observed errors down the promise chain.
-    //                 if (chrome.runtime.lastError) {
-    //                  return reject(chrome.runtime.lastError);
-    //                 }
-    //   // Pass the data retrieved from storage down the promise chain.
-    //                 resolve(items);
-    //                  });
-    //                  });
-    //             };
-
-    //             const nodeDataObj = {};
-    //             const nodeData = [];
-
-    //             console.log("reached before getAllStorageData")
-
-    //             getAllStorageData()
-    //               .then(items => {
-    //                 Object.assign(nodeDataObj, items)
-    //               }).catch(
-    //                 err => console.log(err)
-    //               )
-
-
-    //             if (Object.keys(nodeDataObj).length === 0) {
-    //                 return nodeData
-    //             }
-
-    //             console.log("reached before forLoop")
-
-                
-
-    //             for (let key in nodeDataObj) {
-    //                 nodeData.push(nodeDataObj[key])
-    //             }
-            
-
-    //             console.log("reached afterForLoop")
-
-
-                // console.log("nodeData",nodeData);
-                // console.log("nodeData[0]", nodeData[0])
-
                 return nodeData
             },
+            async updateData(event){
+                //we want to run fetch nodes to get the most recent data
+                const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
+                console.log('updateData parsed.source: ', parsed.source)
+                if (parsed && parsed.source === "colada") {
+                    let placeHolder = await this.fetchNodes()
+                    this.nodes = await placeHolder
+                    this.currNode = this.nodes[0]
+                    console.log('updateData this.nodes: ', this.nodes)
+                }
+            },
+            addListener(){
+                console.log('addListener executed')
+                window.addEventListener('message',this.updateData)
+            }
         }
     }
 </script>
