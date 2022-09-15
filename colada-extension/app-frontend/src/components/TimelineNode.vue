@@ -1,7 +1,7 @@
 <template>
     <div class="timeline-node">
         <div class="status">
-            <span class="type">{{node[Object.keys(node)[0]].key}}</span> 
+            <span class="type">{{node.key}}</span> 
         </div>
         <div class="timestamp">
             <h4>{{timestamp}}</h4>
@@ -24,7 +24,7 @@
         },
         mounted(){
             this.data = this.node
-            this.timestamp = this.convertTime(this.data[Object.keys(this.data)[0]].timestamp)
+            this.timestamp = this.convertTime(this.data.timestamp)
         },
         methods: {
             convertTime (unixTimestamp) {

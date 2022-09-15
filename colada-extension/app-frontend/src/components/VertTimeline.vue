@@ -33,6 +33,20 @@
                 <TimelineNode :node="node" />
             </div>
         </ul>      -->
+         <!-- <ul class="timeline" id="timeline">
+            <li class="li complete">
+                <div class="timestamp">
+                    <span class="author">{{nodes[0].value}}</span> 
+                    <span class="date">{{nodes[0].key}}</span>
+                </div>
+                <div class="status">
+                    <h4>{{nodes[0].timestamp}}</h4>
+                </div>
+            </li>
+            <div :key="node.timestamp" v-for="node in nodes.slice(1)" >
+                <TimelineNode :node="node" />
+            </div>
+        </ul>      -->
     </div>
 </template>
 
@@ -46,17 +60,17 @@
     import {Swiper,SwiperSlide} from 'swiper/vue'
 
     //Import Swiper styles
-    import 'swiper/css'
-    import 'swiper/css/navigation';
-    import 'swiper/css/pagination';
-    import 'swiper/css/scrollbar';
+    import 'swiper/scss'
+    import 'swiper/scss/navigation';
+    import 'swiper/scss/pagination';
+    import 'swiper/scss/scrollbar';
 
     import "../assets/style.css"
    
     export default {
         name: 'VertTimeline',
         props:{
-            nodes: Array
+            nodes: Object
         },
         data(){
             return{

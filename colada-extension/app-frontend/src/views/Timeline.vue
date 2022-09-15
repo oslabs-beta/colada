@@ -1,13 +1,13 @@
 <template>
     <div class="timeline-container">
         <div class="vertical-left">
-            <!-- <VertTimeline :nodes="nodes" /> -->
+            <VertTimeline :nodes="nodes" />
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
             </div>
         </div>
-        <!-- <CurrentNode :node="currNode"/> -->
+        <CurrentNode :node="currNode"/>
     </div>
 </template>
 
@@ -15,13 +15,14 @@
     //Import VertTimeline.vue components
     import VertTimeline from '../components/VertTimeline.vue'
     import CurrentNode from '../components/CurrentNode.vue'
+    import { toRaw } from 'vue';
 
     export default {
         name: 'Timeline',
         data(){
             return{
                 index: 0,
-                nodes: {},
+                nodes: [],
                 currNode: {}
             }
         },
@@ -30,15 +31,44 @@
             CurrentNode,
            
         },
-        created(){
-            // this.currNode = await {...this.nodes[0]}
-            // console.log("currNode", this.currNode)
-        },
-        async mounted(){
-            console.log('entered mounted')
-            this.nodes = await this.fetchNodes()
-            console.log("Timeline.vue this.nodes: ", await this.nodes)
-            console.log('mounted ...this.node', [...this.nodes])
+       
+        
+        async created(){
+            // this.currNode =   {
+            //             "1662748551668": {
+            //                 "actions":{},
+            //                 "editable": true,
+            //                 "getters": {},
+            //                 "key": "store",
+            //                 "state": ["myStr","elements"],
+            //                 "timestamp": 1662748551668,
+            //                 "type": "Store: store",
+            //                 "value": {
+            //                     "elements": [],
+            //                     "myStr": "j"
+            //                 }
+            //             }
+            //         }
+            // console.log('entered mounted');
+            let placeHolder = await this.fetchNodes();
+            // console.log("placeHolder", placeHolder);
+            // this.nodes = await placeHolder
+            setTimeout(() => {this.nodes = placeHolder; console.log("this.nodes: ",this.nodes) },1000);
+            // console.log("this.nodes: ", this.nodes);
+            // console.log("raw", toRaw(this.nodes));
+            // setTimeout(() => {console.log("raw[0]", toRaw(this.nodes)[0])},1000);
+            // setTimeout(() => {console.log("currNode", this.nodes[0]) },1000);
+            setTimeout(() => {this.currNode = this.nodes[0]; console.log("currNode",this.currNode) },1200);
+            
+          
+           
+            
+            // console.log("first", {...this.nodes});
+            // this.currNode =  {...this.nodes[0]}          
+                 
+                     
+            // console.log("currNode", this.currNode);
+           // console.log('mounted ...this.node', [...this.nodes])
             //set the first timeline node class to complete
             // const firstNode = document.querySelector(".timeline-node")
             // if(firstNode){
@@ -142,17 +172,17 @@
                 //     }
                 // ]
                 let nodeDataObj;
-                // const nodeData = []
+                const nodeData = []
                 // Get data from chrome local storage
                 chrome.storage.local.get(null, (result) => {
                     if (result) {{
                         // nodeData = JSON.parse(JSON.stringify(result))
                         nodeDataObj= result
                         //const data = JSON.stringify(result)
-                        console.log("Timeline.vue chrome data test: ", nodeDataObj)
-                        // for(let key in nodeDataObj){
-                        //     nodeData.push(nodeDataObj[key])
-                        // }
+                        // console.log("Timeline.vue chrome data test: ", nodeDataObj)
+                        for(let key in nodeDataObj){
+                            nodeData.push(nodeDataObj[key])
+                        }
                         // console.log('nodeData array: ', nodeData)
                     }}
                 })
@@ -201,9 +231,10 @@
     //             console.log("reached afterForLoop")
 
 
+                // console.log("nodeData",nodeData);
+                // console.log("nodeData[0]", nodeData[0])
 
-
-                return nodeDataObj
+                return nodeData
             },
         }
     }

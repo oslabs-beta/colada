@@ -1,8 +1,10 @@
 <template>
     <div class="current-node-container">
         <h4>Current Node</h4>
-        <p>Store: <span id="curr-store">{{node[Object.keys(node)[0]].key}}</span></p>
-        <p>State: <span id="curr-state">{{node[Object.keys(node)[0]].value}}</span></p>
+        <!-- <p>Store: <span id="curr-store">{{node[Object.keys(node)[0]].key}}</span></p>
+        <p>State: <span id="curr-state">{{node[Object.keys(node)[0]].value}}</span></p> -->
+        <p>Store: <span id="curr-store">{{node.key}}</span></p>
+        <p>State: <span id="curr-state">{{node.value}}</span></p>
         <p>Timestamp: <span id="curr-time">{{timestamp}}</span></p>
     </div>
 </template>
@@ -21,7 +23,7 @@
         },
         mounted(){
             this.data = this.node
-            this.timestamp = this.convertTime(this.data[Object.keys(this.data)[0]].timestamp)
+            this.timestamp = this.convertTime(this.data.timestamp)
         },
         methods: {
             convertTime (unixTimestamp) {
