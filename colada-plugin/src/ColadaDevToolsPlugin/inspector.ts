@@ -43,7 +43,7 @@ const addPiniaStoreData = (payload: any) => {
   console.log('in addPiniaStoreData')
   // use getCurrentStore from stateHandler to get most recent versions stores
   const currentStores = getCurrentStores();
-  console.log('currentStores', currentStores);
+  // console.log('currentStores', currentStores);
 
   // initialize a state array
   const stateArr: StateObject[] = []
@@ -56,7 +56,7 @@ const addPiniaStoreData = (payload: any) => {
   currentStores.forEach((store: any) => {
     // get label of current store
     const currentLabel = Object.keys(store)[0];
-    console.log('current store in forEach', store)
+    // console.log('current store in forEach', store)
 
     const { key, value, getters, actions } = store[currentLabel];
     // add state to stateArry, getters to gettersArray, and actions to actionsArray
@@ -87,14 +87,14 @@ const addPiniaStoreData = (payload: any) => {
   // series of conditionals that looks at the nodeId of the payload and sees if it matches the current store
   // if nodeId is root --> add all the data for all stores
   if (payload.nodeId === 'root') {
-    console.log('root id FOUND')
+    // console.log('root id FOUND')
     payload.state = {
       'state': stateArr,
       'getters': gettersArr,
       'actions': actionsArr,
     }
   } else { // if nodeId is not root
-      console.log('component selected is NOT root, it is:', payload.nodeId)
+      // console.log('component selected is NOT root, it is:', payload.nodeId)
       // use filter to get state, getters, and actionsArr to match the current node id being selected (which is the selected store)
       const filteredStateArr = stateArr.filter((state) => state.key === payload.nodeId)
       const filteredGettersArr = gettersArr.filter((getters) => getters.key === payload.nodeId)

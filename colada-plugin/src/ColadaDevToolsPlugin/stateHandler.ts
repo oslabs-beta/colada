@@ -3,13 +3,66 @@ import * as _ from "lodash"
 
 // create storeHistory array and type it
 const storeHistory: any = [];
+let finalSnapshot: any = {};
+const mockStoreHistory: any = [];
+const storeLabels: any = [];
+
+// this could be changes to actually do all 3 things: 
+// push to storeHistory, emit event, and add to window
+const pushFinalSnapshot = _.debounce(() => {
+  console.log(`!!!!!pushFinalSnapshot running at time ${Date.now()}!!!!!`);
+  console.log('storeLabels: ', storeLabels)
+  // push finalSnapshot to mockStoreHistory
+  // need to add logic to account for if not every store is updated (need to grab most recent versions of the other stores)
+  // delcare variable missing stores, which will have the labels for the missing stores from snapShot
+  const missingStores = storeLabels.filter((label: any) => {
+    return !Object.keys(finalSnapshot[Object.keys(finalSnapshot)[0]]).includes(label)
+  })
+  // TODO: go to mockStoreHistory at mockStoreHistory.length - 1 and grab all the missing stores, and add them to finalSnapshot
+  missingStores.forEach((store: any) => {
+    // can replace this with getter function below
+    const mostRecentSnapshot = mockStoreHistory[mockStoreHistory.length - 1];
+    // add to finalSnapshot
+    finalSnapshot[Object.keys(finalSnapshot)[0]][store] = mostRecentSnapshot[Object.keys(mostRecentSnapshot)[0]][store];
+  })
+  console.log('missingStores:', missingStores)
+  // so i'm not pushing finalSnapshot straight up
+  mockStoreHistory.push(finalSnapshot)
+  console.log('mockStoreHistory is...........:', mockStoreHistory)
+  // reset finalSnapshot
+  finalSnapshot = {};
+}, 100)
 
 const handleStoreChange = (snapshot: any) => {
+  // idea: handleStoreChange just pushes to finalSnapshot and then invokes pushFinalSnapshot (which is debounced)
   
-  console.log('handling store change')
+  
+  console.log(`handleStoreChange running at ${Date.now()}`)
   const snapshotClone = _.cloneDeep(snapshot)
 
-  console.log('CURRENT TIMESTAMP OF RUNNING HANDLESTORECHANG IS', snapshotClone.timestamp)
+  // add snapshots's label ('key' proprety) to storeLabels if it's not already in there
+  if (!storeLabels.includes(snapshotClone.key)){
+    storeLabels.push(snapshotClone.key)
+  }
+
+  // console.log('CURRENT STORE IN HANDLESTORECHANGE IS:', snapshot.key)
+  // console.log('CURRENT TIMESTAMP OF RUNNING HANDLESTORECHANG IS', snapshotClone.timestamp)
+
+  // ** new finalSnapshot logic
+  // if finalSnaphsot has no properites, add initial timestamp property along with associated clone
+  if (_.isEmpty(finalSnapshot)) {
+    console.log('finalSnapshot is empty!!')
+    finalSnapshot[snapshotClone.timestamp] = {
+        [snapshotClone.key]: snapshotClone
+      }
+  }
+  // else, add a new key to finalSnapshot at existing timestamp property
+  else {
+    console.log('finalSnapshot is not empty!')
+    console.log('finalSnapshot is:', finalSnapshot)
+    finalSnapshot[Object.keys(finalSnapshot)[0]][snapshotClone.key] = snapshotClone
+  }
+  // ***
 
   // push to storeCache the updated state (which is the state argument)
   storeHistory.push({
@@ -32,12 +85,15 @@ const handleStoreChange = (snapshot: any) => {
   window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")   
 
   console.log('storeHistory at end of handleStoreChange', storeHistory)
+
+  // **new invocation here
+  pushFinalSnapshot();
 }
 
 
 // import the subscribe method and implement associated functionality 
 const getState = () => {
-  console.log('invoking getState!')
+  // console.log('invoking getState!')
   piniaStores.subscribe(handleStoreChange)
 }
 

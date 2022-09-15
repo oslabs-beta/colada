@@ -47,10 +47,10 @@ export function setupDevtools(app: any) {
         
         //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
-        console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
+        // console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
         // TODO: add logic for sending state and keeping track of state 
 
-        console.log('TIMELINEEVENT.timestamp IS: ', timelineEvent.timestamp)
+        // console.log('TIMELINEEVENT.timestamp IS: ', timelineEvent.timestamp)
         //Create a timeline event with the timelineEvent emitted in the $subscribe
         //If possible, color code/group by store
         api.addTimelineEvent({
