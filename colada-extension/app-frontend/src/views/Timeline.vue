@@ -5,6 +5,7 @@
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
+                <button @click="resetTimeline" class="btn">X</button>
             </div>
         </div>
         <CurrentNode :node="currNode"/>
@@ -56,19 +57,21 @@
             //setInterval(() => {placeHolder = this.fetchNodes();},300);
             
             //this.nodes = await placeHolder
-            setTimeout(() => {this.nodes = placeHolder; },200);
+            setTimeout(() => {
+                this.nodes = placeHolder; 
+            },200);
             // console.log("this.nodes: ", this.nodes);
             // console.log("raw", toRaw(this.nodes));
 
-            setTimeout(() => {this.currNode = this.nodes[0];},500);
+            setTimeout(() => {this.currNode = this.nodes[0];
+                //set the first timeline node class to complete
+                const firstNode = document.querySelector(".timeline-node")
+                if(firstNode){
+                    firstNode.classList.toggle('complete')
+                }
+            },500);
             //setTimeout(() => {this.currNode = this.nodes[0]; console.log("currNode",this.currNode) },1000);
             //setTimeout(() => {this.currNode = this.nodes[0];},1000);
-          
-            //set the first timeline node class to complete
-            // const firstNode = document.querySelector(".timeline-node")
-            // if(firstNode){
-            //     firstNode.classList.toggle('complete')
-            // }
 
             //add an event listener for messages, to update the data and re-render the timeline
             //window.addEventListener('message', this.updateData)
@@ -84,6 +87,9 @@
             //add listener for chrome storage on change
             this.addListener()
 
+        },
+        mounted(){
+            
         },
         methods: {
             stepBack(){
@@ -149,6 +155,9 @@
             forceRerender(){
                 this.componentKey += 1
                 console.log('forceRerender this.componentKey: ', this.componentKey)
+            },
+            resetTimeline(){
+                chrome.storage.local.clear()
             }
         }
     }

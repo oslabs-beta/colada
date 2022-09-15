@@ -34,7 +34,7 @@
             </div>
         </ul>      -->
          <ul class="timeline" id="timeline">
-            <li class="li complete">
+            <!-- <li class="li complete">
                 <div class="timestamp">
                     <span class="author">{{nodes[0].value}}</span> 
                     <span class="date">{{nodes[0].key}}</span>
@@ -42,8 +42,8 @@
                 <div class="status">
                     <h4>{{nodes[0].timestamp}}</h4>
                 </div>
-            </li>
-            <div :key="node.timestamp" v-for="node in nodes.slice(1)" >
+            </li> -->
+            <div class="timeline-nodes" :key="node.timestamp" v-for="node in nodes" >
                 <TimelineNode :node="node" />
             </div>
         </ul>     
