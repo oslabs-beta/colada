@@ -1,6 +1,6 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 // import { StateObject } from '../types'
-import { getState } from './stateHandler'
+import { initializeState } from './stateHandler'
 import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
 import { piniaStores } from '../PiniaColadaPlugin/index'
 import { handleInspectTimelineEvent } from './timeline';
@@ -38,7 +38,7 @@ export function setupDevtools(app: any) {
 
       window.addEventListener("DOMContentLoaded", () => {
         console.log('dom content has been loaded');
-        getState();
+        initializeState();
       })
 
       //add event listener to the window for 'addTimeLineEvent'

@@ -8,17 +8,17 @@ let piniaProxies: ProxyObject[] = [];
 const piniaStores: any = {};
 
 piniaStores.unsubscribe = () => {
-  console.log(unsubscribeMethods)
+  console.log('unsubscribing...')
+  unsubscribeMethods.forEach(e => e());
 }
 
 piniaStores.getPiniaStores = (): any => { 
   return piniaProxies
 }
 
-piniaStores.subscribe = (callback: any) => {
-  console.log('subscribe method', stores)
+piniaStores.subscribe = (callback: any, setInitialState: boolean = false) => {
+  console.log('subscribing...')
   stores.forEach(store => {
-    console.log('in stores for each')
     const snapshot: ProxyObject = {
       timestamp: Date.now(),
       type: `Store: ${store.$id}`,
@@ -31,11 +31,12 @@ piniaStores.subscribe = (callback: any) => {
     }
     const unsubscribeMethod = store.$subscribe(() => {
       snapshot.timestamp = Date.now()
+      console.log('subscribe callback')
       // we can also access mutation and state here
       callback(snapshot)
     })
     unsubscribeMethods.push(unsubscribeMethod)
-    callback(snapshot)
+    if (setInitialState) callback(snapshot)
   }) 
 }
 

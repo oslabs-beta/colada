@@ -34,20 +34,34 @@ const handleStoreChange = (snapshot: any) => {
 
 
 // import the subscribe method and implement associated functionality 
-const getState = () => {
-  console.log('invoking getState!')
-  piniaStores.subscribe(handleStoreChange)
+const initializeState = () => {
+  console.log('invoking initializeState!')
+  piniaStores.subscribe(handleStoreChange, true)
+}
+
+const resubscribe = () => {
+  piniaStores.subscribe(handleStoreChange, false)
+}
+
+const unsubscribe = () => {
+  piniaStores.unsubscribe()
 }
 
 
 // NOTE: currently 0(n) ... consider refactoring to use binary search
 const getSnapshotbyTimestamp = (timestamp: number) => {
   for (const e of storeHistory){
-    console.log(e)
     if (parseInt(Object.keys(e)[0]) === timestamp) return e;
   } 
 }
 
+const setAppState = (snapshot: any) => {
+  // window.store[key].$state = snapshot.state;
+  for (const e in snapshot){
+    window.store[snapshot[e]['key']].$state = snapshot[e].state
+  }
+   console.log("snapshot",snapshot) 
+}
 
 // create getter to access a specified snapshot from storeHistory for time travelling
 
@@ -67,7 +81,10 @@ const getCurrentStores = (includeTimestamps: boolean = false) => {
 }
 
 export {
-  getState,
+  initializeState,
   getCurrentStores,
-  getSnapshotbyTimestamp
+  getSnapshotbyTimestamp,
+  setAppState,
+  resubscribe,
+  unsubscribe
 }

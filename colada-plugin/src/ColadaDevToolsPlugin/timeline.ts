@@ -1,5 +1,10 @@
-import { piniaStores } from '../PiniaColadaPlugin';
-import { getSnapshotbyTimestamp } from './stateHandler'
+import {
+  getSnapshotbyTimestamp,
+  setAppState,
+  resubscribe,
+  unsubscribe
+} from './stateHandler'
+
 // add timeline layer
 // API: api.addTimelineLayer
 
@@ -13,7 +18,6 @@ import { getSnapshotbyTimestamp } from './stateHandler'
 // so when a user clicks on the timeline event, we need to: 
 // 1. change the app's state
 
-//             window.store[key].$state = snapshot.state;
 
 // 2. unsubscibe from stores (maybe do this first?)
 // 3. resubscibe to all stores 
@@ -21,10 +25,11 @@ import { getSnapshotbyTimestamp } from './stateHandler'
 
 const handleInspectTimelineEvent = (payload: any): void => {
   if (payload.layerId === 'colada-plugin'){
-    // TODO call unsubscribe method for each store when the user clicks on a timeline event
     const selectedEventTimestamp: number = payload.event.time;
-    piniaStores.unsubscibe()
-    return getSnapshotbyTimestamp(selectedEventTimestamp);
+    unsubscribe()
+    setAppState(getSnapshotbyTimestamp(selectedEventTimestamp))
+    resubscribe()
+    return 
   }
 }
 
