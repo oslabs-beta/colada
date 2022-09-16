@@ -47,7 +47,7 @@ export function setupDevtools(app: any) {
         
         //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
-        // console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
+        console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
         // TODO: add logic for sending state and keeping track of state 
 
         // console.log('TIMELINEEVENT.timestamp IS: ', timelineEvent.timestamp)
