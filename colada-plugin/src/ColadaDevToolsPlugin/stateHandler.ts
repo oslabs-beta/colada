@@ -1,36 +1,87 @@
 import { piniaStores } from "../PiniaColadaPlugin/index"
 import * as _ from "lodash"
 
-// create storeHistory array and type it
+// delcare global variables
 const storeHistory: any = [];
 declare const window: any 
+let combinedSnapshot: any = {};
+const storeLabels: any = [];
 
-const handleStoreChange = (snapshot: any) => {
-  
-  console.log('handling store change')
-  const snapshotClone = _.cloneDeep(snapshot)
-
-  // push to storeCache the updated state (which is the state argument)
-  storeHistory.push({
-    [snapshotClone.timestamp]: {
-      [snapshotClone.key]: snapshotClone
-    }
+/*
+* Add missing stores to combinedSnapshot
+* Add property hasBeenUpdated to combinedSnapshot and set to false
+* push combinedSnapshot to storeHistory
+* emit custom addTimelineEvent event with combinedSnapshot as payload
+* send data to extension via window.postMessage with combinedSnapshot as payload
+*/
+const outputCombinedSnapshot = _.debounce(() => {
+  console.log(`outputCombinedSnapshot running at time ${Date.now()}`);
+  // delcare variable missing stores, which will have the labels for the missing stores from snapShot
+  const missingStores = storeLabels.filter((label: any) => {
+    return !Object.keys(combinedSnapshot[Object.keys(combinedSnapshot)[0]]).includes(label)
   })
-
-  //we want to create a new timeline event
+  // iterate over missing stores, find the corresponding most recent snapshot, and add to combinedSnapshot
+  missingStores.forEach((store: any) => {
+    // can replace this with getter function below
+    // need to make a deep clone, otherwise we will be udpated the mostRecentSnapshot inadvertently 
+    const mostRecentSnapshot = getCurrentStores(true);
+    const mostRecentSnapshotClone: any = _.cloneDeep(mostRecentSnapshot);
+    // get correspong store and have to const
+    const mostRecentStore = mostRecentSnapshotClone[Object.keys(mostRecentSnapshotClone)[0]][store]
+    // add hasBeenUpdated = false property to snapshot we're adding
+    mostRecentStore.hasBeenUpdated = false;
+    // add to combinedSnapshot
+    combinedSnapshot[Object.keys(combinedSnapshot)[0]][store] = mostRecentStore;
+  })
+  
+  // pushing combinedSnap to storeHistory, triggering custom event, and posting message to window 
+  storeHistory.push(combinedSnapshot)
   //emit a custom event with the proxyObj as a payload
-  const event: any = new CustomEvent('addTimelineEvent', {detail: snapshotClone})
+  const event: any = new CustomEvent('addTimelineEvent', {detail: combinedSnapshot})
   window.dispatchEvent(event)
 
-  //post a message with the piniaObjs as the payload
   //send a messsage to the window for the extension to make use of
   const messageObj: any = {
     source: 'colada',
-    payload: snapshotClone
+    payload: combinedSnapshot
   }
-  window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")   
+  // TODO: change the second argument here to current URL?
+  window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")
+
+  console.log('storeHistory is...........:', storeHistory)
+  // reset combinedSnapshot to empty object
+  combinedSnapshot = {};
+}, 10)
+
+const handleStoreChange = (snapshot: any) => {
+  
+  console.log(`handleStoreChange running at ${Date.now()}`)
+  const snapshotClone = _.cloneDeep(snapshot)
+
+  // add hasBeenUpdated property to true on snapshotClone
+  snapshotClone.hasBeenUpdated = true;
+
+  // add snapshots's label ('key' proprety) to storeLabels if it's not already in there
+  // ! really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
+  if (!storeLabels.includes(snapshotClone.key)){
+    storeLabels.push(snapshotClone.key)
+  }
+
+  // if finalSnaphsot has no properites, add initial timestamp property along with associated snapshotClone
+  if (_.isEmpty(combinedSnapshot)) {
+    combinedSnapshot[snapshotClone.timestamp] = {
+        [snapshotClone.key]: snapshotClone
+      }
+  }
+  // else, add a new key to combinedSnapshot at existing timestamp property
+  else {
+    combinedSnapshot[Object.keys(combinedSnapshot)[0]][snapshotClone.key] = snapshotClone
+  }
 
   console.log('storeHistory at end of handleStoreChange', storeHistory)
+
+  // invoke debounced outputCombinedSnapshot
+  outputCombinedSnapshot();
 }
 
 
@@ -67,17 +118,16 @@ const setAppState = (snapshot: any) => {
 
 // create getter to access a the MOST RECENT snapshot from storeHistory for inspector
 /*
- @params: includeTimestamps: boolean --> if you want your output to include timestamps. Defaults to false
+ @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
 */
+// TODO: decide if we want to use cloneDeep here? vs a reference
 const getCurrentStores = (includeTimestamps: boolean = false) => {
   if (includeTimestamps) {
-    return [storeHistory[storeHistory.length - 1]]; 
+    return storeHistory[storeHistory.length - 1]; 
   }
   else {
-    return Object.values(storeHistory[storeHistory.length - 1])
+    return Object.values(storeHistory[storeHistory.length - 1])[0]
   }
-  // we need a snapshot of ALL stores, which would ideally all be wrapped within the same element in our storeHistory array 
-  
 }
 
 export {
