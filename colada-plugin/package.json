@@ -30,6 +30,7 @@
     "@rollup/plugin-replace": "^4.0.0",
     "@types/node": "^18.7.14",
     "@vue/devtools-api": "^6.2.1",
+    "lodash": "^4.17.21",
     "pascalcase": "^2.0.0",
     "pinia": "^2.0.22",
     "rimraf": "^3.0.2",
@@ -39,5 +40,8 @@
     "rollup-plugin-vue": "^6.0.0",
     "typescript": "^4.8.2",
     "vue": "^3.2.38"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.185"
   }
 }
