@@ -12,7 +12,9 @@ A Chrome Devtool extension
 ```
 cd colada-extension
 npm install
+npm run dev
 ```
+Navigate to chrome://extensions in browser, select "Load Unpacked", load colada-extension/dist from your colada directory
 
 # colada-plugin
 ```

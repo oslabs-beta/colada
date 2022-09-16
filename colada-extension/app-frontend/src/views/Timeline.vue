@@ -1,13 +1,14 @@
 <template>
     <div class="timeline-container">
         <div class="vertical-left">
-            <VertTimeline :nodes="nodes" />
+            <VertTimeline :key="componentKey" :nodes="nodes" />
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
+                <button @click="resetTimeline" class="btn">X</button>
             </div>
         </div>
-        <CurrentNode :node="currNode"/>
+        <CurrentNode :key="currNodeKey" :node="currNode"/>
     </div>
 </template>
 
@@ -15,6 +16,8 @@
     //Import VertTimeline.vue components
     import VertTimeline from '../components/VertTimeline.vue'
     import CurrentNode from '../components/CurrentNode.vue'
+    import { toRaw, ref } from 'vue';
+    import { addListener } from 'process';
 
     export default {
         name: 'Timeline',
@@ -22,23 +25,86 @@
             return{
                 index: 0,
                 nodes: [],
-                currNode: {}
+                currNode: {},
+                componentKey: 0,
+                currNodeKey: 0
             }
         },
         components: {
             VertTimeline,
             CurrentNode,
-           
+        },
+       
+        
+        async mounted(){
+            // this.currNode =   {
+            //             "1662748551668": {
+            //                 "actions":{},
+            //                 "editable": true,
+            //                 "getters": {},
+            //                 "key": "store",
+            //                 "state": ["myStr","elements"],
+            //                 "timestamp": 1662748551668,
+            //                 "type": "Store: store",
+            //                 "value": {
+            //                     "elements": [],
+            //                     "myStr": "j"
+            //                 }
+            //             }
+            //         }
+
+            //  this.currNode =   {
+            //             "1662748551668": {
+            //                 counter: {
+            //                     "actions":{},
+            //                     "editable": true,
+            //                     "getters": {},
+            //                     "key": "counter",
+            //                     "state": ["count"],
+            //                     "timestamp": 1662748551668,
+            //                     "type": "Store: counter",
+            //                     "value": {
+            //                         "count":0
+            //                     }
+            //                 },
+            //                 store: {
+            //                     "actions":{},
+            //                     "editable": true,
+            //                     "getters": {},
+            //                     "key": "store",
+            //                     "state": ["myStr","elements"],
+            //                     "timestamp": 1662748551668,
+            //                     "type": "Store: store",
+            //                     "value": {
+            //                         "elements": [],
+            //                         "myStr": "j"
+            //                     }
+            //                 },
+
+            //         }
+            //     }
+
+            // console.log('entered mounted');
+            let placeHolder = await this.fetchNodes()
+            
+            setTimeout(() => {
+                this.nodes = placeHolder; 
+            },200);
+
+            setTimeout(() => {this.currNode = this.nodes[0];
+                //set the first timeline node class to complete
+                const firstNode = document.querySelector(".timeline-node")
+                if(firstNode){
+                    firstNode.classList.toggle('complete')
+                }
+            },500);
+
+            //add listener for chrome storage on change
+            this.addListener()
+
         },
         created(){
-            this.nodes = this.fetchNodes()
-            console.log("Timeline.vue this.nodes: ", this.nodes)
-            this.currNode = this.nodes[0]
-        },
-        mounted(){
-            //set the first timeline node class to complete
-            const firstNode = document.querySelector(".timeline-node")
-            firstNode.classList.toggle('complete')
+            
         },
         methods: {
             stepBack(){
@@ -47,7 +113,6 @@
                     const lastComplete = completes[completes.length-1]
                     lastComplete.classList.toggle('complete');
                     this.index--
-                    //console.log('this.index stepBack: ', this.index)
 
                     //set the currNode 
                     this.currNode = this.nodes[this.index]
@@ -61,7 +126,6 @@
                 if(this.index < allNodes.length - 1){
                     //increment the index
                     this.index++
-                    //console.log('this.index stepForward: ', this.index)
                     
                     //initialize lastLi to the allLi at the key of this.index
                     const lastNode = allNodes[this.index]
@@ -73,140 +137,40 @@
                 }
             },
             fetchNodes(){
+                let nodeDataObj;
+                const nodeData = []
+                // Get data from chrome local storage
+                chrome.storage.local.get(null, (result) => {
+                    if (result) {{
 
-                const nodeData = [
-                    {
-                        0: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551668,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "j"
-                            }
-                        }
-                    },
-                    {
-                        1: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551763,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "jo"
-                            }
-                        }
-                    },
-                    {
-                        2: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748551897,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": [],
-                                "myStr": "jon"
-                            }
-                        }
-                    },
-                    {
-                        3: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon"],
-                                "myStr": ""
-                            }
-                        }
-                    },
-                    {
-                        4: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon"],
-                                "myStr": "1"
-                            }
-                        }
-                    },
-                    {
-                        5: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon"],
-                                "myStr": "2"
-                            }
-                        }
-                    },
-                    {
-                        6: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon"],
-                                "myStr": "3"
-                            }
-                        }
-                    },
-                    {
-                        7: {
-                            "actions":{},
-                            "editable": true,
-                            "getters": {},
-                            "key": "store",
-                            "state": ["myStr","elements"],
-                            "timestamp": 1662748552723,
-                            "type": "Store: store",
-                            "value": {
-                                "elements": ["jon", "123"],
-                                "myStr": ""
-                            }
-                        }
-                    }
-                ]
+                        nodeDataObj = result
 
-                //Get data from chrome local storage
-                // chrome.storage.local.get(null, (result) => {
-                //     if(result){
-                //         const data = JSON.stringify(result)
-                //         console.log("Timeline.vue chrome data: ", data)
-                //     }
-                // })
+                        for(let key in nodeDataObj){
+                            nodeData.push(nodeDataObj[key])
+                        }
+                    }}
+                })
 
                 return nodeData
             },
+             addListener(){
+                //console.log('addListener executed')
+                chrome.storage.onChanged.addListener(async () => {
+                    //console.log('chrome storage changed')
+                    let data = await this.fetchNodes()
+                    setTimeout(() => {this.nodes = data; },200);
+                    //console.log('chrome store changed this.nodes: ', this.nodes)
+                    this.forceRerender()
+                })
+            },
+            forceRerender(){
+                this.componentKey += 1
+                this.currNodeKey += 1
+                //console.log('forceRerender this.componentKey: ', this.componentKey)
+            },
+            resetTimeline(){
+                chrome.storage.local.clear()
+            }
         }
     }
 </script>
