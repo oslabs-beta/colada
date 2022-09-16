@@ -14,17 +14,21 @@
     export default {
         name: "TimelineNode",
         props:{
+            id: String,
             node: Object,
         },
         data(){
             return{
                 data:{},
-                timestamp: ""
+                timestamp: "",
+                idData:""
             }
         },
-        mounted(){
+        updated(){
             this.data = this.node
             this.timestamp = this.convertTime(this.data.timestamp)
+            this.idData = this.id.toString()
+            console.log("TimelineNode.vue idData: ", this.idData)
         },
         methods: {
             convertTime (unixTimestamp) {
