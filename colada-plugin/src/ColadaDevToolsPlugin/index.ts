@@ -1,8 +1,12 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
 // import { StateObject } from '../types'
-import { initializeState } from './stateHandler'
 import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
 import { handleInspectTimelineEvent } from './timeline';
+import { 
+  initializeState, 
+  setAppState, 
+  getSnapshotbyTimestamp 
+} from './stateHandler'
 
 // declare type for application window
 declare const window: any;
@@ -33,6 +37,22 @@ export function setupDevtools(app: any) {
       //********************************************************************** */
       // ************ EVENT LISTENERS *****************************************
       //********************************************************************** */
+
+      window.addEventListener("message", (event: any) => {
+        console.log('message received!')
+        console.log('event is: ', event);
+        // parse data from message
+        const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
+
+        // if source is colada extension, set app's state to snapshot that correspodns with payload's timestamp
+        if (parsed.source === 'colada-extension') {
+    
+          const timestamp = parsed.payload;
+          console.log('found colada-extension message!')
+
+          setAppState(getSnapshotbyTimestamp(timestamp))
+        }
+      })
 
       window.addEventListener("DOMContentLoaded", () => {
         console.log('dom content has been loaded');
