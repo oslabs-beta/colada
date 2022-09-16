@@ -44,21 +44,32 @@ export function setupDevtools(app: any) {
         console.log('addTimelineEvent listener has been triggered')
         
         //console.log('addTimelineEvent e is: ', e)
-        const timelineEvent = e.detail
-        // console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
+        const eventToAdd = e.detail
+        console.log('eventToAdd is:', eventToAdd, 'layer is:', timelineLayerId)
 
-        //Create a timeline event with the timelineEvent emitted in the $subscribe
-        //If possible, color code/group by store
-        api.addTimelineEvent({
-          layerId: timelineLayerId,
-          event:{
-            time: timelineEvent.timestamp,
-            title: timelineEvent.key,
-            data: {
-              state: timelineEvent.value
-            },
-            groupId: timelineEvent.key
-          }
+        //Create a timeline event with the eventToAdd emitted in the $subscribe
+        
+        // grab timestamp from eventToAdd
+        const currentTimestamp = parseInt(Object.keys(eventToAdd)[0]);
+        const currentStores = Object.values(eventToAdd[currentTimestamp])
+        console.log('currentStores', currentStores)
+        // iterate over the object associated with that timestamp
+        currentStores.forEach((store: any) => {
+          console.log('store in forEach', store)
+          // add timelineEvent for each store
+          //If possible, color code/group by store
+          api.addTimelineEvent({
+            layerId: timelineLayerId,
+            event:{
+              time: currentTimestamp,
+              title: store.key,
+              data: {
+                state: store.value
+              },
+              groupId: store.key
+            }
+          })
+
         })
         // refresh inspector state after adding element to timeline
         api.sendInspectorState(inspectorId);

@@ -37,6 +37,7 @@ piniaStores.subscribe = (callback: any, setInitialState: boolean = false) => {
     })
     unsubscribeMethods.push(unsubscribeMethod)
     if (setInitialState) callback(snapshot)
+    // callback(snapshot)
   }) 
 }
 

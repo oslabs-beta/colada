@@ -58,6 +58,8 @@ const handleStoreChange = (snapshot: any) => {
   console.log(`handleStoreChange running at ${Date.now()}`)
   const snapshotClone = _.cloneDeep(snapshot)
 
+  console.log('snapshot in handleStoreChange.....', snapshot)
+
   // add hasBeenUpdated property to true on snapshotClone
   snapshotClone.hasBeenUpdated = true;
 
@@ -109,9 +111,13 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 }
 
 const setAppState = (snapshot: any) => {
-  console.log('updating store state...')
+  console.log('running setAppState...')
+  console.log('snapshot in setAppState:', snapshot)
   const stores: any = Object.values(snapshot)[0]
-  for (const key in stores){ window.store[key].$state = stores[key].value }
+  for (const key in stores){ 
+    console.log('in for loop in setAppState!')
+    window.store[key].$state = stores[key].value
+  }
 }
 
 // create getter to access a specified snapshot from storeHistory for time travelling
