@@ -2,7 +2,7 @@ import { piniaStores } from "../PiniaColadaPlugin/index"
 import * as _ from "lodash"
 
 // delcare global variables
-const storeHistory: any = [];
+let storeHistory: any = [];
 declare const window: any 
 let combinedSnapshot: any = {};
 const storeLabels: any = [];
@@ -120,9 +120,6 @@ const setAppState = (snapshot: any) => {
   }
 }
 
-// create getter to access a specified snapshot from storeHistory for time travelling
-
-// create getter to access a the MOST RECENT snapshot from storeHistory for inspector
 /*
  @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
 */

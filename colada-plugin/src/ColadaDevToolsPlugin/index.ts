@@ -1,11 +1,10 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api'
-// import { StateObject } from '../types'
 import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
 import { handleInspectTimelineEvent } from './timeline';
 import { 
   initializeState, 
   setAppState, 
-  getSnapshotbyTimestamp 
+  getSnapshotbyTimestamp
 } from './stateHandler'
 
 // declare type for application window
@@ -56,7 +55,7 @@ export function setupDevtools(app: any) {
 
       window.addEventListener("DOMContentLoaded", () => {
         console.log('dom content has been loaded');
-        initializeState();
+        setTimeout(initializeState, 1000);
       })
 
       //add event listener to the window for 'addTimeLineEvent'
@@ -178,16 +177,6 @@ export function setupDevtools(app: any) {
             label: 'Colada 🥥',
             skipScreenshots: true, // doesn't work :(
         })
-
-        //Are we able to add UI buttons??
-
-        // api.on.timelineCleared --> triggers when the user clears the timeline from the timeline panel 
-        api.on.timelineCleared(() => {
-          // TODO: clear our global timeline data when this is triggered
-          console.log('Timeline cleared')
-        })
-       
       
-      //*********** end of setupDevToolsPlugin ********** */
     })
 }

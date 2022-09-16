@@ -57,19 +57,19 @@ const addPiniaStoreData = (payload: any) => {
     const stateObj: StateObject = {
       key: key,
       value: value,
-      editable: true
+      editable: false
     }
 
     const gettersObj: any = {
       key: key,
       value: getters,
-      editable: true
+      editable: false
     }
 
     const actionsObj: any = {
       key: key,
       value: actions,
-      editable: true
+      editable: false
     }
 
     stateArr.push(stateObj);
@@ -92,7 +92,7 @@ const addPiniaStoreData = (payload: any) => {
       // use filter to get state, getters, and actionsArr to match the current node id being selected (which is the selected store)
       const filteredStateArr = stateArr.filter((state) => state.key === payload.nodeId)
       const filteredGettersArr = gettersArr.filter((getters) => getters.key === payload.nodeId)
-      const filteredActionsArr = stateArr.filter((actions) => {
+      const filteredActionsArr = actionsArr.filter((actions) => {
         return actions.key === payload.nodeId
       })
 
