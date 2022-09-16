@@ -2,10 +2,8 @@ import { setupDevtoolsPlugin } from '@vue/devtools-api'
 // import { StateObject } from '../types'
 import { getState } from './stateHandler'
 import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
-import { piniaStores } from '../PiniaColadaPlugin/index'
 import { handleInspectTimelineEvent } from './timeline';
 
-const piniaObjs = piniaStores.getPiniaStores();
 // declare type for application window
 declare const window: any;
 
@@ -47,10 +45,8 @@ export function setupDevtools(app: any) {
         
         //console.log('addTimelineEvent e is: ', e)
         const timelineEvent = e.detail
-        console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
-        // TODO: add logic for sending state and keeping track of state 
+        // console.log('timelineEvent is:', timelineEvent, 'layer is:', timelineLayerId)
 
-        // console.log('TIMELINEEVENT.timestamp IS: ', timelineEvent.timestamp)
         //Create a timeline event with the timelineEvent emitted in the $subscribe
         //If possible, color code/group by store
         api.addTimelineEvent({
@@ -134,8 +130,6 @@ export function setupDevtools(app: any) {
 
 
         api.on.getInspectorState((payload: any) => {
-          console.log('piniaObjs:',piniaObjs);
-          
           // if payload inspectorId matches the Colada inspectorId, add the relevant Pinia store data to the inspector panel
           if(payload.inspectorId === inspectorId){
             addPiniaStoreData(payload);

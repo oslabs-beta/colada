@@ -7,11 +7,11 @@ let combinedSnapshot: any = {};
 const storeLabels: any = [];
 
 /*
-* Add missing stores to combinedSnapshop
-* Add property hasBeenUpdated = false to combinedSnapshot
+* Add missing stores to combinedSnapshot
+* Add property hasBeenUpdated to combinedSnapshot and set to false
 * push combinedSnapshot to storeHistory
 * emit custom addTimelineEvent event with combinedSnapshot as payload
-* postMessage to window with combinedSnapshot as payload
+* send data to extension via window.postMessage with combinedSnapshot as payload
 */
 const outputCombinedSnapshot = _.debounce(() => {
   console.log(`outputCombinedSnapshot running at time ${Date.now()}`);
@@ -23,9 +23,10 @@ const outputCombinedSnapshot = _.debounce(() => {
   missingStores.forEach((store: any) => {
     // can replace this with getter function below
     // need to make a deep clone, otherwise we will be udpated the mostRecentSnapshot inadvertently 
-    const mostRecentSnapshot: any = _.cloneDeep(getCurrentStores(true));
+    const mostRecentSnapshot = getCurrentStores(true);
+    const mostRecentSnapshotClone: any = _.cloneDeep(mostRecentSnapshot);
     // get correspong store and have to const
-    const mostRecentStore = mostRecentSnapshot[Object.keys(mostRecentSnapshot)[0]][store]
+    const mostRecentStore = mostRecentSnapshotClone[Object.keys(mostRecentSnapshotClone)[0]][store]
     // add hasBeenUpdated = false property to snapshot we're adding
     mostRecentStore.hasBeenUpdated = false;
     // add to combinedSnapshot
@@ -60,22 +61,19 @@ const handleStoreChange = (snapshot: any) => {
   snapshotClone.hasBeenUpdated = true;
 
   // add snapshots's label ('key' proprety) to storeLabels if it's not already in there
-  // TODO: really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
+  // ! really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
   if (!storeLabels.includes(snapshotClone.key)){
     storeLabels.push(snapshotClone.key)
   }
 
-  // if finalSnaphsot has no properites, add initial timestamp property along with associated clone
+  // if finalSnaphsot has no properites, add initial timestamp property along with associated snapshotClone
   if (_.isEmpty(combinedSnapshot)) {
-    console.log('combinedSnapshot is empty!!')
     combinedSnapshot[snapshotClone.timestamp] = {
         [snapshotClone.key]: snapshotClone
       }
   }
   // else, add a new key to combinedSnapshot at existing timestamp property
   else {
-    console.log('combinedSnapshot is not empty!')
-    console.log('combinedSnapshot is:', combinedSnapshot)
     combinedSnapshot[Object.keys(combinedSnapshot)[0]][snapshotClone.key] = snapshotClone
   }
 
@@ -106,7 +104,7 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 
 // create getter to access a the MOST RECENT snapshot from storeHistory for inspector
 /*
- @params: includeTimestamps: boolean - if you want your output to include timestamps. Defaults to false
+ @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
 */
 // TODO: decide if we want to use cloneDeep here? vs a reference
 const getCurrentStores = (includeTimestamps: boolean = false) => {
@@ -114,10 +112,8 @@ const getCurrentStores = (includeTimestamps: boolean = false) => {
     return storeHistory[storeHistory.length - 1]; 
   }
   else {
-    return Object.values(storeHistory[storeHistory.length - 1])
+    return Object.values(storeHistory[storeHistory.length - 1])[0]
   }
-  // we need a snapshot of ALL stores, which would ideally all be wrapped within the same element in our storeHistory array 
-  
 }
 
 export {

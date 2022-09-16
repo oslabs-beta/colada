@@ -11,7 +11,6 @@ const addPiniaStoreLabels = (payload: any, context: any) => {
   console.log('RUNNING addPiniaStoreLabels')
   // iterate over stores and grab each label 
   const currentStores = getCurrentStores();
-  console.log('currentStores IS: ', currentStores)
   // initialize root node for Colada inspector tree
   payload.rootNodes = [
     {
@@ -22,10 +21,9 @@ const addPiniaStoreLabels = (payload: any, context: any) => {
   ]
 
   // iterate over currentStores to add children stores to root 
-  currentStores.forEach((store: any) => {
+  Object.values(currentStores).forEach((store: any) => {
     // current label is the zeroth (only) key on obj
-    const currentLabel = Object.keys(store)[0];
-    console.log('currentLabel is', currentLabel)
+    const currentLabel = store.key;
     // push current store label to children array in payload.rootNodes
     payload.rootNodes[0].children.push({
       id: currentLabel,
@@ -43,7 +41,6 @@ const addPiniaStoreData = (payload: any) => {
   console.log('in addPiniaStoreData')
   // use getCurrentStore from stateHandler to get most recent versions stores
   const currentStores = getCurrentStores();
-  // console.log('currentStores', currentStores);
 
   // initialize a state array
   const stateArr: StateObject[] = []
@@ -53,12 +50,9 @@ const addPiniaStoreData = (payload: any) => {
   const actionsArr: any[] = []
   
   // iterate over currentStores
-  currentStores.forEach((store: any) => {
-    // get label of current store
-    const currentLabel = Object.keys(store)[0];
-    // console.log('current store in forEach', store)
+  Object.values(currentStores).forEach((store: any) => {
 
-    const { key, value, getters, actions } = store[currentLabel];
+    const { key, value, getters, actions } = store;
     // add state to stateArry, getters to gettersArray, and actions to actionsArray
     const stateObj: StateObject = {
       key: key,
@@ -109,11 +103,9 @@ const addPiniaStoreData = (payload: any) => {
       }
   }
 
-  // TODO: get the inspector to also update upon $subscribe being invoked? so it matches the app in real time?
-
 }
 
-// stretch: add tags to component inspector?
+// stretch: add tags to component inspector
 // stretch: allow user to edit inspector state with api.on.editInspectorState
 
 export {
