@@ -188,12 +188,22 @@ $pinia-color:rgb(250,217,111);
 .timeline {
   list-style-type: none;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction:column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  gap:0.25rem;
 }
 
 .vert-timeline{
   height:100vw;
+}
+
+.timeline-nodes{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:space-evenly;
+  gap:0.25rem;
 }
 
 .node{
@@ -232,7 +242,7 @@ $pinia-color:rgb(250,217,111);
   display: flex;
   justify-content: center;
   align-items:center;
-  border-right: 2px solid #D6DCE0;
+  border-left: 2px solid #D6DCE0;
   position: relative;
   transition: all 200ms ease-in;
   h4{
@@ -241,21 +251,21 @@ $pinia-color:rgb(250,217,111);
   }
   &:before{
       content: '';
-      width: 25px;
-      height: 25px;
+      width: 8px;
+      height: 8px;
       background-color: white;
       border-radius: 25px;
       border: 1px solid #ddd;
       position: absolute;
       top: 40%;
-      right: -15px;
+      left: -15px;
       transition: all 200ms ease-in;
   }
 }
 
 .timeline-node.complete{
   .status{
-      border-right: 2px solid $primary-color;
+      border-left: 2px solid $primary-color;
       color: $store-color;
       &:before{
           background-color: $primary-color;

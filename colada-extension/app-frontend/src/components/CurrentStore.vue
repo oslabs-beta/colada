@@ -1,25 +1,22 @@
 <template>
-    <div class="current-node-container">
-        <h4>Current Node</h4>
-        <!-- <p>Store: <span id="curr-store">{{node.key}}</span></p>
-        <p>State: <span id="curr-state">{{node.value}}</span></p>
-        <p>Timestamp: <span id="curr-time">{{node.timestamp}}</span></p> -->
-        <div class="stores" v-for="store in node">
-            <CurrentStore :store="store" />
+    <div class="current-store-container">
+        <div v-for="info in store">
+            <StoreInfo :info="info" />
         </div>
+
     </div>
 </template>
 
 <script>
-    import CurrentStore from './CurrentStore.vue'
+    import StoreInfo from './StoreInfo.vue'
 
     export default {
-        name: "CurrentNode",
+        name: "CurrentStore",
         props:{
-            node: Object
+            store: Object
         },
         components:{
-            CurrentStore
+            StoreInfo
         },
         data(){
             return{
@@ -28,9 +25,8 @@
             }
         },
         updated(){
-            this.data = this.node
-            //console.log('CurrentNode.vue this.data: ', this.data)
-            // this.timestamp = this.convertTime(this.data.timestamp)
+            this.data = this.store[Object.keys(this.store)[0]]
+            //this.timestamp = this.convertTime(this.data.timestamp)
         },
         methods: {
             convertTime (unixTimestamp) {
@@ -42,7 +38,7 @@
 </script>
 
 <style>
-    .current-node-container{
+    .current-store-container{
         height:100vh;
         display:flex;
         flex-direction:column;
