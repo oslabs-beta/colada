@@ -1,5 +1,8 @@
+
+
 function contentScript() {
   console.log("running injected content script...");
+
   
   function saveMessage(event) {
     const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''

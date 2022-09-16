@@ -35,7 +35,7 @@
         },
        
         
-        async created(){
+        async mounted(){
             // this.currNode =   {
             //             "1662748551668": {
             //                 "actions":{},
@@ -71,7 +71,7 @@
             this.addListener()
 
         },
-        mounted(){
+        created(){
             
         },
         methods: {
