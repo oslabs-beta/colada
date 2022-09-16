@@ -1,9 +1,8 @@
 import { piniaStores } from "../PiniaColadaPlugin/index"
 import * as _ from "lodash"
 
-// create storeHistory array and type it
+// delcare global variables
 const storeHistory: any = [];
-// combined snapshot, 
 let combinedSnapshot: any = {};
 const storeLabels: any = [];
 
@@ -15,7 +14,7 @@ const storeLabels: any = [];
 * postMessage to window with combinedSnapshot as payload
 */
 const outputCombinedSnapshot = _.debounce(() => {
-  console.log(`!!!!!outputCombinedSnapshot running at time ${Date.now()}!!!!!`);
+  console.log(`outputCombinedSnapshot running at time ${Date.now()}`);
   // delcare variable missing stores, which will have the labels for the missing stores from snapShot
   const missingStores = storeLabels.filter((label: any) => {
     return !Object.keys(combinedSnapshot[Object.keys(combinedSnapshot)[0]]).includes(label)
@@ -32,31 +31,27 @@ const outputCombinedSnapshot = _.debounce(() => {
     // add to combinedSnapshot
     combinedSnapshot[Object.keys(combinedSnapshot)[0]][store] = mostRecentStore;
   })
-  console.log('missingStores:', missingStores)
   
-  // TODO: add logic for pushing to storeHistory, triggering custom event, and posting message to window here
+  // pushing combinedSnap to storeHistory, triggering custom event, and posting message to window 
   storeHistory.push(combinedSnapshot)
-  //we want to create a new timeline event
   //emit a custom event with the proxyObj as a payload
   const event: any = new CustomEvent('addTimelineEvent', {detail: combinedSnapshot})
   window.dispatchEvent(event)
 
-  //post a message with the piniaObjs as the payload
   //send a messsage to the window for the extension to make use of
   const messageObj: any = {
     source: 'colada',
     payload: combinedSnapshot
   }
+  // TODO: change the second argument here to current URL?
   window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")
 
   console.log('storeHistory is...........:', storeHistory)
-  // reset combinedSnapshot
+  // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10)
 
 const handleStoreChange = (snapshot: any) => {
-  // idea: handleStoreChange just pushes to combinedSnapshot and then invokes outputCombinedSnapshot (which is debounced)
-  // TODO: add hasBeenUpdated = true property to snapshotClone
   
   console.log(`handleStoreChange running at ${Date.now()}`)
   const snapshotClone = _.cloneDeep(snapshot)
@@ -65,15 +60,11 @@ const handleStoreChange = (snapshot: any) => {
   snapshotClone.hasBeenUpdated = true;
 
   // add snapshots's label ('key' proprety) to storeLabels if it's not already in there
-  // really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
+  // TODO: really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
   if (!storeLabels.includes(snapshotClone.key)){
     storeLabels.push(snapshotClone.key)
   }
 
-  // console.log('CURRENT STORE IN HANDLESTORECHANGE IS:', snapshot.key)
-  // console.log('CURRENT TIMESTAMP OF RUNNING HANDLESTORECHANG IS', snapshotClone.timestamp)
-
-  // ** new combinedSnapshot logic
   // if finalSnaphsot has no properites, add initial timestamp property along with associated clone
   if (_.isEmpty(combinedSnapshot)) {
     console.log('combinedSnapshot is empty!!')
@@ -87,20 +78,10 @@ const handleStoreChange = (snapshot: any) => {
     console.log('combinedSnapshot is:', combinedSnapshot)
     combinedSnapshot[Object.keys(combinedSnapshot)[0]][snapshotClone.key] = snapshotClone
   }
-  // ***
-
-  // push to storeCache the updated state (which is the state argument)
-  // storeHistory.push({
-  //   [snapshotClone.timestamp]: {
-  //     [snapshotClone.key]: snapshotClone
-  //   }
-  // })
-
-  
 
   console.log('storeHistory at end of handleStoreChange', storeHistory)
 
-  // **new invocation of debounced function here
+  // invoke debounced outputCombinedSnapshot
   outputCombinedSnapshot();
 }
 
