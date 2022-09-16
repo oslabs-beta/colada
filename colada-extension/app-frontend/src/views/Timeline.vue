@@ -8,7 +8,7 @@
                 <button @click="resetTimeline" class="btn">X</button>
             </div>
         </div>
-        <CurrentNode :node="currNode"/>
+        <CurrentNode :key="currNodeKey" :node="currNode"/>
     </div>
 </template>
 
@@ -26,7 +26,8 @@
                 index: 0,
                 nodes: [],
                 currNode: {},
-                componentKey: 0
+                componentKey: 0,
+                currNodeKey: 0
             }
         },
         components: {
@@ -51,6 +52,37 @@
             //                 }
             //             }
             //         }
+
+            //  this.currNode =   {
+            //             "1662748551668": {
+            //                 counter: {
+            //                     "actions":{},
+            //                     "editable": true,
+            //                     "getters": {},
+            //                     "key": "counter",
+            //                     "state": ["count"],
+            //                     "timestamp": 1662748551668,
+            //                     "type": "Store: counter",
+            //                     "value": {
+            //                         "count":0
+            //                     }
+            //                 },
+            //                 store: {
+            //                     "actions":{},
+            //                     "editable": true,
+            //                     "getters": {},
+            //                     "key": "store",
+            //                     "state": ["myStr","elements"],
+            //                     "timestamp": 1662748551668,
+            //                     "type": "Store: store",
+            //                     "value": {
+            //                         "elements": [],
+            //                         "myStr": "j"
+            //                     }
+            //                 },
+
+            //         }
+            //     }
 
             // console.log('entered mounted');
             let placeHolder = await this.fetchNodes()
@@ -133,6 +165,7 @@
             },
             forceRerender(){
                 this.componentKey += 1
+                this.currNodeKey += 1
                 //console.log('forceRerender this.componentKey: ', this.componentKey)
             },
             resetTimeline(){

@@ -1,15 +1,21 @@
 <template>
     <div class="timeline-node">
         <div class="status">
-            <span class="type">{{node.key}}</span> 
+            <!-- <span class="type">{{node.key}}</span>  -->
+            <!-- <span class="type">{{data}}</span>  -->
+            <div v-for="store in data">
+                <StoreNode :store="store"></StoreNode>
+            </div>
         </div>
         <div class="timestamp">
-            <h4>{{node.timestamp}}</h4>
+            <!-- <h4>{{node.timestamp}}</h4> -->
+            <!-- <h4>{{node.timestamp}}</h4> -->
         </div>
     </div>
 </template>
 
 <script>
+    import StoreNode from './StoreNode.vue'
 
     export default {
         name: "TimelineNode",
@@ -17,24 +23,21 @@
             id: String,
             node: Object,
         },
+        components:{
+            StoreNode
+        },
         data(){
             return{
                 data:{},
                 timestamp: "",
-                idData:""
             }
         },
         updated(){
-            this.data = this.node
-            this.timestamp = this.convertTime(this.data.timestamp)
-            this.idData = this.id.toString()
-            console.log("TimelineNode.vue idData: ", this.idData)
+            this.data = this.node[Object.keys(this.node)[0]]
+            //console.log("TimelineNode.vue this.data", this.data)
         },
         methods: {
-            convertTime (unixTimestamp) {
-                const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US")
-                return date
-            }
+
         }
     }
 

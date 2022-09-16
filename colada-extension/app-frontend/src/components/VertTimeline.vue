@@ -2,7 +2,7 @@
     <div class="vert-timeline">
          <ul class="timeline" id="timeline">
             <div class="timeline-node" :key="node.timestamp" v-for="node in nodes" > 
-                <TimelineNode :id="node.timestamp" :node="node" />
+                    <TimelineNode :node="node" />
             </div>
         </ul>     
     </div>
@@ -26,6 +26,8 @@
 
         },
         updated(){
+            //console.log('VertTimeline this.nodes: ', this.nodes)
+
             const timelineNodes = document.getElementsByClassName('timeline-node')
             //console.log('VertTimeline.vue timelineNodes: ', timelineNodes)
             for(let i = 0; i < timelineNodes.length; i++){
@@ -39,7 +41,7 @@
                     }
                     console.log('node clicked, messageObj: ', messageObj)
                     window.postMessage(JSON.stringify(messageObj), window.location.href) 
-                    //console.log('window.location.href: ', window.location.href)
+                    console.log('window.location.href: ', window.location.href)
                 })
             }
         }
