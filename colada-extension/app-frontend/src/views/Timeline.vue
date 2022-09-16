@@ -1,79 +1,45 @@
 <template>
     <div class="timeline-container">
-        <!-- <div class="swiper-container">
-            <p class="swiper-control">
-            <button type="button" class="btn btn-default btn-sm prev-slide">Prev</button>
-            <button type="button" class="btn btn-default btn-sm next-slide">Next</button>
-            </p>
-            <div class="swiper-wrapper timeline-swiper">
-            <div class="swiper-slide" v-for="item in steps">
-                <div class="timestamp-swiper">
-                <span class="date-swiper">{{item.dateLabel}}</span>
-                </div>
-                <div class="status-swiper">
-                <span>{{item.title}}</span>
-                </div>
+        <div class="vertical-left">
+            <VertTimeline :nodes="nodes" />
+            <div class="btn-container">
+                <button @click="stepBack" id="back-btn" class="btn">^</button>
+                <button @click="stepForward" id="forward-btn" class="btn">v</button>
             </div>
-            </div>
-      </div> -->
-        <HorzTimeline />
-        <div class="btn-container">
-            <button @click="stepBack" id="back-btn" class="btn">&lt-</button>
-            <button @click="stepForward" id="forward-btn" class="btn">-&gt</button>
         </div>
+        <CurrentNode :node="currNode"/>
     </div>
 </template>
 
 <script>
-    //Import HorzTimeline.vue components
-    import HorzTimeline from '../components/HorzTimeline.vue'
-
-    //Import Swiper core and required modules
-    import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-
-    //Import Swiper Vue.js components
-    import {Swiper, SwiperSlide} from 'swiper/vue'
-
-    //Import Swiper styles
-    import 'swiper/scss'
-    import 'swiper/scss/navigation';
-    import 'swiper/scss/pagination';
-    import 'swiper/scss/scrollbar';
-
-    const data = [
-        { dateLabel: 'January 2017', title: 'Gathering Information' },
-        { dateLabel: 'February 2017', title: 'Planning' },
-        { dateLabel: 'March 2017', title: 'Design' },
-        { dateLabel: 'April 2017', title: 'Content Writing and Assembly' },
-        { dateLabel: 'May 2017', title: 'Coding' },
-        { dateLabel: 'June 2017', title: 'Testing, Review & Launch' },
-        { dateLabel: 'July 2017', title: 'Maintenance' }
-    ];
+    //Import VertTimeline.vue components
+    import VertTimeline from '../components/VertTimeline.vue'
+    import CurrentNode from '../components/CurrentNode.vue'
 
     export default {
         name: 'Timeline',
         data(){
             return{
-                index: 2,
-                steps:data
+                index: 0,
+                nodes: [],
+                currNode: {}
             }
         },
         components: {
-            HorzTimeline,
-            // Swiper,
-            // SwiperSlide
+            VertTimeline,
+            CurrentNode,
+           
         },
-        // mounted(){
-        //     const swiper = new Swiper('.swiper-container', {
-        //         //pagination: '.swiper-pagination',
-        //         slidesPerView: 4,
-        //         paginationClickable: true,
-        //         grabCursor: true,
-        //         paginationClickable: true,
-        //         nextButton: '.next-slide',
-        //         prevButton: '.prev-slide',
-        //     });  
-        // },
+        created(){
+            this.nodes = this.fetchNodes()
+            console.log("Timeline.vue this.nodes: ", this.nodes)
+            this.currNode = this.nodes[0]
+        },
+        mounted(){
+            //set the first timeline node class to complete
+            const firstNode = document.querySelector(".timeline-node")
+            firstNode.classList.toggle('complete')
+        },
         methods: {
             stepBack(){
                 if(this.index > 0){
@@ -81,20 +47,166 @@
                     const lastComplete = completes[completes.length-1]
                     lastComplete.classList.toggle('complete');
                     this.index--
-                    console.log('this.index stepBack: ', this.index)
+                    //console.log('this.index stepBack: ', this.index)
+
+                    //set the currNode 
+                    this.currNode = this.nodes[this.index]
                 }
             },
             stepForward(){
-                console.log('Step Forward clicked')
-                const allLi = document.querySelectorAll(".li")
-                console.log("allLi: ", allLi)
-                if(this.index < allLi.length - 1){
+                //console.log('Step Forward clicked')
+                const allNodes = document.querySelectorAll(".timeline-node")
+
+                //only allow stepForward to execute if the index is less than the total length
+                if(this.index < allNodes.length - 1){
+                    //increment the index
                     this.index++
-                    console.log('this.index stepForward: ', this.index)
-                    const lastLi = allLi[this.index]
-                    lastLi.classList.toggle('complete')
+                    //console.log('this.index stepForward: ', this.index)
+                    
+                    //initialize lastLi to the allLi at the key of this.index
+                    const lastNode = allNodes[this.index]
+                    //toggle 'complete' from the class
+                    lastNode.classList.toggle('complete')
+
+                    //set the currNode
+                    this.currNode = this.nodes[this.index]
                 }
-            }
+            },
+            fetchNodes(){
+
+                const nodeData = [
+                    {
+                        0: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551668,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "j"
+                            }
+                        }
+                    },
+                    {
+                        1: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551763,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "jo"
+                            }
+                        }
+                    },
+                    {
+                        2: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748551897,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": [],
+                                "myStr": "jon"
+                            }
+                        }
+                    },
+                    {
+                        3: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": ""
+                            }
+                        }
+                    },
+                    {
+                        4: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "1"
+                            }
+                        }
+                    },
+                    {
+                        5: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "2"
+                            }
+                        }
+                    },
+                    {
+                        6: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon"],
+                                "myStr": "3"
+                            }
+                        }
+                    },
+                    {
+                        7: {
+                            "actions":{},
+                            "editable": true,
+                            "getters": {},
+                            "key": "store",
+                            "state": ["myStr","elements"],
+                            "timestamp": 1662748552723,
+                            "type": "Store: store",
+                            "value": {
+                                "elements": ["jon", "123"],
+                                "myStr": ""
+                            }
+                        }
+                    }
+                ]
+
+                //Get data from chrome local storage
+                // chrome.storage.local.get(null, (result) => {
+                //     if(result){
+                //         const data = JSON.stringify(result)
+                //         console.log("Timeline.vue chrome data: ", data)
+                //     }
+                // })
+
+                return nodeData
+            },
         }
     }
 </script>
@@ -102,16 +214,23 @@
 <style scoped>
     .timeline-container{
         display:flex;
-        flex-direction:column;
+        flex-direction:row;
         justify-content:space-between;
-        align-items:center;
+        align-items:flex-start;
         gap:1rem;
+    }
+
+    .vertical-left{
+        display:flex;
+        justify-content:flex-start;
+        align-items:flex-start;
     }
 
     .btn-container{
         display:flex;
-        justify-content:space-evenly;
+        flex-direction: column;
+        justify-content:center;
         align-items:center;
-        gap:2rem;
+        gap:1rem;
     }
 </style>

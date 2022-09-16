@@ -4,6 +4,8 @@ $background-color: rgb(13,16,21);
 $nav-icon:white;
 $nav-hover:rgb(48,61,78);
 $nav-click:rgb(71, 91, 118);
+$store-color:rgb(199, 165, 243);
+$pinia-color:rgb(250,217,111);
 
 //****************** Below is App.vue styling ***************
 
@@ -12,6 +14,10 @@ $nav-click:rgb(71, 91, 118);
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+    html{
+      width:100vw;
+      height:100vh;
     }
     body {
       font-family: 'Poppins', sans-serif;
@@ -79,7 +85,15 @@ $nav-click:rgb(71, 91, 118);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:2rem;
+    border-bottom: 3px double rgb(71, 91, 118);
+    width:100vw;
+    padding: 0rem 0.5rem;
+}
+
+.navbar-icons{
+  display:flex;
+  justify-content:space-evenly;
+  align-items:center;
 }
 
 .nav-icon{
@@ -87,7 +101,6 @@ $nav-click:rgb(71, 91, 118);
     height:48px;
     color:$nav-icon;
     transition:0.2s;
-   
     border-radius:8px;
     display:flex;
     justify-content:center;
@@ -103,140 +116,194 @@ $nav-click:rgb(71, 91, 118);
 }
 //****************** Above is Navbar.vue styling ***************
 
-//****************** Below is HorzTimeline.vue styling ***************
+// //****************** Below is HorzTimeline.vue styling ***************
 
-    .timeline {
-        list-style-type: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .li{
-        display:flex;
-        flex-direction:column;
-        justify-content:space-evenly;
-        gap:16px;
-        transition: all 200ms ease-in;
-    }
+//     .timeline {
+//         list-style-type: none;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//     }
+//     .li{
+//         display:flex;
+//         flex-direction:column;
+//         justify-content:space-evenly;
+//         gap:16px;
+//         transition: all 200ms ease-in;
+//     }
 
-    .timestamp{
-        margin-bottom: 20px;
-        padding: 0px 40px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        font-weight: 100;
-    }
-    .status{
-        padding: 0px 40px;
-        display: flex;
-        justify-content: center;
-        border-top: 2px solid #D6DCE0;
-        position: relative;
-        transition: all 200ms ease-in;
-        h4{
-            font-weight:600;
-            padding-top:16px;
-        }
-        &:before{
-            content: '';
-            width: 25px;
-            height: 25px;
-            background-color: white;
-            border-radius: 25px;
-            border: 1px solid #ddd;
-            position: absolute;
-            top: -15px;
-            left: 42%;
-            transition: all 200ms ease-in;
-        }
-    }
+//     .timestamp{
+//         margin-bottom: 20px;
+//         padding: 0px 40px;
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
+//         font-weight: 100;
+//     }
+//     .status{
+//         padding: 0px 40px;
+//         display: flex;
+//         justify-content: center;
+//         align-items:center;
+//         border-top: 2px solid #D6DCE0;
+//         position: relative;
+//         transition: all 200ms ease-in;
+//         h4{
+//             font-weight:600;
+//             padding-top:16px;
+//         }
+//         &:before{
+//             content: '';
+//             width: 25px;
+//             height: 25px;
+//             background-color: white;
+//             border-radius: 25px;
+//             border: 1px solid #ddd;
+//             position: absolute;
+//             top: -15px;
+//             left: 42%;
+//             transition: all 200ms ease-in;
+//         }
+//     }
 
-    .li.complete{
-        .status{
-            border-top: 2px solid $primary-color;
-            &:before{
-                background-color: $primary-color;
-                border: none;
-                transition: all 200ms ease-in ;
-            }
-        }
-         h4 {
-            padding-top:16px;
-            color: $primary-color;
-        }
-    }
+//     .li.complete{
+//         .status{
+//             border-top: 2px solid $primary-color;
+//             &:before{
+//                 background-color: $primary-color;
+//                 border: none;
+//                 transition: all 200ms ease-in ;
+//             }
+//         }
+//          h4 {
+//             padding-top:16px;
+//             color: $primary-color;
+//         }
+//     }
 
-//****************** Above is HorzTimeline.vue styling ***************
+// //****************** Above is HorzTimeline.vue styling ***************
 
-//****************** Below is Swiper styling ***************
-.timeline-swiper {
-    margin: 50px 0;
-    list-style-type: none;
-    display: flex;
-    padding: 0;
-    text-align: center;
-  }
-  .timeline-swiper > li {
-    transition: all 200ms ease-in;
-  }
-  .timestamp-swiper {
-    width: 200px;
-    margin-bottom: 20px;
-    padding: 0px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: 100; 
-  }
+//****************** Below is VertTimeline.vue styling (MAKE SURE TO ONLY HAVE HORZ OR VERT***************
 
-.status-swiper {
-    padding: 0px 40px;
-    display: flex;
-    justify-content: center;
-    border-top: 4px solid #3e70ff;
-    position: relative;
-    transition: all 200ms ease-in ;
-  }
-    
-  .status-swiper > span {
-    font-weight: 600;
-    padding-top: 20px;
-  }
-  .status-swiper > span:before {
-    content: '';
-    width: 25px;
-    height: 25px;
-    background-color: #e8eeff;
-    border-radius: 25px;
-    border: 4px solid #3e70ff;
-    position: absolute;
-    top: -15px;
-    left: 42%;
-    transition: all 200ms ease-in;
-  }
+.timeline {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.swiper-control {
-    text-align: right;
-  }
-  
-  .swiper-container {
-    width: 100%;
-    height: 250px;
-    margin: 50px 0;
-    overflow: hidden;
-    padding: 0 20px 30px 20px;
-  }
-  .swiper-slide {
-    width: 200px;
-    text-align: center;
-    font-size: 18px;
-  }
-  .swiper-slide:nth-child(2n) {
-    width: 40%;
-  }
-  .swiper-slide:nth-child(3n) {
-    width: 20%;
-  }   
+.vert-timeline{
+  height:100vw;
+}
 
-//****************** Above is Swiper styling ***************
+.node{
+  display:flex;
+  flex-direction:column;
+}
+
+.timeline-node{
+  display:flex;
+  // flex-direction:column;
+  justify-content:space-evenly;
+  transition: all 200ms ease-in;
+  height:100%;
+  border-radius:0.25rem;
+}
+
+.timeline-node:hover{
+  background-color:$nav-hover;
+}
+
+.timeline-node:focus, .li:active{
+  background-color:$nav-click;
+  cursor:pointer;
+}
+
+.timestamp{
+  padding: 0px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  font-weight: 100;
+}
+.status{
+  padding: 0px 20px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  border-right: 2px solid #D6DCE0;
+  position: relative;
+  transition: all 200ms ease-in;
+  h4{
+      font-weight:600;
+      // padding-top:16px;
+  }
+  &:before{
+      content: '';
+      width: 25px;
+      height: 25px;
+      background-color: white;
+      border-radius: 25px;
+      border: 1px solid #ddd;
+      position: absolute;
+      top: 40%;
+      right: -15px;
+      transition: all 200ms ease-in;
+  }
+}
+
+.timeline-node.complete{
+  .status{
+      border-right: 2px solid $primary-color;
+      color: $store-color;
+      &:before{
+          background-color: $primary-color;
+          border: none;
+          transition: all 200ms ease-in ;
+      }
+  }
+   h4 {
+      color: $primary-color;
+  }
+}
+
+//****************** Above is VertTimeline.vue styling ***************
+
+//****************** Below is Animations ***************
+
+.slide-right-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-right-leave-active {
+  opacity:0;
+}
+
+.slide-right-enter-from, .slide-right-leave-to {
+  transform: translateX(-200px);
+  opacity: 0;
+}
+
+.slide-left-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.slide-left-leave-active {
+  opacity:0;
+}
+
+.slide-left-enter-from, .slide-left-leave-to {
+  transform: translateX(200px);
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+//****************** Above is Animations ***************

@@ -1,10 +1,10 @@
-// not in use, just saved as an example
+// not in use, just left in as an example
 //
-// window.addEventListener("click", async () => {
+// chrome.runtime.onMessage.addListener( async () => {
 //   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-//
+
 //   chrome.scripting.executeScript({
 //     target: { tabId: tab.id },
-//     func: () => {},
-// });
-// });
+//     func: () => {}
+//   });
+// })
