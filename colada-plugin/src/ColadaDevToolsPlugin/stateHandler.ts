@@ -60,11 +60,7 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 const setAppState = (snapshot: any) => {
   console.log('updating store state...')
   const stores: any = Object.values(snapshot)[0]
-  for (const key in stores){
-    console.log(window.store[key].$state)
-    console.log(stores[key]) 
-    window.store[key].$state = stores[key].value
-  }
+  for (const key in stores){ window.store[key].$state = stores[key].value }
 }
 
 // create getter to access a specified snapshot from storeHistory for time travelling
