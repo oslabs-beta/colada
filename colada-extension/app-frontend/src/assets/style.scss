@@ -117,18 +117,42 @@ $pinia-color:rgb(250,217,111);
 //****************** Above is Navbar.vue styling ***************
 
 //****************** Below is VertTimeline.vue styling ***************
+.timeline-container{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+  width: 100%;
+}
+
+.vertical-left{
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  width:100%;
+  height:100%;
+}
+
+#reset-btn{
+  background-color: rgb(13,16,21);
+  color:rgb(96, 202, 140);
+}
+.vert-timeline{
+  height:100%;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
 
 .timeline {
   list-style-type: none;
   display: flex;
   flex-direction:column;
   align-items: flex-start;
-  justify-content: space-evenly;
-  gap:0.25rem;
-}
-
-.vert-timeline{
-  height:100vw;
+  justify-content: flex-start;
 }
 
 .timeline-nodes{
@@ -137,7 +161,21 @@ $pinia-color:rgb(250,217,111);
   flex-direction:column;
   align-items:flex-start;
   justify-content:space-evenly;
-  gap:0.25rem;
+  border-left: 2px solid #D6DCE0;
+  position:relative;
+  transition: all 200ms ease-in;
+  &:before{
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 25%;
+    left: -6px;
+    transition: all 200ms ease-in;
+  }
 }
 
 .node{
@@ -149,29 +187,17 @@ $pinia-color:rgb(250,217,111);
   display:flex;
   // flex-direction:column;
   justify-content:space-evenly;
-  transition: all 200ms ease-in;
+  
   height:100%;
-  border-left: 2px solid #D6DCE0;
-  position:relative;
-  &:before{
-    content: '';
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 25px;
-    border: 1px solid #ddd;
-    position: absolute;
-    top: 40%;
-    left: 15px;
-    transition: all 200ms ease-in;
-  }
+  
+  
 }
 
-.timeline-node:hover{
+.timeline-nodes:hover{
   background-color:$nav-hover;
 }
 
-.timeline-node:focus, .li:active{
+.timeline-nodes:focus, .li:active{
   background-color:$nav-click;
   cursor:pointer;
 }
@@ -210,13 +236,13 @@ $pinia-color:rgb(250,217,111);
   // }
 }
 
-.timeline-node.complete{
+.timeline-nodes.complete{
       border-left: 2px solid $primary-color;
       color: $store-color;
       &:before{
           background-color: $primary-color;
-          border: none;
           transition: all 200ms ease-in ;
+          border: 1px solid $primary-color;
       }
   .status{
       // border-left: 2px solid $primary-color;

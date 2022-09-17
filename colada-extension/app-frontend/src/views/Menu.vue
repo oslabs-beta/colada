@@ -4,7 +4,11 @@
             <h2 class="link" id="https://github.com/oslabs-beta/colada">Github</h2>
             <h2 class="link" id="https://colada.dev">Website</h2>
         </div>
-        
+        <div>
+            <p class="description-text">
+                Colada is a developer tool designed to augment the current Vue Devtools and the Pinia State Management Library. 
+            </p>
+        </div>
         <h3><strong>Contributors</strong></h3>
         <ul class="contributors">
             <li>Dan Steinbrook<img id="https://github.com/dsteinbrook" class="icon link" src="https://img.icons8.com/glyph-neue/344/github.png" alt="github-logo"/></li>
@@ -62,6 +66,10 @@
 
     h2:hover{
         color:white;
+    }
+
+    .description-text{
+        text-align:center;
     }
 
     h3{

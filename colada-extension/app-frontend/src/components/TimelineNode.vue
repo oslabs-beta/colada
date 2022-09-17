@@ -17,7 +17,7 @@
     export default {
         name: "TimelineNode",
         props:{
-            startTime: String,
+            startTime: Number,
             node: Object,
         },
         components:{

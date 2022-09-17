@@ -5,10 +5,10 @@
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
-                <button @click="resetTimeline" class="btn">X</button>
+                <button @click="resetTimeline" id="reset-btn" class="btn">X</button>
             </div>
         </div>
-        <CurrentNode :key="currNodeKey" :node="currNode"/>
+        <CurrentNode :startTime="startTime" :key="currNodeKey" :node="currNode"/>
     </div>
 </template>
 
@@ -77,15 +77,20 @@
             
             setTimeout(() => {
                 this.nodes = placeHolder; 
-            },200);
+            },100);
 
-            setTimeout(() => {this.currNode = this.nodes[0];
-                //set the first timeline node class to complete
-                const firstNode = document.querySelector(".timeline-node")
-                if(firstNode){
-                    firstNode.classList.toggle('complete')
-                }
-            },500);
+            setTimeout(() => {
+                //set the index to the last node
+                this.index = this.nodes.length - 1
+
+                //set the currNode to the last index
+                this.currNode = this.nodes[this.index];
+                // const firstNode = document.querySelector(".timeline-nodes")
+                // if(firstNode){
+                //     firstNode.classList.toggle('complete')
+                // }
+                this.forceRerender()
+            },150);
 
             //add listener for chrome storage on change
             this.addListener()
@@ -104,11 +109,12 @@
 
                     //set the currNode 
                     this.currNode = this.nodes[this.index]
+                    
                 }
             },
             stepForward(){
                 //console.log('Step Forward clicked')
-                const allNodes = document.querySelectorAll(".timeline-node")
+                const allNodes = document.querySelectorAll(".timeline-nodes")
 
                 //only allow stepForward to execute if the index is less than the total length
                 if(this.index < allNodes.length - 1){
@@ -122,6 +128,7 @@
 
                     //set the currNode
                     this.currNode = this.nodes[this.index]
+                    
                 }
             },
             fetchNodes(){
@@ -146,7 +153,7 @@
                 chrome.storage.onChanged.addListener(async () => {
                     //console.log('chrome storage changed')
                     let data = await this.fetchNodes()
-                    setTimeout(() => {this.nodes = data; },200);
+                    setTimeout(() => {this.nodes = data; },100);
                     //console.log('chrome store changed this.nodes: ', this.nodes)
                     this.forceRerender()
                 })
@@ -164,20 +171,6 @@
 </script>
 
 <style scoped>
-    .timeline-container{
-        display:flex;
-        flex-direction:row;
-        justify-content:space-between;
-        align-items:flex-start;
-        gap:1rem;
-    }
-
-    .vertical-left{
-        display:flex;
-        justify-content:flex-start;
-        align-items:flex-start;
-    }
-
     .btn-container{
         display:flex;
         flex-direction: column;
