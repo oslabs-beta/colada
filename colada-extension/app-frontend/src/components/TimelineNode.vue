@@ -1,15 +1,12 @@
 <template>
     <div class="timeline-node">
         <div class="status">
-            <!-- <span class="type">{{node.key}}</span>  -->
-            <!-- <span class="type">{{data}}</span>  -->
             <div v-for="store in data">
                 <StoreNode :store="store"></StoreNode>
             </div>
-        </div>
-        <div class="timestamp">
-            <!-- <h4>{{node.timestamp}}</h4> -->
-            <!-- <h4>{{node.timestamp}}</h4> -->
+            <div class="timestamp">
+                <h4>{{timestamp}}</h4>
+            </div>
         </div>
     </div>
 </template>
@@ -20,7 +17,7 @@
     export default {
         name: "TimelineNode",
         props:{
-            id: String,
+            startTime: String,
             node: Object,
         },
         components:{
@@ -34,10 +31,23 @@
         },
         updated(){
             this.data = this.node[Object.keys(this.node)[0]]
+            console.log([Object.keys(this.node)[0]][0])
+            this.timestamp = this.convertTime(parseInt([Object.keys(this.node)[0]][0]))
+            console.log("TimelineNode.vue this.timestamp: ", this.timestamp)
             //console.log("TimelineNode.vue this.data", this.data)
         },
         methods: {
-
+            convertTime(timestamp){
+                const date = new Date(timestamp)
+                console.log('date: ', date)
+                const startTime = this.startTime
+                console.log('this.startTime: ', this.startTime)
+                //calculate the difference and divide by 1000 to convert from ms to seconds
+                const difference = (date - this.startTime) / 1000
+                const formattedTime = `+${difference}s`
+                console.log("formattedTime: ", formattedTime)
+                return formattedTime
+            }
         }
     }
 

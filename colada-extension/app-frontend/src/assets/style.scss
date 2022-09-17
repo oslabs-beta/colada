@@ -116,74 +116,7 @@ $pinia-color:rgb(250,217,111);
 }
 //****************** Above is Navbar.vue styling ***************
 
-// //****************** Below is HorzTimeline.vue styling ***************
-
-//     .timeline {
-//         list-style-type: none;
-//         display: flex;
-//         align-items: center;
-//         justify-content: center;
-//     }
-//     .li{
-//         display:flex;
-//         flex-direction:column;
-//         justify-content:space-evenly;
-//         gap:16px;
-//         transition: all 200ms ease-in;
-//     }
-
-//     .timestamp{
-//         margin-bottom: 20px;
-//         padding: 0px 40px;
-//         display: flex;
-//         flex-direction: column;
-//         align-items: center;
-//         font-weight: 100;
-//     }
-//     .status{
-//         padding: 0px 40px;
-//         display: flex;
-//         justify-content: center;
-//         align-items:center;
-//         border-top: 2px solid #D6DCE0;
-//         position: relative;
-//         transition: all 200ms ease-in;
-//         h4{
-//             font-weight:600;
-//             padding-top:16px;
-//         }
-//         &:before{
-//             content: '';
-//             width: 25px;
-//             height: 25px;
-//             background-color: white;
-//             border-radius: 25px;
-//             border: 1px solid #ddd;
-//             position: absolute;
-//             top: -15px;
-//             left: 42%;
-//             transition: all 200ms ease-in;
-//         }
-//     }
-
-//     .li.complete{
-//         .status{
-//             border-top: 2px solid $primary-color;
-//             &:before{
-//                 background-color: $primary-color;
-//                 border: none;
-//                 transition: all 200ms ease-in ;
-//             }
-//         }
-//          h4 {
-//             padding-top:16px;
-//             color: $primary-color;
-//         }
-//     }
-
-// //****************** Above is HorzTimeline.vue styling ***************
-
-//****************** Below is VertTimeline.vue styling (MAKE SURE TO ONLY HAVE HORZ OR VERT***************
+//****************** Below is VertTimeline.vue styling ***************
 
 .timeline {
   list-style-type: none;
@@ -200,6 +133,7 @@ $pinia-color:rgb(250,217,111);
 
 .timeline-nodes{
   display:flex;
+  width:100%;
   flex-direction:column;
   align-items:flex-start;
   justify-content:space-evenly;
@@ -217,7 +151,20 @@ $pinia-color:rgb(250,217,111);
   justify-content:space-evenly;
   transition: all 200ms ease-in;
   height:100%;
-  border-radius:0.25rem;
+  border-left: 2px solid #D6DCE0;
+  position:relative;
+  &:before{
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 40%;
+    left: 15px;
+    transition: all 200ms ease-in;
+  }
 }
 
 .timeline-node:hover{
@@ -242,29 +189,28 @@ $pinia-color:rgb(250,217,111);
   display: flex;
   justify-content: center;
   align-items:center;
-  border-left: 2px solid #D6DCE0;
+  // border-left: 2px solid #D6DCE0;
   position: relative;
   transition: all 200ms ease-in;
   h4{
       font-weight:600;
       // padding-top:16px;
   }
-  &:before{
-      content: '';
-      width: 8px;
-      height: 8px;
-      background-color: white;
-      border-radius: 25px;
-      border: 1px solid #ddd;
-      position: absolute;
-      top: 40%;
-      left: -15px;
-      transition: all 200ms ease-in;
-  }
+  // &:before{
+  //     content: '';
+  //     width: 8px;
+  //     height: 8px;
+  //     background-color: white;
+  //     border-radius: 25px;
+  //     border: 1px solid #ddd;
+  //     position: absolute;
+  //     top: 40%;
+  //     left: -15px;
+  //     transition: all 200ms ease-in;
+  // }
 }
 
 .timeline-node.complete{
-  .status{
       border-left: 2px solid $primary-color;
       color: $store-color;
       &:before{
@@ -272,6 +218,14 @@ $pinia-color:rgb(250,217,111);
           border: none;
           transition: all 200ms ease-in ;
       }
+  .status{
+      // border-left: 2px solid $primary-color;
+      // color: $store-color;
+      // &:before{
+      //     background-color: $primary-color;
+      //     border: none;
+      //     transition: all 200ms ease-in ;
+      // }
   }
    h4 {
       color: $primary-color;

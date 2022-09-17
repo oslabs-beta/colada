@@ -1,8 +1,8 @@
 <template>
     <div class="vert-timeline">
          <ul class="timeline" id="timeline">
-            <div class="timeline-node" :key="node.timestamp" v-for="node in nodes" > 
-                    <TimelineNode :node="node" />
+            <div class="timeline-nodes" :key="node.timestamp" v-for="node in nodes" > 
+                    <TimelineNode :startTime="startTime" :node="node" />
             </div>
         </ul>     
     </div>
@@ -14,6 +14,7 @@
     export default {
         name: 'VertTimeline',
         props:{
+            startTime: String,
             nodes: Object
         },
         data() {

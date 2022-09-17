@@ -1,7 +1,7 @@
 <template>
     <div class="timeline-container">
         <div class="vertical-left">
-            <VertTimeline :key="componentKey" :nodes="nodes" />
+            <VertTimeline :startTime="startTime" :key="componentKey" :nodes="nodes" />
             <div class="btn-container">
                 <button @click="stepBack" id="back-btn" class="btn">^</button>
                 <button @click="stepForward" id="forward-btn" class="btn">v</button>
@@ -27,7 +27,8 @@
                 nodes: [],
                 currNode: {},
                 componentKey: 0,
-                currNodeKey: 0
+                currNodeKey: 0,
+                startTime: ""
             }
         },
         components: {
@@ -37,21 +38,8 @@
        
         
         async mounted(){
-            // this.currNode =   {
-            //             "1662748551668": {
-            //                 "actions":{},
-            //                 "editable": true,
-            //                 "getters": {},
-            //                 "key": "store",
-            //                 "state": ["myStr","elements"],
-            //                 "timestamp": 1662748551668,
-            //                 "type": "Store: store",
-            //                 "value": {
-            //                     "elements": [],
-            //                     "myStr": "j"
-            //                 }
-            //             }
-            //         }
+            //get the current time and assign it to startTime to be passed as a prop 
+            this.startTime = Date.now()
 
             //  this.currNode =   {
             //             "1662748551668": {
