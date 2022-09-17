@@ -1,7 +1,7 @@
 <template>
     <div class="current-store-container">
         <div v-for="info in store">
-            <StoreInfo :info="info" />
+            <StoreInfo :startTime="startTime" :info="info" />
         </div>
 
     </div>
@@ -13,6 +13,7 @@
     export default {
         name: "CurrentStore",
         props:{
+            startTime:Number,
             store: Object
         },
         components:{
@@ -21,44 +22,16 @@
         data(){
             return{
                 data:{},
-                timestamp: ""
             }
         },
         updated(){
             this.data = this.store[Object.keys(this.store)[0]]
-            //this.timestamp = this.convertTime(this.data.timestamp)
         },
-        methods: {
-            convertTime (unixTimestamp) {
-                const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US")
-                return date
-            }
-        }
     }
 </script>
 
-<style>
+<style scoped>
     .current-store-container{
-        height:100vh;
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-start;
-        align-items:flex-start;
-        gap:0.5rem;
-        border-left: 3px double rgb(71, 91, 118);
-        padding:1rem;
-        transition: 0.2s;
-    }
-
-    #curr-store{
-        color:rgb(199, 165, 243);
-    }
-
-    #curr-state{
-        color:rgb(250,217,111);
-    }
-
-    #curr-time{
-        color:rgb(96, 202, 140);
+        
     }
 </style>
