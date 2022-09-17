@@ -1,8 +1,8 @@
 <template>
     <div class="vert-timeline">
          <ul class="timeline" id="timeline">
-            <div class="timeline-node" :key="node.timestamp" v-for="node in nodes" > 
-                    <TimelineNode :node="node" />
+            <div class="timeline-nodes" :key="node.timestamp" v-for="node in nodes" > 
+                    <TimelineNode :startTime="startTime" :node="node" />
             </div>
         </ul>     
     </div>
@@ -14,6 +14,7 @@
     export default {
         name: 'VertTimeline',
         props:{
+            startTime: Number,
             nodes: Object
         },
         data() {
@@ -26,20 +27,7 @@
 
         },
         methods: {
-            // sendMsg(message){
 
-            // // chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, {source: "devtoolsPanel", payload: "test"})
-
-            // chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
-
-            // // chrome.devtools.instpectedWindow.eval("sendMessage()",{useContentScriptContext: true});
-
-            // },
-            
-
-
-
-            
         },
 
         updated(){
