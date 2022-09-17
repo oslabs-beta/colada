@@ -42,12 +42,14 @@ export function setupDevtools(app: any) {
         console.log('event is: ', event);
         // parse data from message
         const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
+        console.log('parsed is (IN PLUGIN):', parsed)
 
         // if source is colada extension, set app's state to snapshot that correspodns with payload's timestamp
         if (parsed.source === 'colada-extension') {
     
-          const timestamp = parsed.payload;
+          const timestamp = parseInt(parsed.payload);
           console.log('found colada-extension message!')
+          console.log('timestamp FROM PLUGIN MESSAGE', timestamp)
 
           setAppState(getSnapshotbyTimestamp(timestamp))
         }

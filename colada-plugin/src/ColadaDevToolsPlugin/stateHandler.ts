@@ -47,18 +47,14 @@ const outputCombinedSnapshot = _.debounce(() => {
   }
   // TODO: change the second argument here to current URL?
   window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")
-
-  console.log('storeHistory is...........:', storeHistory)
+  
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10)
 
 const handleStoreChange = (snapshot: any) => {
   
-  console.log(`handleStoreChange running at ${Date.now()}`)
   const snapshotClone = _.cloneDeep(snapshot)
-
-  console.log('snapshot in handleStoreChange.....', snapshot)
 
   // add hasBeenUpdated property to true on snapshotClone
   snapshotClone.hasBeenUpdated = true;
@@ -79,8 +75,6 @@ const handleStoreChange = (snapshot: any) => {
   else {
     combinedSnapshot[Object.keys(combinedSnapshot)[0]][snapshotClone.key] = snapshotClone
   }
-
-  console.log('storeHistory at end of handleStoreChange', storeHistory)
 
   // invoke debounced outputCombinedSnapshot
   outputCombinedSnapshot();
