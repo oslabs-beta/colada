@@ -1,7 +1,10 @@
 <template>
-    <div class="store-node">
+    <div class="timeline-node">
         <div class="status">
             <span class="type">{{store.key}}</span> 
+        </div>
+        <div class="timestamp">
+            <h4>{{timestamp}}</h4>
         </div>
     </div>
 </template>

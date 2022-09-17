@@ -1,5 +1,5 @@
 <template>
-    <div class="individual-store-container">
+    <div class="current-store-container">
         <h5>Store: <span id="curr-store">{{info.key}}</span></h5>
         <p>State: <span id="curr-state">{{info.value}}</span></p>
         <p>Timestamp: <span id="curr-time">{{timestamp}}</span></p>
@@ -10,7 +10,6 @@
     export default {
         name: "CurrentStore",
         props:{
-            startTime:Number,
             info: Object
         },
         data(){
@@ -24,35 +23,25 @@
             this.timestamp = this.convertTime(this.data.timestamp)
         },
         methods: {
-            convertTime(timestamp){
-                const date = new Date(timestamp)
-                console.log('date: ', date)
-                const startTime = this.startTime
-                console.log('this.startTime: ', this.startTime)
-                //calculate the difference and divide by 1000 to convert from ms to seconds
-                const difference = (date - this.startTime) / 1000
-                const formattedTime = `+${difference}s`
-                console.log("formattedTime: ", formattedTime)
-                return formattedTime
+            convertTime (unixTimestamp) {
+                const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US")
+                return date
             }
         }
     }
 </script>
 
 <style>
-    .individual-store-container{
-        height:100%;
+    .current-store-container{
+        height:100vh;
         display:flex;
         flex-direction:column;
         justify-content:flex-start;
         align-items:flex-start;
         gap:0.5rem;
-        border-top: 1px solid rgb(71, 91, 118);
-        /* border-bottom: 1px solid rgb(71, 91, 118); */
+        border-left: 3px double rgb(71, 91, 118);
         padding:1rem;
         transition: 0.2s;
-        overflow-x:wrap;
-        min-width:0;
     }
 
     #curr-store{

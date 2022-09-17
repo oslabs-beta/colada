@@ -18,16 +18,11 @@ function contentScript() {
   };
 
   window.addEventListener("message", saveMessage);
-
   chrome.runtime.onMessage.addListener((message) => {
     console.log("DEVTOOL message payload",message.payload);
     console.log("DEVTOOL message", JSON.stringify(message));
     window.postMessage(JSON.stringify(message), window.location.href) 
   })
-
-  // chrome.devtools.network.onNavigated.addListener(() => {
-  //   console.log('Inspected page reloaded');
-  // });
 }
 
 // function sendMessage() {
