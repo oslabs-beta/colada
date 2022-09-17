@@ -1,12 +1,12 @@
-import { setupDevtools } from './ColadaDevToolsPlugin/index'
-import { PiniaColadaPlugin } from './PiniaColadaPlugin/index'
+import { setupDevtools } from './ColadaDevToolsPlugin/index';
+import { PiniaColadaPlugin } from './PiniaColadaPlugin/index';
 
 export default {
-  install (app: any, options = {}) {
-    setupDevtools(app)
+  install(app: any) {
+    setupDevtools(app);
   }
-}
+};
 
-export { PiniaColadaPlugin }
+export { PiniaColadaPlugin };
 
 

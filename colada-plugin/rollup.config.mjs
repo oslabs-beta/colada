@@ -1,41 +1,41 @@
-import vuePlugin from 'rollup-plugin-vue'
-import replace from '@rollup/plugin-replace'
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import pascalcase from 'pascalcase'
-import pkg from './package.json' assert {type:'json'}
-import {terser} from 'rollup-plugin-terser'
-import ts from 'rollup-plugin-typescript2'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
+import vuePlugin from 'rollup-plugin-vue';
+import replace from '@rollup/plugin-replace';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import pascalcase from 'pascalcase';
+import pkg from './package.json' assert {type:'json'};
+import {terser} from 'rollup-plugin-terser';
+import ts from 'rollup-plugin-typescript2';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //const pkg = require('./package.json')
-const name = pkg.name
+const name = pkg.name;
 
 function getAuthors (pkg) {
-  const { contributors, author } = pkg
+  const { contributors, author } = pkg;
 
-  const authors = new Set()
+  const authors = new Set();
   if (contributors && contributors) {
     contributors.forEach((contributor) => {
-      authors.add(contributor.name)
-    })
+      authors.add(contributor.name);
+    });
   }
-  if (author) authors.add(author.name)
+  if (author) authors.add(author.name);
 
-  return Array.from(authors).join(', ')
+  return Array.from(authors).join(', ');
 }
 
 const banner = `/*!
   * ${pkg.name} v${pkg.version}
   * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
   * @license MIT
-  */`
+  */`;
 
 // ensure TS checks only once for each build
-let hasTSChecked = false
+let hasTSChecked = false;
 
 const outputConfigs = {
   // each file name has the format: `dist/${name}.${format}.js`
@@ -56,47 +56,47 @@ const outputConfigs = {
     file: pkg.module.replace('bundler', 'browser'),
     format: 'es'
   }
-}
+};
 
-const allFormats = Object.keys(outputConfigs)
-const packageFormats = allFormats
+const allFormats = Object.keys(outputConfigs);
+const packageFormats = allFormats;
 const packageConfigs = packageFormats.map((format) =>
   createConfig(format, outputConfigs[format])
-)
+);
 
 // only add the production ready if we are bundling the options
 packageFormats.forEach((format) => {
   if (format === 'cjs') {
-    packageConfigs.push(createProductionConfig(format))
+    packageConfigs.push(createProductionConfig(format));
   } else if (format === 'global') {
-    packageConfigs.push(createMinifiedConfig(format))
+    packageConfigs.push(createMinifiedConfig(format));
   }
-})
+});
 
-export default packageConfigs
+export default packageConfigs;
 
 function createConfig (format, output, plugins = []) {
   if (!output) {
-    console.log(`invalid format: "${format}"`)
-    process.exit(1)
+    console.log(`invalid format: "${format}"`);
+    process.exit(1);
   }
 
-  output.sourcemap = !!process.env.SOURCE_MAP
-  output.banner = banner
-  output.externalLiveBindings = false
-  output.globals = { vue: 'Vue', '@vue/composition-api': 'vueCompositionApi' }
+  output.sourcemap = !!process.env.SOURCE_MAP;
+  output.banner = banner;
+  output.externalLiveBindings = false;
+  output.globals = { vue: 'Vue', '@vue/composition-api': 'vueCompositionApi' };
 
-  const isProductionBuild = /\.prod\.js$/.test(output.file)
-  const isGlobalBuild = format === 'global'
-  const isRawESMBuild = format === 'esm'
-  const isNodeBuild = format === 'cjs'
-  const isBundlerESMBuild = /esm-bundler/.test(format)
+  const isProductionBuild = /\.prod\.js$/.test(output.file);
+  const isGlobalBuild = format === 'global';
+  const isRawESMBuild = format === 'esm';
+  const isNodeBuild = format === 'cjs';
+  const isBundlerESMBuild = /esm-bundler/.test(format);
 
-  if (isGlobalBuild) output.name = pascalcase(pkg.name)
+  if (isGlobalBuild) output.name = pascalcase(pkg.name);
 
 
   // **************
-  const shouldEmitDeclarations = !hasTSChecked
+  const shouldEmitDeclarations = !hasTSChecked;
 
   const tsPlugin = ts({
     check: !hasTSChecked,
@@ -110,18 +110,18 @@ function createConfig (format, output, plugins = []) {
       },
       exclude: ['__tests__', 'test-dts'],
     },
-  })
+  });
   // we only need to check TS and generate declarations once for each build.
   // it also seems to run into weird issues when checking multiple times
   // during a single build.
-  hasTSChecked = true
+  hasTSChecked = true;
 
-  const external = ['vue', '@vue/composition-api']
+  const external = ['vue', '@vue/composition-api'];
   if (!isGlobalBuild) {
-    external.push('@vue/devtools-api')
+    external.push('@vue/devtools-api');
   }
 
-  const nodePlugins = [resolve(), commonjs()]
+  const nodePlugins = [resolve(), commonjs()];
 
   return {
     input: 'src/index.ts',
@@ -140,7 +140,7 @@ function createConfig (format, output, plugins = []) {
       ...plugins
     ],
     output
-  }
+  };
 }
 
 function createReplacePlugin (
@@ -156,25 +156,25 @@ function createReplacePlugin (
     __VUE_PROD_DEVTOOLS__: isBundlerESMBuild
       ? '__VUE_PROD_DEVTOOLS__'
       : 'false'
-  }
+  };
   // allow inline overrides like
   // __RUNTIME_COMPILE__=true yarn build
   Object.keys(replacements).forEach((key) => {
     if (key in process.env) {
-      replacements[key] = process.env[key]
+      replacements[key] = process.env[key];
     }
-  })
+  });
   return replace({
     preventAssignment: true,
     values: replacements
-  })
+  });
 }
 
 function createProductionConfig (format) {
   return createConfig(format, {
     file: `dist/${name}.${format}.prod.js`,
     format: outputConfigs[format].format
-  })
+  });
 }
 
 function createMinifiedConfig (format) {
@@ -195,5 +195,5 @@ function createMinifiedConfig (format) {
         }
       })
     ]
-  )
+  );
 }
