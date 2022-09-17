@@ -5,19 +5,16 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'plugin:vue/vue3-essential',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:vue/vue3-essential'
   ],
   'overrides': [
   ],
-  'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaVersion': 'latest',
     'sourceType': 'module'
   },
   'plugins': [
-    'vue',
-    '@typescript-eslint'
+    'vue'
   ],
   'rules': {
     'indent': [
