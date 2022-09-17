@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="timestamp">
-            <button class = "btn" :id = "timestamp" @click = "handleClick">{{formattedTime}}</button>
+            <button class = "timestamp-btn" :id = "timestamp" @click = "handleClick">{{formattedTime}}</button>
         </div>
     </div>
 </template>
@@ -27,11 +27,12 @@
             handleClick(event) {
                 // const timestamp = "1662748551668"
                 const tmstmp = event.target.id;
-                // console.log("timestamp",timestamp);
+                //console.log("timestamp",timestamp);
                 const messageObj = {
                     source: 'colada-extension',
                     payload: tmstmp
                 }
+                console.log('TimelineNode.vue messageObj: ', messageObj)
                 this.sendMsg(messageObj);
 
             },
@@ -45,7 +46,7 @@
                 const startTime = this.startTime
                 console.log('this.startTime: ', this.startTime)
                 //calculate the difference and divide by 1000 to convert from ms to seconds
-                const difference = (date - this.startTime) / 1000
+                const difference = ((date - this.startTime) / 1000).toFixed(3)
                 const formattedTime = `+${difference}s`
                 console.log("formattedTime: ", formattedTime)
                 return formattedTime

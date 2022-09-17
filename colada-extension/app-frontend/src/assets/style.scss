@@ -79,6 +79,38 @@ $pinia-color:rgb(250,217,111);
       display: block;
       width: 100%;
     }
+
+    .timestamp-btn {
+      display: inline-block;
+      background: $primary-color;
+      color: $background-color;
+      border: none;
+      padding: 3px 6px;
+      margin: 3px;
+      border-radius: 3px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+      font-family: inherit;
+      transition:0.25s;
+      border:1px solid $primary-color;
+    }
+
+    .timestamp-btn:hover{
+        background-color:$background-color;
+        color: $primary-color;
+    }
+
+    .timestamp-btn:focus {
+      outline: none;
+    }
+    .timestamp-btn:active {
+      transform: scale(0.9);
+    }
+    .timestamp-btn-block {
+      display: block;
+      width: 100%;
+    }
 //****************** Above is Button styling ***************
 
 //****************** Below is Navbar.vue styling ***************
