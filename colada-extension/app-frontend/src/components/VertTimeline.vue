@@ -40,12 +40,14 @@
         updated(){
             //console.log('VertTimeline this.nodes: ', this.nodes)
 
-            const timelineNodes = document.getElementsByClassName('timeline-node')
+            const timelineNodes = document.getElementsByClassName('timeline-nodes')
             //console.log('VertTimeline.vue timelineNodes: ', timelineNodes)
             for(let i = 0; i < timelineNodes.length; i++){
                 timelineNodes[i].addEventListener("click", (e) => {
                     //console.log('clicked on li, e.target.parentNode: ', e.target.parentNode)
                     //post a message timestamp string ("1662748551668")
+                    e.preventDefault()
+                    //e.stopPropagation()
                     const timestamp = "1662748551668"
                     const messageObj = {
                     source: 'colada-extension',
@@ -56,6 +58,9 @@
                     // window.postMessage(JSON.stringify(messageObj), window.location.href) 
                     // console.log('window.location.href: ', window.location.href)
                     // chrome.devtools.instpectedWindow.eval("sendMessage()",{useContentScriptContext: true});
+                    console.log('e.target.index: ', e.target.index)
+                    console.log('e.target.id: ', e.target.id)
+                    
                 })
             }
         }

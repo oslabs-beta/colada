@@ -29,3 +29,9 @@
         },
     }
 </script>
+
+<style scoped>
+    .current-store-container{
+        
+    }
+</style>

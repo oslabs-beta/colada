@@ -4,6 +4,7 @@ $background-color: rgb(13,16,21);
 $nav-icon:white;
 $nav-hover:rgb(48,61,78);
 $nav-click:rgb(71, 91, 118);
+$border-color:rgb(71, 91, 118);
 $store-color:rgb(199, 165, 243);
 $pinia-color:rgb(250,217,111);
 
@@ -85,7 +86,7 @@ $pinia-color:rgb(250,217,111);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border-bottom: 3px double rgb(71, 91, 118);
+    border-bottom: 3px double $border-color;
     width:100vw;
     padding: 0rem 0.5rem;
 }
@@ -139,8 +140,8 @@ $pinia-color:rgb(250,217,111);
 }
 
 #reset-btn{
-  background-color: rgb(13,16,21);
-  color:rgb(96, 202, 140);
+  background-color: $background-color;
+  color: $primary-color;
 }
 .vert-timeline{
   height:90%;
@@ -151,8 +152,7 @@ $pinia-color:rgb(250,217,111);
   align-items:center;
   overflow-x: hidden;
   overflow-y: auto;
-  border-top: 1px solid rgb(71, 91, 118);
-  border-bottom: 1px solid rgb(71, 91, 118);
+
 }
 
 .timeline {
@@ -170,8 +170,10 @@ $pinia-color:rgb(250,217,111);
   align-items:flex-start;
   justify-content:space-evenly;
   border-left: 2px solid #D6DCE0;
+  border-top: 1px solid $border-color;
   position:relative;
   transition: all 200ms ease-in;
+  z-index:1;
   &:before{
     content: '';
     width: 8px;
@@ -186,6 +188,19 @@ $pinia-color:rgb(250,217,111);
   }
 }
 
+.timeline-nodes:hover{
+  background-color:$nav-hover;
+  cursor:pointer;
+}
+
+.timeline-nodes:focus, .timeline-nodes:active{
+  background-color:$nav-click;
+}
+
+.timeline-nodes.clicked{
+  background-color:$nav-click;
+}
+
 .node{
   display:flex;
   flex-direction:column;
@@ -195,15 +210,6 @@ $pinia-color:rgb(250,217,111);
   display:flex;
   justify-content:space-evenly;
   height:100%;
-}
-
-.timeline-nodes:hover{
-  background-color:$nav-hover;
-}
-
-.timeline-nodes:focus, .li:active{
-  background-color:$nav-click;
-  cursor:pointer;
 }
 
 .timestamp{

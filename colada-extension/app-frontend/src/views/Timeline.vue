@@ -28,7 +28,7 @@
                 currNode: {},
                 componentKey: 0,
                 currNodeKey: 0,
-                startTime: ""
+                startTime: 0
             }
         },
         components: {
@@ -38,6 +38,9 @@
        
         
         async mounted(){
+            //clears chrome local storage
+            this.resetTimeline()
+
             //get the current time and assign it to startTime to be passed as a prop 
             this.startTime = Date.now()
 
@@ -73,10 +76,10 @@
             //     }
 
             // console.log('entered mounted');
-            let placeHolder = await this.fetchNodes()
+            const nodeData = await this.fetchNodes()
             
             setTimeout(() => {
-                this.nodes = placeHolder; 
+                this.nodes = nodeData; 
             },100);
 
             setTimeout(() => {
@@ -161,7 +164,6 @@
             forceRerender(){
                 this.componentKey += 1
                 this.currNodeKey += 1
-                //console.log('forceRerender this.componentKey: ', this.componentKey)
             },
             resetTimeline(){
                 chrome.storage.local.clear()

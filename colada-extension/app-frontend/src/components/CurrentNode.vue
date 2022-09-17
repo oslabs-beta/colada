@@ -35,7 +35,7 @@
 <style scoped>
     .vertical-right{
         height:100%;
-        width:40%;
+        width:50%;
         display:flex;
         flex-direction:column;
         justify-content:flex-start;
@@ -46,7 +46,7 @@
         transition: 0.2s;
         border-bottom: 3px double rgb(71, 91, 118);
         flex-grow: 1;
-        overflow:scroll;
+        overflow-y:scroll;
     }
 
     h3{

@@ -51,6 +51,8 @@
         /* border-bottom: 1px solid rgb(71, 91, 118); */
         padding:1rem;
         transition: 0.2s;
+        overflow-x:wrap;
+        min-width:0;
     }
 
     #curr-store{
