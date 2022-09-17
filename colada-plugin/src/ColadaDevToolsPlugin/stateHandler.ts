@@ -105,6 +105,7 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 };
 
 const setAppState = (snapshot: any) => {
+  unsubscribe();
   console.log('running setAppState...');
   console.log('snapshot in setAppState:', snapshot);
   const stores: any = Object.values(snapshot)[0];
@@ -112,6 +113,7 @@ const setAppState = (snapshot: any) => {
     console.log('in for loop in setAppState!');
     window.store[key].$state = stores[key].value;
   }
+  resubscribe();
 }
 
 /*
