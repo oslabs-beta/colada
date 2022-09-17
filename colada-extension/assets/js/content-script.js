@@ -18,7 +18,20 @@ function contentScript() {
   };
 
   window.addEventListener("message", saveMessage);
+  chrome.runtime.onMessage.addListener((message) => {
+    console.log("DEVTOOL message payload",message.payload);
+    console.log("DEVTOOL message", JSON.stringify(message));
+    window.postMessage(JSON.stringify(message), window.location.href) 
+  })
 }
+
+// function sendMessage() {
+
+//   console.log("received message from devPanel")
+
+
+
+// }
 
 contentScript()
 
