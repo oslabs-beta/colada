@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <Navbar />
-        <router-view v-slot="{Component, route}">
+        <router-view v-slot="{Component}">
             <transition :name="route.meta.transition || 'fade'">
                 <component :is="Component" />
             </transition>
@@ -18,6 +18,9 @@ export default {
     name: "App",
     components: {
         Navbar
+    },
+    setup(){
+
     }
 }
 </script>

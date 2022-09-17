@@ -1,17 +1,12 @@
 <template>
     <div class="timeline-node">
         <div class="status">
-            <!-- <span class="type">{{node.key}}</span>  -->
-            <!-- <span class="type">{{data}}</span>  -->
             <div v-for="store in data">
                 <StoreNode :store="store"></StoreNode>
             </div>
         </div>
         <div class="timestamp">
-
-            <button class = "btn" :id = "timestamp" @click = "handleClick">{{timestamp}}</button>
-            
-           
+            <button class = "timestamp-btn" :id = "timestamp" @click = "handleClick">{{formattedTime}}</button>
         </div>
     </div>
 </template>
@@ -22,37 +17,40 @@
     export default {
         name: "TimelineNode",
         props:{
-            id: String,
+            startTime: Number,
             node: Object,
         },
         components:{
             StoreNode
         },
         methods: {
-
-           
-
             handleClick(event) {
-
                 // const timestamp = "1662748551668"
-                    const tmstmp = event.target.id;
-                    // console.log("timestamp",timestamp);
-                    const messageObj = {
+                const tmstmp = event.target.id;
+                //console.log("timestamp",timestamp);
+                const messageObj = {
                     source: 'colada-extension',
                     payload: tmstmp
-                    }
-                    this.sendMsg(messageObj);
+                }
+                console.log('TimelineNode.vue messageObj: ', messageObj)
+                this.sendMsg(messageObj);
 
             },
-
             sendMsg(message){
-
                 // console.log(message);
-
                 chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
-
             },
-
+            convertTime(timestamp){
+                const date = new Date(timestamp)
+                console.log('date: ', date)
+                const startTime = this.startTime
+                console.log('this.startTime: ', this.startTime)
+                //calculate the difference and divide by 1000 to convert from ms to seconds
+                const difference = ((date - this.startTime) / 1000).toFixed(3)
+                const formattedTime = `+${difference}s`
+                console.log("formattedTime: ", formattedTime)
+                return formattedTime
+            }
         },
                
       
@@ -60,35 +58,13 @@
             return{
                 data:{},
                 timestamp: "",
+                formattedTime: ""
             }
         },
         updated(){
             this.data = this.node[Object.keys(this.node)[0]]
             this.timestamp = Object.keys(this.node)[0];
-            // console.log("timestamp",this.timestamp)
-            //console.log("TimelineNode.vue this.data", this.data)
-        },
-        // methods: {
-
-        //     handleClick(event){
-
-        //         const timestamp = "1662748551668"
-        //             const messageObj = {
-        //             source: 'colada-extension',
-        //             payload: timestamp
-        //             }
-        //             this.sendMsg(messageObj);
-
-        //     },
-
-        //     sendMsg(message){
-
-        //         chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
-
-        //     },
-
-        // }
+            this.formattedTime = this.convertTime(parseInt([Object.keys(this.node)[0]][0]))
+         }
     }
-
-    
 </script>

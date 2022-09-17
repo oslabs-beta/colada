@@ -1,11 +1,8 @@
 <template>
-    <div class="current-node-container">
-        <h4>Current Node</h4>
-        <!-- <p>Store: <span id="curr-store">{{node.key}}</span></p>
-        <p>State: <span id="curr-state">{{node.value}}</span></p>
-        <p>Timestamp: <span id="curr-time">{{node.timestamp}}</span></p> -->
+    <div class="vertical-right">
+        <h3>Current Node</h3>
         <div class="stores" v-for="store in node">
-            <CurrentStore :store="store" />
+            <CurrentStore :startTime="startTime" :store="store" />
         </div>
     </div>
 </template>
@@ -16,6 +13,7 @@
     export default {
         name: "CurrentNode",
         props:{
+            startTime:Number,
             node: Object
         },
         components:{
@@ -29,40 +27,35 @@
         },
         updated(){
             this.data = this.node
-            //console.log('CurrentNode.vue this.data: ', this.data)
-            // this.timestamp = this.convertTime(this.data.timestamp)
         },
-        methods: {
-            convertTime (unixTimestamp) {
-                const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US")
-                return date
-            }
-        }
+
     }
 </script>
 
-<style>
-    .current-node-container{
-        height:100vh;
+<style scoped>
+    .vertical-right{
+        height:100%;
+        width:50%;
         display:flex;
         flex-direction:column;
         justify-content:flex-start;
         align-items:flex-start;
         gap:0.5rem;
         border-left: 3px double rgb(71, 91, 118);
-        padding:1rem;
+        padding-top:1rem;
         transition: 0.2s;
+        border-bottom: 3px double rgb(71, 91, 118);
+        flex-grow: 1;
+        overflow-y:scroll;
     }
 
-    #curr-store{
-        color:rgb(199, 165, 243);
+    h3{
+        padding-left: 1rem;
+        
     }
 
-    #curr-state{
-        color:rgb(250,217,111);
+    .stores{
+        width:100%
     }
 
-    #curr-time{
-        color:rgb(96, 202, 140);
-    }
 </style>
