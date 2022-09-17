@@ -27,13 +27,13 @@ $pinia-color:rgb(250,217,111);
       align-items:center;
       background-color:$background-color;
       color:rgb(182,193,201);
+      overflow:hidden;
     }
     .main{
         display:flex;
         flex-direction:column;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items:center;
-        gap:1rem;
     }
     .container {
       max-width: 500px;
@@ -123,7 +123,8 @@ $pinia-color:rgb(250,217,111);
   justify-content:space-between;
   align-items:flex-start;
   gap:1rem;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 .vertical-left{
@@ -132,6 +133,9 @@ $pinia-color:rgb(250,217,111);
   align-items:flex-start;
   width:100%;
   height:100%;
+  padding-top:1rem;
+  flex-grow:3;
+  
 }
 
 #reset-btn{
@@ -139,12 +143,16 @@ $pinia-color:rgb(250,217,111);
   color:rgb(96, 202, 140);
 }
 .vert-timeline{
-  height:100%;
+  height:90%;
   width:100%;
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-top: 1px solid rgb(71, 91, 118);
+  border-bottom: 1px solid rgb(71, 91, 118);
 }
 
 .timeline {
@@ -185,12 +193,8 @@ $pinia-color:rgb(250,217,111);
 
 .timeline-node{
   display:flex;
-  // flex-direction:column;
   justify-content:space-evenly;
-  
   height:100%;
-  
-  
 }
 
 .timeline-nodes:hover{
@@ -215,25 +219,11 @@ $pinia-color:rgb(250,217,111);
   display: flex;
   justify-content: center;
   align-items:center;
-  // border-left: 2px solid #D6DCE0;
   position: relative;
   transition: all 200ms ease-in;
   h4{
       font-weight:600;
-      // padding-top:16px;
   }
-  // &:before{
-  //     content: '';
-  //     width: 8px;
-  //     height: 8px;
-  //     background-color: white;
-  //     border-radius: 25px;
-  //     border: 1px solid #ddd;
-  //     position: absolute;
-  //     top: 40%;
-  //     left: -15px;
-  //     transition: all 200ms ease-in;
-  // }
 }
 
 .timeline-nodes.complete{
@@ -244,18 +234,9 @@ $pinia-color:rgb(250,217,111);
           transition: all 200ms ease-in ;
           border: 1px solid $primary-color;
       }
-  .status{
-      // border-left: 2px solid $primary-color;
-      // color: $store-color;
-      // &:before{
-      //     background-color: $primary-color;
-      //     border: none;
-      //     transition: all 200ms ease-in ;
-      // }
-  }
-   h4 {
-      color: $primary-color;
-  }
+    h4 {
+        color: $primary-color;
+    }
 }
 
 //****************** Above is VertTimeline.vue styling ***************

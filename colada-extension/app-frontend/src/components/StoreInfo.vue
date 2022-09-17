@@ -48,7 +48,7 @@
         align-items:flex-start;
         gap:0.5rem;
         border-top: 1px solid rgb(71, 91, 118);
-        border-bottom: 1px solid rgb(71, 91, 118);
+        /* border-bottom: 1px solid rgb(71, 91, 118); */
         padding:1rem;
         transition: 0.2s;
     }

@@ -26,6 +26,17 @@
             TimelineNode,
 
         },
+        methods: {
+            sendMsg(message){
+
+            // chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, {source: "devtoolsPanel", payload: "test"})
+            console.log('sendMsg fired')
+            chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
+
+            // chrome.devtools.instpectedWindow.eval("sendMessage()",{useContentScriptContext: true});
+
+            }
+        },
         updated(){
             //console.log('VertTimeline this.nodes: ', this.nodes)
 
@@ -40,9 +51,11 @@
                     source: 'colada-extension',
                     payload: timestamp
                     }
+                    this.sendMsg(messageObj);
                     console.log('node clicked, messageObj: ', messageObj)
-                    window.postMessage(JSON.stringify(messageObj), window.location.href) 
-                    console.log('window.location.href: ', window.location.href)
+                    // window.postMessage(JSON.stringify(messageObj), window.location.href) 
+                    // console.log('window.location.href: ', window.location.href)
+                    // chrome.devtools.instpectedWindow.eval("sendMessage()",{useContentScriptContext: true});
                 })
             }
         }
