@@ -2,8 +2,8 @@ import { piniaStores } from '../PiniaColadaPlugin/index';
 import * as _ from 'lodash';
 
 // delcare global variables
-const storeHistory: any = [];
-declare const window: any;
+let storeHistory: any = [];
+declare const window: any 
 let combinedSnapshot: any = {};
 const storeLabels: any = [];
 
@@ -46,19 +46,15 @@ const outputCombinedSnapshot = _.debounce(() => {
     payload: combinedSnapshot
   };
   // TODO: change the second argument here to current URL?
-  window.postMessage(JSON.stringify(messageObj), 'http://localhost:5173');
-
-  console.log('storeHistory is...........:', storeHistory);
+  window.postMessage(JSON.stringify(messageObj), "http://localhost:5173")
+  
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10);
 
 const handleStoreChange = (snapshot: any) => {
-
-  console.log(`handleStoreChange running at ${Date.now()}`);
-  const snapshotClone = _.cloneDeep(snapshot);
-
-  console.log('snapshot in handleStoreChange.....', snapshot);
+  
+  const snapshotClone = _.cloneDeep(snapshot)
 
   // add hasBeenUpdated property to true on snapshotClone
   snapshotClone.hasBeenUpdated = true;
@@ -79,8 +75,6 @@ const handleStoreChange = (snapshot: any) => {
   else {
     combinedSnapshot[Object.keys(combinedSnapshot)[0]][snapshotClone.key] = snapshotClone;
   }
-
-  console.log('storeHistory at end of handleStoreChange', storeHistory);
 
   // invoke debounced outputCombinedSnapshot
   outputCombinedSnapshot();
@@ -118,11 +112,8 @@ const setAppState = (snapshot: any) => {
     console.log('in for loop in setAppState!');
     window.store[key].$state = stores[key].value;
   }
-};
+}
 
-// create getter to access a specified snapshot from storeHistory for time travelling
-
-// create getter to access a the MOST RECENT snapshot from storeHistory for inspector
 /*
  @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
 */

@@ -1,8 +1,11 @@
-import { setupDevtoolsPlugin } from '@vue/devtools-api';
-// import { StateObject } from '../types'
-import { initializeState } from './stateHandler';
-import { addPiniaStoreLabels, addPiniaStoreData } from './inspector';
+import { setupDevtoolsPlugin } from '@vue/devtools-api'
+import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
 import { handleInspectTimelineEvent } from './timeline';
+import { 
+  initializeState, 
+  setAppState, 
+  getSnapshotbyTimestamp
+} from './stateHandler'
 
 // declare type for application window
 declare const window: any;
@@ -34,10 +37,28 @@ export function setupDevtools(app: any) {
     // ************ EVENT LISTENERS *****************************************
     //********************************************************************** */
 
-    window.addEventListener('DOMContentLoaded', () => {
-      console.log('dom content has been loaded');
-      setTimeout(initializeState, 550);
-    });
+      window.addEventListener("message", (event: any) => {
+        console.log('message received!')
+        console.log('event is: ', event);
+        // parse data from message
+        const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
+        console.log('parsed is (IN PLUGIN):', parsed)
+
+        // if source is colada extension, set app's state to snapshot that correspodns with payload's timestamp
+        if (parsed.source === 'colada-extension') {
+    
+          const timestamp = parseInt(parsed.payload);
+          console.log('found colada-extension message!')
+          console.log('timestamp FROM EXTENSION MESSAGE', timestamp)
+
+          setAppState(getSnapshotbyTimestamp(timestamp))
+        }
+      })
+
+      window.addEventListener("DOMContentLoaded", () => {
+        console.log('dom content has been loaded');
+        setTimeout(initializeState, 1000);
+      })
 
     //add event listener to the window for 'addTimeLineEvent'
     window.addEventListener('addTimelineEvent', (e: any) => {
@@ -148,26 +169,16 @@ export function setupDevtools(app: any) {
     });
 
 
-    //********************************************************************** */
-    // ************ TIMELINE SETTINGS *****************************************
-    //********************************************************************** */
-    //Register a timeline layer
-    api.addTimelineLayer({
-      id: timelineLayerId,
-      color: 0xff984f,
-      label: 'Colada 🥥',
-      skipScreenshots: true, // doesn't work :(
-    });
-
-    //Are we able to add UI buttons??
-
-    // api.on.timelineCleared --> triggers when the user clears the timeline from the timeline panel 
-    api.on.timelineCleared(() => {
-      // TODO: clear our global timeline data when this is triggered
-      console.log('Timeline cleared');
-    });
-
-
-    //*********** end of setupDevToolsPlugin ********** */
-  });
+      //********************************************************************** */
+      // ************ TIMELINE SETTINGS *****************************************
+      //********************************************************************** */
+        //Register a timeline layer
+        api.addTimelineLayer({
+            id: timelineLayerId,
+            color: 0xff984f,
+            label: 'Colada 🥥',
+            skipScreenshots: true, // doesn't work :(
+        })
+      
+    })
 }
