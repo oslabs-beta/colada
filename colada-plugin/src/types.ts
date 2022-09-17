@@ -21,9 +21,9 @@ export type ProxyObject = {
 }
 
 export type StateObject = {
-    store_id?: string,
-    key: string,
-    value: any,
-    editable: boolean
+  store_id?: string,
+  key: string,
+  value: any,
+  editable: boolean
 }
 

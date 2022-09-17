@@ -4,9 +4,9 @@
             <div v-for="store in data">
                 <StoreNode :store="store"></StoreNode>
             </div>
-            <div class="timestamp">
-                <h4>{{timestamp}}</h4>
-            </div>
+        </div>
+        <div class="timestamp">
+            <button class = "btn" :id = "timestamp" @click = "handleClick">{{formattedTime}}</button>
         </div>
     </div>
 </template>
@@ -23,20 +23,22 @@
         components:{
             StoreNode
         },
-        data(){
-            return{
-                data:{},
-                timestamp: "",
-            }
-        },
-        updated(){
-            this.data = this.node[Object.keys(this.node)[0]]
-            console.log([Object.keys(this.node)[0]][0])
-            this.timestamp = this.convertTime(parseInt([Object.keys(this.node)[0]][0]))
-            console.log("TimelineNode.vue this.timestamp: ", this.timestamp)
-            //console.log("TimelineNode.vue this.data", this.data)
-        },
         methods: {
+            handleClick(event) {
+                // const timestamp = "1662748551668"
+                const tmstmp = event.target.id;
+                // console.log("timestamp",timestamp);
+                const messageObj = {
+                    source: 'colada-extension',
+                    payload: tmstmp
+                }
+                this.sendMsg(messageObj);
+
+            },
+            sendMsg(message){
+                // console.log(message);
+                chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
+            },
             convertTime(timestamp){
                 const date = new Date(timestamp)
                 console.log('date: ', date)
@@ -48,8 +50,20 @@
                 console.log("formattedTime: ", formattedTime)
                 return formattedTime
             }
-        }
+        },
+               
+      
+        data(){
+            return{
+                data:{},
+                timestamp: "",
+                formattedTime: ""
+            }
+        },
+        updated(){
+            this.data = this.node[Object.keys(this.node)[0]]
+            this.timestamp = Object.keys(this.node)[0];
+            this.formattedTime = this.convertTime(parseInt([Object.keys(this.node)[0]][0]))
+         }
     }
-
-    
 </script>
