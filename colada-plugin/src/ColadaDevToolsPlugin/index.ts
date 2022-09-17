@@ -49,7 +49,7 @@ export function setupDevtools(app: any) {
     
           const timestamp = parseInt(parsed.payload);
           console.log('found colada-extension message!')
-          console.log('timestamp FROM PLUGIN MESSAGE', timestamp)
+          console.log('timestamp FROM EXTENSION MESSAGE', timestamp)
 
           setAppState(getSnapshotbyTimestamp(timestamp))
         }
