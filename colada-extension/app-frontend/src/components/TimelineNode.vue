@@ -47,7 +47,7 @@
 
             sendMsg(message){
 
-                console.log(message);
+                // console.log(message);
 
                 chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message)
 
@@ -65,7 +65,7 @@
         updated(){
             this.data = this.node[Object.keys(this.node)[0]]
             this.timestamp = Object.keys(this.node)[0];
-            console.log("timestamp",this.timestamp)
+            // console.log("timestamp",this.timestamp)
             //console.log("TimelineNode.vue this.data", this.data)
         },
         // methods: {

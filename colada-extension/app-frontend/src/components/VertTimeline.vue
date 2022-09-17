@@ -43,7 +43,7 @@
         },
 
         updated(){
-            console.log('VertTimeline this.nodes: ', this.nodes)
+            // console.log('VertTimeline this.nodes: ', this.nodes)
 
             // const timelineNodes = document.getElementsByClassName('timeline-node')
             // //console.log('VertTimeline.vue timelineNodes: ', timelineNodes)
