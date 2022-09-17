@@ -4,13 +4,14 @@
   "version": "0.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "js/background.js"
   },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html"
   },
   "devtools_page": "devtools-background.html",
+ 
   "host_permissions": [
     "https://*/*",
     "http://*/*"
@@ -21,7 +22,7 @@
         "https://*/*",
         "http://*/*"
       ],
-       "js": ["content-script.js"]
+       "js": ["js/content-script.js"]
      }
   ]
 }
