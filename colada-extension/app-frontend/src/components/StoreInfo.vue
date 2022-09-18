@@ -1,6 +1,6 @@
 <template>
     <div class="individual-store-container">
-        <h5>Store: <span id="curr-store">{{info.key}}</span></h5>
+        <p>Store: <span id="curr-store">{{info.key}}</span></p>
         <p>State: <span id="curr-state">{{info.value}}</span></p>
         <p>Timestamp: <span id="curr-time">{{timestamp}}</span></p>
     </div>
@@ -27,11 +27,11 @@
             convertTime(timestamp){
                 const date = new Date(timestamp)
                 const rawHours = date.getHours();
-                const hours = rawHours < 10 ? `0${rawHours}` : rawHours
-                const minutes = date.getMinutes();
-                const rawMinutes = rawMinutes < 10 ? `0${rawMinutes}` : rawMinutes
+                const hours = parseInt(rawHours) < 10 ? `0${rawHours}` : rawHours
+                const rawMinutes = date.getMinutes();
+                const minutes = parseInt(rawMinutes) < 10 ? `0${rawMinutes}` : rawMinutes
                 const rawSeconds = date.getSeconds();
-                const seconds = rawSeconds < 10 ? `0${rawSeconds}` : rawSeconds
+                const seconds = parseInt(rawSeconds) < 10 ? `0${rawSeconds}` : rawSeconds
                 const formattedTime = `${hours}:${minutes}:${seconds}`;
                 return formattedTime
             }

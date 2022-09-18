@@ -24,8 +24,7 @@ $slate-800:#1e293b;
       height:100vh;
     }
     body {
-      // font-family: 'Poppins', sans-serif;
-      font-family:monospace;
+      font-family: 'Poppins', sans-serif;
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
@@ -204,7 +203,7 @@ $slate-800:#1e293b;
   height:100%;
   padding-top:1rem;
   flex-grow:3;
-  
+  font-family:monospace;
 }
 
 .vert-timeline{

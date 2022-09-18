@@ -164,17 +164,20 @@
                 }
                  //set the currNode 
                  this.currNode = this.nodes[this.index];
+                 this.handleStep()
+                
             },
             stepBack(){
                 if(this.index > 0){
                     const nodes = document.querySelectorAll(".complete");
                     const lastNode = nodes[nodes.length-1];
-                    lastNode.classList.remove('complete');
-                    this.index--;
+                    if(lastNode.classList.contains('complete')){
+                        lastNode.classList.remove('complete');
+                        this.index--;
+                        this.currNode = this.nodes[this.index];
+                        this.handleStep()
+                    }
                     
-                    
-                    //set the currNode 
-                    this.currNode = this.nodes[this.index];
                 }
             },
             stepForward(){
@@ -184,11 +187,15 @@
                 if(this.index < nodes.length - 1){
                     //initialize lastNode to the allNodes at the key of this.index
                     const lastNode = nodes[this.index];
-                    lastNode.classList.add('complete');
-                    this.index++;
+                    if(!lastNode.classList.add('complete')){
+                        lastNode.classList.add('complete');
+                        this.index++;
+                        this.currNode = this.nodes[this.index];
+                        this.handleStep()
+                    }
+                    
 
-                    //set the currNode
-                    this.currNode = this.nodes[this.index];
+                    
                 }
             },
             stepForwardToEnd(){
@@ -204,10 +211,11 @@
             
                 //set the currNode
                 this.currNode = this.nodes[this.index]
+                this.handleStep()
             },
-            stepToNode(id){
-                console.log('stepToNode id: ', id)
-                this.index = parseInt(id)
+            stepToNode(input){
+                console.log('stepToNode input: ', input)
+                this.index = parseInt(input)
                 console.log('stepToNode this.index: ', this.index)
                 const nodes = document.querySelectorAll(".timeline-nodes")
 
@@ -225,6 +233,21 @@
                 this.currNode = this.node[this.index]
                 console.log('stepToNode this.curr.node updated')
                 
+            },
+            handleStep() {
+                const timestamp = Object.keys(this.currNode)[0]
+                // console.log('handleStep timestamp: ', timestamp)
+                if(timestamp){
+                    const messageObj = {
+                    source: 'colada-extension',
+                    payload: timestamp
+                    }
+                    this.sendMsg(messageObj);
+                }
+                
+            },
+            sendMsg(message){
+                chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
             },
             fetchNodes(){
                 let nodeDataObj;
