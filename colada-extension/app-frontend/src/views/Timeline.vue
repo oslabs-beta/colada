@@ -122,6 +122,8 @@
             setTimeout(() => {
                 this.nodes = this.fetchNodes(); 
                 console.log("timeine.vue mounted this.nodes: ", this.nodes)
+                //set the index to the last node
+                this.index = this.nodes.length - 1
             },300);
 
             setTimeout(() => {
@@ -132,11 +134,10 @@
                 //     firstNode.classList.toggle('complete')
                 // }
 
-                //set the index to the last node
-                this.index = this.nodes.length - 1
+                
 
                 //set the currNode to the last index
-                this.currNode = this.nodes[this.index];
+                //this.currNode = this.nodes[this.index];
 
                 //this.forceRerender()
             },500);
@@ -214,9 +215,7 @@
                 this.handleStep()
             },
             stepToNode(input){
-                console.log('stepToNode input: ', input)
                 this.index = parseInt(input)
-                console.log('stepToNode this.index: ', this.index)
                 const nodes = document.querySelectorAll(".timeline-nodes")
 
                 //clear all the complete from the nodes
@@ -231,8 +230,6 @@
                 }
                     
                 this.currNode = this.nodes[this.index]
-                console.log('stepToNode this.curr.node updated')
-                
             },
             handleStep() {
                 const timestamp = Object.keys(this.currNode)[0]
@@ -264,6 +261,11 @@
                     }}
                 })
                 console.log('fetchNodes nodeData: ', nodeData)
+                setTimeout(() => {
+                    this.currNode = nodeData[nodeData.length - 1]
+                    console.log('fetchNodes this.currNode: ', this.currNode)
+                }, 100)
+                
                 return nodeData
             },
              addListener(){
