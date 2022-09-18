@@ -26,9 +26,12 @@
         methods: {
             convertTime(timestamp){
                 const date = new Date(timestamp)
-                const hours = date.getHours();
+                const rawHours = date.getHours();
+                const hours = rawHours < 10 ? `0${rawHours}` : rawHours
                 const minutes = date.getMinutes();
-                const seconds = date.getSeconds();
+                const rawMinutes = rawMinutes < 10 ? `0${rawMinutes}` : rawMinutes
+                const rawSeconds = date.getSeconds();
+                const seconds = rawSeconds < 10 ? `0${rawSeconds}` : rawSeconds
                 const formattedTime = `${hours}:${minutes}:${seconds}`;
                 return formattedTime
             }

@@ -1,7 +1,7 @@
 <template>
     <div class="timeline-container">
         <div class="vertical-left">
-            <VertTimeline :startTime="startTime" :key="componentKey" :nodes="nodes" />
+            <VertTimeline :startTime="startTime" :key="componentKey" :nodes="nodes" :stepToNode="stepToNode"/>
             <div class="btn-container">
                 <button @click="stepBackToBeginning" id="back-btn-all" class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
@@ -114,11 +114,15 @@
             //     }
 
             // console.log('entered mounted');
-            let placeHolder = await this.fetchNodes();
+            // setTimeout(() => {
+            //     const nodeData = await this.fetchNodes();
+            // }, 150)
+            
             
             setTimeout(() => {
-                this.nodes = placeHolder; 
-            },100);
+                this.nodes = this.fetchNodes(); 
+                console.log("timeine.vue mounted this.nodes: ", this.nodes)
+            },300);
 
             setTimeout(() => {
                 // this.currNode = this.nodes[0];
@@ -134,8 +138,8 @@
                 //set the currNode to the last index
                 this.currNode = this.nodes[this.index];
 
-                this.forceRerender()
-            },150);
+                //this.forceRerender()
+            },500);
 
             //add listener for chrome storage on change
             this.addListener()
@@ -178,13 +182,10 @@
                 const nodes = document.querySelectorAll(".timeline-nodes")
                 //only allow stepForward to execute if the index is less than the total length
                 if(this.index < nodes.length - 1){
-                    //increment the index
-                    this.index++;
-                    
                     //initialize lastNode to the allNodes at the key of this.index
                     const lastNode = nodes[this.index];
-                    //toggle 'complete' from the class
                     lastNode.classList.add('complete');
+                    this.index++;
 
                     //set the currNode
                     this.currNode = this.nodes[this.index];
@@ -204,7 +205,10 @@
                 //set the currNode
                 this.currNode = this.nodes[this.index]
             },
-            stepToNode(index){
+            stepToNode(id){
+                console.log('stepToNode id: ', id)
+                this.index = parseInt(id)
+                console.log('stepToNode this.index: ', this.index)
                 const nodes = document.querySelectorAll(".timeline-nodes")
 
                 //clear all the complete from the nodes
@@ -217,6 +221,10 @@
                 for(let i = 0; i < this.index; i++){
                     nodes[i].classList.add('complete')
                 }
+                    
+                this.currNode = this.node[this.index]
+                console.log('stepToNode this.curr.node updated')
+                
             },
             fetchNodes(){
                 let nodeDataObj;
@@ -232,7 +240,7 @@
                         }
                     }}
                 })
-
+                console.log('fetchNodes nodeData: ', nodeData)
                 return nodeData
             },
              addListener(){
