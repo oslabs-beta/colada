@@ -1,5 +1,5 @@
 <template>
-    <button @click="onClick()" class="btn">Count: {{num}}</button>
+    <button @click="onClick()" class="btn">Increment & Submit</button>
 </template>
 
 <script>

@@ -3,5 +3,5 @@ const props = defineProps(["foo", "item"]);
 </script>
 
 <template>
-  hello {{ item.name }}<br/>
+  Hello {{ item.name }}<br/>
 </template>
