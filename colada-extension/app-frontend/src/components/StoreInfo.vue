@@ -26,13 +26,10 @@
         methods: {
             convertTime(timestamp){
                 const date = new Date(timestamp)
-                console.log('date: ', date)
-                const startTime = this.startTime
-                console.log('this.startTime: ', this.startTime)
-                //calculate the difference and divide by 1000 to convert from ms to seconds
-                const difference = (date - this.startTime) / 1000
-                const formattedTime = `+${difference}s`
-                console.log("formattedTime: ", formattedTime)
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+                const formattedTime = `${hours}:${minutes}:${seconds}`;
                 return formattedTime
             }
         }
