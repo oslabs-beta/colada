@@ -226,11 +226,11 @@
                     }
                 }
                 //add 'complete' class to nodes up to the index
-                for(let i = 0; i < this.index; i++){
+                for(let i = 0; i <= this.index; i++){
                     nodes[i].classList.add('complete')
                 }
                     
-                this.currNode = this.node[this.index]
+                this.currNode = this.nodes[this.index]
                 console.log('stepToNode this.curr.node updated')
                 
             },
