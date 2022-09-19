@@ -1,8 +1,6 @@
 import {
   getSnapshotbyTimestamp,
-  setAppState,
-  resubscribe,
-  unsubscribe
+  setAppState
 } from './stateHandler';
 
 const handleInspectTimelineEvent = (payload: any): void => {
@@ -10,9 +8,7 @@ const handleInspectTimelineEvent = (payload: any): void => {
   if (payload.layerId === 'colada-plugin') {
     const selectedEventTimestamp: number = payload.event.time;
     console.log('payload in handleInspectTimelineEvent:', payload);
-    unsubscribe();
     setAppState(getSnapshotbyTimestamp(selectedEventTimestamp));
-    resubscribe();
     return;
   }
 };

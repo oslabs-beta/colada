@@ -4,8 +4,12 @@ $background-color: rgb(13,16,21);
 $nav-icon:white;
 $nav-hover:rgb(48,61,78);
 $nav-click:rgb(71, 91, 118);
+$border-color:rgb(71, 91, 118);
 $store-color:rgb(199, 165, 243);
 $pinia-color:rgb(250,217,111);
+$red-500: #ef4444;
+$slate-400: #94a3b8;
+$slate-800:#1e293b;
 
 //****************** Below is App.vue styling ***************
 
@@ -27,13 +31,13 @@ $pinia-color:rgb(250,217,111);
       align-items:center;
       background-color:$background-color;
       color:rgb(182,193,201);
+      overflow:hidden;
     }
     .main{
         display:flex;
         flex-direction:column;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items:center;
-        gap:1rem;
     }
     .container {
       max-width: 500px;
@@ -49,23 +53,23 @@ $pinia-color:rgb(250,217,111);
 //****************** Below is Button styling ***************
     .btn {
       display: inline-block;
-      background: $primary-color;
-      color: $background-color;
+      background: $background-color;
+      color: $primary-color;
       border: none;
-      padding: 5px 20px;
-      margin: 5px;
+      padding: 3px 14px;
+      margin: 3px;
       border-radius: 5px;
       cursor: pointer;
       text-decoration: none;
-      font-size: 20px;
+      font-size: 16px;
       font-family: inherit;
       transition:0.25s;
       border:2px solid $primary-color;
     }
 
     .btn:hover{
-        background-color:$background-color;
-        color: $primary-color;
+        background-color:$primary-color;
+        color: $background-color;
     }
 
     .btn:focus {
@@ -78,6 +82,70 @@ $pinia-color:rgb(250,217,111);
       display: block;
       width: 100%;
     }
+
+    .clear-btn {
+      display: inline-block;
+      background: $background-color;
+      color: $red-500;
+      border: none;
+      padding: 3px 14px;
+      margin: 3px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+      font-family: inherit;
+      transition:0.25s;
+      border:2px solid $red-500;
+    }
+
+    .clear-btn:hover{
+        background-color:$red-500;
+        color: $background-color;
+    }
+
+    .clear-btn:focus {
+      outline: none;
+    }
+    .clear-btn:active {
+      transform: scale(0.9);
+    }
+    .clear-btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    .timestamp-btn {
+      display: inline-block;
+      background: $background-color;
+      color: $primary-color;
+      border: none;
+      padding: 3px 6px;
+      margin: 3px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+      font-family: inherit;
+      transition:0.25s;
+      border:2px solid $primary-color;
+    }
+
+    .timestamp-btn:hover{
+        background-color:$primary-color;
+        color: $background-color;
+    }
+
+    .timestamp-btn:focus {
+      outline: none;
+    }
+    .timestamp-btn:active {
+      transform: scale(0.9);
+    }
+    .timestamp-btn-block {
+      display: block;
+      width: 100%;
+    }
 //****************** Above is Button styling ***************
 
 //****************** Below is Navbar.vue styling ***************
@@ -85,7 +153,7 @@ $pinia-color:rgb(250,217,111);
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border-bottom: 3px double rgb(71, 91, 118);
+    border-bottom: 3px double $border-color;
     width:100vw;
     padding: 0rem 0.5rem;
 }
@@ -116,95 +184,85 @@ $pinia-color:rgb(250,217,111);
 }
 //****************** Above is Navbar.vue styling ***************
 
-// //****************** Below is HorzTimeline.vue styling ***************
+//****************** Below is VertTimeline.vue styling ***************
+.timeline-container{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+  width: 100vw;
+  height: 100vh;
+}
 
-//     .timeline {
-//         list-style-type: none;
-//         display: flex;
-//         align-items: center;
-//         justify-content: center;
-//     }
-//     .li{
-//         display:flex;
-//         flex-direction:column;
-//         justify-content:space-evenly;
-//         gap:16px;
-//         transition: all 200ms ease-in;
-//     }
+.vertical-left{
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  width:100%;
+  height:100%;
+  padding-top:1rem;
+  flex-grow:3;
+  font-family:monospace;
+}
 
-//     .timestamp{
-//         margin-bottom: 20px;
-//         padding: 0px 40px;
-//         display: flex;
-//         flex-direction: column;
-//         align-items: center;
-//         font-weight: 100;
-//     }
-//     .status{
-//         padding: 0px 40px;
-//         display: flex;
-//         justify-content: center;
-//         align-items:center;
-//         border-top: 2px solid #D6DCE0;
-//         position: relative;
-//         transition: all 200ms ease-in;
-//         h4{
-//             font-weight:600;
-//             padding-top:16px;
-//         }
-//         &:before{
-//             content: '';
-//             width: 25px;
-//             height: 25px;
-//             background-color: white;
-//             border-radius: 25px;
-//             border: 1px solid #ddd;
-//             position: absolute;
-//             top: -15px;
-//             left: 42%;
-//             transition: all 200ms ease-in;
-//         }
-//     }
+.vert-timeline{
+  height:90%;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:center;
+  overflow-x: hidden;
+  overflow-y: auto;
 
-//     .li.complete{
-//         .status{
-//             border-top: 2px solid $primary-color;
-//             &:before{
-//                 background-color: $primary-color;
-//                 border: none;
-//                 transition: all 200ms ease-in ;
-//             }
-//         }
-//          h4 {
-//             padding-top:16px;
-//             color: $primary-color;
-//         }
-//     }
-
-// //****************** Above is HorzTimeline.vue styling ***************
-
-//****************** Below is VertTimeline.vue styling (MAKE SURE TO ONLY HAVE HORZ OR VERT***************
+}
 
 .timeline {
   list-style-type: none;
   display: flex;
   flex-direction:column;
   align-items: flex-start;
-  justify-content: space-evenly;
-  gap:0.25rem;
-}
-
-.vert-timeline{
-  height:100vw;
+  justify-content: flex-start;
 }
 
 .timeline-nodes{
   display:flex;
+  width:100%;
   flex-direction:column;
   align-items:flex-start;
   justify-content:space-evenly;
-  gap:0.25rem;
+  border-left: 2px solid #D6DCE0;
+  border-top: 1px solid $border-color;
+  position:relative;
+  transition: all 200ms ease-in;
+  z-index:1;
+  &:before{
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: $slate-400;
+    border-radius: 25px;
+    border: 1px solid $slate-400;
+    position: absolute;
+    top: 25%;
+    left: -6px;
+    transition: all 200ms ease-in;
+  }
 }
+
+// .timeline-nodes:hover{
+//   background-color:$nav-hover;
+//   cursor:pointer;
+// }
+
+// .timeline-nodes:focus, .timeline-nodes:active{
+//   background-color:$nav-click;
+// }
+
+// .timeline-nodes.clicked{
+//   background-color:$nav-click;
+// }
 
 .node{
   display:flex;
@@ -213,20 +271,8 @@ $pinia-color:rgb(250,217,111);
 
 .timeline-node{
   display:flex;
-  // flex-direction:column;
   justify-content:space-evenly;
-  transition: all 200ms ease-in;
   height:100%;
-  border-radius:0.25rem;
-}
-
-.timeline-node:hover{
-  background-color:$nav-hover;
-}
-
-.timeline-node:focus, .li:active{
-  background-color:$nav-click;
-  cursor:pointer;
 }
 
 .timestamp{
@@ -242,40 +288,25 @@ $pinia-color:rgb(250,217,111);
   display: flex;
   justify-content: center;
   align-items:center;
-  border-left: 2px solid #D6DCE0;
   position: relative;
   transition: all 200ms ease-in;
   h4{
       font-weight:600;
-      // padding-top:16px;
-  }
-  &:before{
-      content: '';
-      width: 8px;
-      height: 8px;
-      background-color: white;
-      border-radius: 25px;
-      border: 1px solid #ddd;
-      position: absolute;
-      top: 40%;
-      left: -15px;
-      transition: all 200ms ease-in;
   }
 }
 
-.timeline-node.complete{
-  .status{
+.timeline-nodes.complete{
+      background-color:$slate-800;
       border-left: 2px solid $primary-color;
       color: $store-color;
       &:before{
           background-color: $primary-color;
-          border: none;
           transition: all 200ms ease-in ;
+          border: 1px solid $primary-color;
       }
-  }
-   h4 {
-      color: $primary-color;
-  }
+    h4 {
+        color: $primary-color;
+    }
 }
 
 //****************** Above is VertTimeline.vue styling ***************
@@ -283,7 +314,7 @@ $pinia-color:rgb(250,217,111);
 //****************** Below is Animations ***************
 
 .slide-right-enter-active {
-  transition: all 0.4s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .slide-right-leave-active {
@@ -296,7 +327,7 @@ $pinia-color:rgb(250,217,111);
 }
 
 .slide-left-enter-active {
-  transition: all 0.4s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .slide-left-leave-active {

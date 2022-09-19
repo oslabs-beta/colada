@@ -8,6 +8,6 @@ app.mount('#app');
 
 // chrome.devtools.inspectedWindow.eval("sendMessage()",{useContentScriptContext: true}, () => {console.log("sent message to content script")});
 
-// chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, {source: "devtoolsPanel", payload: "test"})
+//chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, {source: "devtoolsPanel", payload: "test"})
 
 
