@@ -5,4 +5,4 @@ console.log("entered devtools-background.js")
 
 chrome.devtools.panels.create('Colada DevTools', '', '../devtools-panel.html');
 
-chrome.devtools.inspectedWindow.eval("sendMessage()",{useContentScriptContext: true}, () => {console.log("sent message to content script")});
+// chrome.devtools.inspectedWindow.eval("sendMessage()",{useContentScriptContext: true}, () => {console.log("sent message to content script")});
