@@ -46,7 +46,7 @@ const outputCombinedSnapshot = _.debounce(() => {
     payload: combinedSnapshot
   };
   // TODO: change the second argument here to current URL?
-  window.postMessage(JSON.stringify(messageObj), window.location.href)
+  window.postMessage(JSON.stringify(messageObj), window.location.href);
   
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};

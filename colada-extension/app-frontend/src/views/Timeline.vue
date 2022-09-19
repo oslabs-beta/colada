@@ -37,256 +37,260 @@
 </template>
 
 <script>
-    //Import VertTimeline.vue components
-    import VertTimeline from '../components/VertTimeline.vue';
-    import CurrentNode from '../components/CurrentNode.vue';
-    import { toRaw, ref } from 'vue';
-    import { addListener } from 'process';
+//Import VertTimeline.vue components
+import VertTimeline from '../components/VertTimeline.vue';
+import CurrentNode from '../components/CurrentNode.vue';
+import { toRaw, ref } from 'vue';
+import { addListener } from 'process';
 
-    export default {
-        name: 'Timeline',
-        data(){
-            return{
-                index: 0,
-                nodes: [],
-                currNode: {},
-                componentKey: 0,
-                currNodeKey: 0,
-                startTime: 0
-            }
-        },
-        components: {
-            VertTimeline,
-            CurrentNode,
-        },
+export default {
+  name: 'Timeline',
+  data(){
+    return{
+      index: 0,
+      nodes: [],
+      currNode: {},
+      componentKey: 0,
+      currNodeKey: 0,
+      startTime: 0
+    };
+  },
+  components: {
+    VertTimeline,
+    CurrentNode,
+  },
        
         
-        async mounted(){
-            //clears chrome local storage
-            this.resetTimeline();
-            //get the current time and assign it to startTime to be passed as a prop 
-            this.startTime = Date.now();
-            // this.currNode =   {
-            //             "1662748551668": {
-            //                 "actions":{},
-            //                 "editable": true,
-            //                 "getters": {},
-            //                 "key": "store",
-            //                 "state": ["myStr","elements"],
-            //                 "timestamp": 1662748551668,
-            //                 "type": "Store: store",
-            //                 "value": {
-            //                     "elements": [],
-            //                     "myStr": "j"
-            //                 }
-            //             }
-            //         }
+  async mounted(){
+    //clears chrome local storage
+    this.resetTimeline();
+    this.addListener();
+    //get the current time and assign it to startTime to be passed as a prop 
+    this.startTime = Date.now();
+    // this.currNode =   {
+    //             "1662748551668": {
+    //                 "actions":{},
+    //                 "editable": true,
+    //                 "getters": {},
+    //                 "key": "store",
+    //                 "state": ["myStr","elements"],
+    //                 "timestamp": 1662748551668,
+    //                 "type": "Store: store",
+    //                 "value": {
+    //                     "elements": [],
+    //                     "myStr": "j"
+    //                 }
+    //             }
+    //         }
 
-            //  this.currNode =   {
-            //             "1662748551668": {
-            //                 counter: {
-            //                     "actions":{},
-            //                     "editable": true,
-            //                     "getters": {},
-            //                     "key": "counter",
-            //                     "state": ["count"],
-            //                     "timestamp": 1662748551668,
-            //                     "type": "Store: counter",
-            //                     "value": {
-            //                         "count":0
-            //                     }
-            //                 },
-            //                 store: {
-            //                     "actions":{},
-            //                     "editable": true,
-            //                     "getters": {},
-            //                     "key": "store",
-            //                     "state": ["myStr","elements"],
-            //                     "timestamp": 1662748551668,
-            //                     "type": "Store: store",
-            //                     "value": {
-            //                         "elements": [],
-            //                         "myStr": "j"
-            //                     }
-            //                 },
+    //  this.currNode =   {
+    //             "1662748551668": {
+    //                 counter: {
+    //                     "actions":{},
+    //                     "editable": true,
+    //                     "getters": {},
+    //                     "key": "counter",
+    //                     "state": ["count"],
+    //                     "timestamp": 1662748551668,
+    //                     "type": "Store: counter",
+    //                     "value": {
+    //                         "count":0
+    //                     }
+    //                 },
+    //                 store: {
+    //                     "actions":{},
+    //                     "editable": true,
+    //                     "getters": {},
+    //                     "key": "store",
+    //                     "state": ["myStr","elements"],
+    //                     "timestamp": 1662748551668,
+    //                     "type": "Store: store",
+    //                     "value": {
+    //                         "elements": [],
+    //                         "myStr": "j"
+    //                     }
+    //                 },
 
-            //         }
-            //     }
+    //         }
+    //     }
 
-            // console.log('entered mounted');
-            // setTimeout(() => {
-            //     const nodeData = await this.fetchNodes();
-            // }, 150)
+    // console.log('entered mounted');
+    // setTimeout(() => {
+    //     const nodeData = await this.fetchNodes();
+    // }, 150)
             
             
-            setTimeout(() => {
-                this.nodes = this.fetchNodes(); 
-                console.log("timeine.vue mounted this.nodes: ", this.nodes)
-                //set the index to the last node
-                this.index = this.nodes.length - 1
-            },300);
+    setTimeout( () => {
+      this.nodes = this.fetchNodes(); 
+      console.log("timeline.vue mounted this.nodes: ", this.nodes);
+      //set the index to the last node
+      this.index = this.nodes.length - 1
+    },75);
 
-            setTimeout(() => {
-                // this.currNode = this.nodes[0];
-                //set the first timeline node class to complete
-                // const firstNode = document.querySelector(".timeline-node")
-                // if(firstNode){
-                //     firstNode.classList.toggle('complete')
-                // }
+    // console.log("timeline.vue mounted this.nodes: ", this.nodes)
+
+    // setTimeout(() => {
+    //   // this.currNode = this.nodes[0];
+    //   //set the first timeline node class to complete
+    //   // const firstNode = document.querySelector(".timeline-node")
+    //   // if(firstNode){
+    //   //     firstNode.classList.toggle('complete')
+    //   // }
 
                 
 
-                //set the currNode to the last index
-                //this.currNode = this.nodes[this.index];
+    //   //set the currNode to the last index
+    //   //this.currNode = this.nodes[this.index];
 
-                //this.forceRerender()
-            },500);
+    //   //this.forceRerender()
+    // },500);
 
-            //add listener for chrome storage on change
-            this.addListener()
-        },
+    //add listener for chrome storage on change
+    // this.addListener()
+  },
 
-        methods: {
-            stepBackToBeginning(){
-                //reset the index
-                this.index = 0
-                //get all timeline nodes
-                const nodes = document.querySelectorAll(".timeline-nodes")
+  methods: {
+    stepBackToBeginning(){
+      //reset the index
+      this.index = 0
+      //get all timeline nodes
+      const nodes = document.querySelectorAll(".timeline-nodes")
 
-                //check if first node has complete, if not, add complete
-                if(!nodes[this.index].classList.contains('complete')){
-                    nodes[this.index].classList.add('complete');
-                }
-                //iterate from index 1 to toggle off complete
-                for(let i = 1; i < nodes.length; i++){
-                    if(nodes[i].classList.contains('complete')){
-                        nodes[i].classList.remove('complete');
-                    }
-                }
-                 //set the currNode 
-                 this.currNode = this.nodes[this.index];
-                 this.handleStep()
-                
-            },
-            stepBack(){
-                if(this.index > 0){
-                    const nodes = document.querySelectorAll(".complete");
-                    const lastNode = nodes[nodes.length-1];
-                    if(lastNode.classList.contains('complete')){
-                        lastNode.classList.remove('complete');
-                        this.index--;
-                        this.currNode = this.nodes[this.index];
-                        this.handleStep()
-                    }
-                    
-                }
-            },
-            stepForward(){
-                //console.log('Step Forward clicked')
-                const nodes = document.querySelectorAll(".timeline-nodes")
-                //only allow stepForward to execute if the index is less than the total length
-                if(this.index < nodes.length - 1){
-                    //initialize lastNode to the allNodes at the key of this.index
-                    const lastNode = nodes[this.index];
-                    if(!lastNode.classList.add('complete')){
-                        lastNode.classList.add('complete');
-                        this.index++;
-                        this.currNode = this.nodes[this.index];
-                        this.handleStep()
-                    }
-                    
-
-                    
-                }
-            },
-            stepForwardToEnd(){
-                const nodes = document.querySelectorAll(".timeline-nodes")
-                //get the index of the last node
-                this.index = nodes.length - 1
-
-                for(let i = 0; i < this.index; i++){
-                    if(!nodes[i].classList.contains('complete')){
-                        nodes[i].classList.add('complete')
-                    }
-                }
-            
-                //set the currNode
-                this.currNode = this.nodes[this.index]
-                this.handleStep()
-            },
-            stepToNode(input){
-                this.index = parseInt(input)
-                const nodes = document.querySelectorAll(".timeline-nodes")
-
-                //clear all the complete from the nodes
-                for(let i = 0; i < nodes.length; i++){
-                    if(nodes[i].classList.contains('complete')){
-                        nodes[i].classList.remove('complete');
-                    }
-                }
-                //add 'complete' class to nodes up to the index
-                for(let i = 0; i <= this.index; i++){
-                    nodes[i].classList.add('complete')
-                }
-                    
-                this.currNode = this.nodes[this.index]
-            },
-            handleStep() {
-                const timestamp = Object.keys(this.currNode)[0]
-                // console.log('handleStep timestamp: ', timestamp)
-                if(timestamp){
-                    const messageObj = {
-                    source: 'colada-extension',
-                    payload: timestamp
-                    }
-                    this.sendMsg(messageObj);
-                }
-                
-            },
-            sendMsg(message){
-                chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
-            },
-            fetchNodes(){
-                let nodeDataObj;
-                const nodeData = []
-                // Get data from chrome local storage
-                chrome.storage.local.get(null, (result) => {
-                    if (result) {{
-
-                        nodeDataObj = result
-
-                        for(let key in nodeDataObj){
-                            nodeData.push(nodeDataObj[key])
-                        }
-                    }}
-                })
-                console.log('fetchNodes nodeData: ', nodeData)
-                setTimeout(() => {
-                    this.currNode = nodeData[nodeData.length - 1]
-                    console.log('fetchNodes this.currNode: ', this.currNode)
-                }, 100)
-                
-                return nodeData
-            },
-             addListener(){
-                //console.log('addListener executed')
-                chrome.storage.onChanged.addListener(async () => {
-                    //console.log('chrome storage changed')
-                    let data = await this.fetchNodes()
-                    setTimeout(() => {this.nodes = data; },100);
-                    //console.log('chrome store changed this.nodes: ', this.nodes)
-                    this.forceRerender()
-                })
-            },
-            forceRerender(){
-                this.componentKey += 1
-                this.currNodeKey += 1      
-            },
-            resetTimeline(){
-                chrome.storage.local.clear()
-            }
+      //check if first node has complete, if not, add complete
+      if(!nodes[this.index].classList.contains('complete')){
+        nodes[this.index].classList.add('complete');
+      }
+      //iterate from index 1 to toggle off complete
+      for(let i = 1; i < nodes.length; i++){
+        if(nodes[i].classList.contains('complete')){
+          nodes[i].classList.remove('complete');
         }
+      }
+      //set the currNode 
+      this.currNode = this.nodes[this.index];
+      this.handleStep()
+                
+    },
+    stepBack(){
+      if(this.index > 0){
+        const nodes = document.querySelectorAll(".complete");
+        const lastNode = nodes[nodes.length-1];
+        if(lastNode.classList.contains('complete')){
+          lastNode.classList.remove('complete');
+          this.index--;
+          this.currNode = this.nodes[this.index];
+          this.handleStep();
+        }
+                    
+      }
+    },
+    stepForward(){
+      //console.log('Step Forward clicked')
+      const nodes = document.querySelectorAll(".timeline-nodes")
+      //only allow stepForward to execute if the index is less than the total length
+      if(this.index < nodes.length - 1){
+        //initialize lastNode to the allNodes at the key of this.index
+        const lastNode = nodes[this.index];
+        if(!lastNode.classList.add('complete')){
+          lastNode.classList.add('complete');
+          this.index++;
+          this.currNode = this.nodes[this.index];
+          this.handleStep()
+        }
+                    
+
+                    
+      }
+    },
+    stepForwardToEnd(){
+      const nodes = document.querySelectorAll(".timeline-nodes")
+      //get the index of the last node
+      this.index = nodes.length - 1
+
+      for(let i = 0; i < this.index; i++){
+        if(!nodes[i].classList.contains('complete')){
+          nodes[i].classList.add('complete')
+        }
+      }
+            
+      //set the currNode
+      this.currNode = this.nodes[this.index]
+      this.handleStep()
+    },
+    stepToNode(input){
+      this.index = parseInt(input)
+      const nodes = document.querySelectorAll(".timeline-nodes")
+
+      //clear all the complete from the nodes
+      for(let i = 0; i < nodes.length; i++){
+        if(nodes[i].classList.contains('complete')){
+          nodes[i].classList.remove('complete');
+        }
+      }
+      //add 'complete' class to nodes up to the index
+      for(let i = 0; i <= this.index; i++){
+        nodes[i].classList.add('complete')
+      }
+                    
+      this.currNode = this.nodes[this.index]
+    },
+    handleStep() {
+      const timestamp = Object.keys(this.currNode)[0]
+      // console.log('handleStep timestamp: ', timestamp)
+      if(timestamp){
+        const messageObj = {
+          source: 'colada-extension',
+          payload: timestamp
+        }
+        this.sendMsg(messageObj);
+      }
+                
+    },
+    sendMsg(message){
+      chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
+    },
+    fetchNodes(){
+      let nodeDataObj;
+      const nodeData = []
+      // Get data from chrome local storage
+      chrome.storage.local.get(null, (result) => {
+        if (result) {{
+
+          nodeDataObj = result
+
+          for(let key in nodeDataObj){
+            nodeData.push(nodeDataObj[key])
+          }
+        }}
+      })
+    //   console.log('fetchNodes nodeData: ', nodeData)
+      setTimeout(() => {
+        this.currNode = nodeData[nodeData.length - 1]
+        console.log('fetchNodes this.currNode: ', this.currNode);
+        // console.log('this.nodes', this.nodes)
+      }, 100)
+                
+      return nodeData
+    },
+    addListener(){
+      //console.log('addListener executed')
+      chrome.storage.onChanged.addListener(async () => {
+        //console.log('chrome storage changed')
+        let data = await this.fetchNodes()
+        setTimeout(() => {this.nodes = data; },100);
+        //console.log('chrome store changed this.nodes: ', this.nodes)
+        this.forceRerender()
+      })
+    },
+    forceRerender(){
+      this.componentKey += 1
+      this.currNodeKey += 1      
+    },
+    resetTimeline(){
+      chrome.storage.local.clear()
     }
+  }
+}
 </script>
 
 <style scoped>

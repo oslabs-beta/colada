@@ -18,6 +18,9 @@ function contentScript() {
   };
 
   window.addEventListener("message", saveMessage);
+  window.addEventListener('load', () => {chrome.storage.local.clear()} );
+
+
   chrome.runtime.onMessage.addListener((message) => {
     console.log("DEVTOOL message payload",message.payload);
     console.log("DEVTOOL message", JSON.stringify(message));
