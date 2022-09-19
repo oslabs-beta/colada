@@ -1,8 +1,0 @@
-{
-    "/dist/js/background.js": "/dist/js/background.js",
-    "/dist/js/content-script.js": "/dist/js/content-script.js",
-    "/dist/js/devtools-background.js": "/dist/js/devtools-background.js",
-    "/dist/js/devtools-panel.js": "/dist/js/devtools-panel.js",
-    "/dist/js/popup.js": "/dist/js/popup.js",
-    "/dist/css/style.css": "/dist/css/style.css"
-}
