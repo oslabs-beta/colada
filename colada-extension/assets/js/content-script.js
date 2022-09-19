@@ -27,9 +27,9 @@ function contentScript() {
     console.log("DEVTOOL message", JSON.stringify(message));
     window.postMessage(JSON.stringify(message), window.location.href)
     }
-    if (message.source === 'colada-extension-clear') {
-      window.location.reload();
-    } 
+    // if (message.source === 'colada-extension-clear') {
+    //   window.location.reload();
+    // } 
   })
 }
 

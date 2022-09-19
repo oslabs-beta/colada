@@ -301,8 +301,8 @@ export default {
     },
     resetTimeline(){
       chrome.storage.local.clear();
-      const message = {source: 'colada-extension-clear'};
-      this.sendMsg(message)
+    //   const message = {source: 'colada-extension-clear'};
+    //   this.sendMsg(message)
     }
   }
 }
