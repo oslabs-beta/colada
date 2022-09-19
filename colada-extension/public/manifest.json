@@ -1,10 +1,10 @@
 {
   "name": "Colada DevTools",
-  "description": "MAKE SURE TO ADD SPECIFIC HOST PERMISSIONS!!",
-  "version": "0.1",
+  "description": "The best companion for Pinia!",
+  "version": "0.9",
   "manifest_version": 3,
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "./background.js"
   },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
@@ -22,7 +22,7 @@
         "https://*/*",
         "http://*/*"
       ],
-       "js": ["js/content-script.js"]
+       "js": ["./content-script.js"]
      }
   ]
 }
