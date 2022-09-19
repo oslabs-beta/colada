@@ -22,9 +22,14 @@ function contentScript() {
 
 
   chrome.runtime.onMessage.addListener((message) => {
+    if (message.source === 'colada-extension') {
     console.log("DEVTOOL message payload",message.payload);
     console.log("DEVTOOL message", JSON.stringify(message));
-    window.postMessage(JSON.stringify(message), window.location.href) 
+    window.postMessage(JSON.stringify(message), window.location.href)
+    }
+    if (message.source === 'colada-extension-clear') {
+      window.location.reload();
+    } 
   })
 }
 

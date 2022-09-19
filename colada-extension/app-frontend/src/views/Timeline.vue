@@ -59,6 +59,8 @@ export default {
     VertTimeline,
     CurrentNode,
   },
+
+
        
         
   async mounted(){
@@ -67,6 +69,7 @@ export default {
     this.addListener();
     //get the current time and assign it to startTime to be passed as a prop 
     this.startTime = Date.now();
+    // this.fetchNodes();
     // this.currNode =   {
     //             "1662748551668": {
     //                 "actions":{},
@@ -122,6 +125,7 @@ export default {
             
     setTimeout( () => {
       this.nodes = this.fetchNodes(); 
+    // this.fetchNodes();
       console.log("timeline.vue mounted this.nodes: ", this.nodes);
       //set the index to the last node
       this.index = this.nodes.length - 1
@@ -267,8 +271,17 @@ export default {
       setTimeout(() => {
         this.currNode = nodeData[nodeData.length - 1]
         console.log('fetchNodes this.currNode: ', this.currNode);
+        console.log('fetchNodes nodeData after timeout', nodeData);
+        // this.nodes = nodeData;
+        // this.forceRerender();
+        // console.log('fetchNodes this.nodes',this.nodes)
+        // return nodeData;
         // console.log('this.nodes', this.nodes)
-      }, 100)
+      }, 100);
+
+    //   setTimeout(() => {return nodeData},105);
+
+    console.log("fetchNodes nodeData before timeout", nodeData)
                 
       return nodeData
     },
@@ -287,7 +300,9 @@ export default {
       this.currNodeKey += 1      
     },
     resetTimeline(){
-      chrome.storage.local.clear()
+      chrome.storage.local.clear();
+      const message = {source: 'colada-extension-clear'};
+      this.sendMsg(message)
     }
   }
 }
