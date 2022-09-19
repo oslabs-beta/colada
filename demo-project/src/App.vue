@@ -15,18 +15,22 @@ window.store = {store, counter}
 
 <template>
   <div class="wrapper">
-    <Header msg="You did it!" />
-    You wrote: {{ store.myStr }}<br/>
-    there are {{ store.totalPeople }} people.
+    <Header msg="Colada Demo Project" />
+    <div class="content-container">
+      <div class="btn-container">
+        <h1>Count: <span class="green">{{counter.count}}</span></h1>
+        <Counter @btn-click = "counter.increment" :num="counter.count" />
+        <DoubleStore @dbl-store-count="counter.increment" @dbl-store-text="store.addPerson(store.myStr)" :num="counter.count"/>
+      </div>
+      <div class="text-container">
+        <h1>You wrote: <span class="green">{{ store.myStr }}</span></h1>
+        <h2>there are <span class="yellow">{{ store.totalPeople }}</span> people.</h2>
+        <input v-model="store.myStr" @keydown.enter="store.addPerson(store.myStr)" />
+        <main>
+          <Main v-for="item in store.elements" :item="item" />
+        </main>
+      </div>
+    </div>
   </div>
-  
-  <input v-model="store.myStr" @keydown.enter="store.addPerson(store.myStr)" />
-  <main>
-    <Main v-for="item in store.elements" :item="item" />
-  </main>
-
-  <Counter @btn-click = "counter.increment" :num="counter.count" />
-
-  <DoubleStore @dbl-store-count="counter.increment" @dbl-store-text="store.addPerson(store.myStr)" :num="counter.count"/>
-
 </template>
+

@@ -7,6 +7,9 @@ $nav-click:rgb(71, 91, 118);
 $border-color:rgb(71, 91, 118);
 $store-color:rgb(199, 165, 243);
 $pinia-color:rgb(250,217,111);
+$red-500: #ef4444;
+$slate-400: #94a3b8;
+$slate-800:#1e293b;
 
 //****************** Below is App.vue styling ***************
 
@@ -50,23 +53,23 @@ $pinia-color:rgb(250,217,111);
 //****************** Below is Button styling ***************
     .btn {
       display: inline-block;
-      background: $primary-color;
-      color: $background-color;
+      background: $background-color;
+      color: $primary-color;
       border: none;
-      padding: 5px 20px;
-      margin: 5px;
+      padding: 3px 14px;
+      margin: 3px;
       border-radius: 5px;
       cursor: pointer;
       text-decoration: none;
-      font-size: 20px;
+      font-size: 16px;
       font-family: inherit;
       transition:0.25s;
       border:2px solid $primary-color;
     }
 
     .btn:hover{
-        background-color:$background-color;
-        color: $primary-color;
+        background-color:$primary-color;
+        color: $background-color;
     }
 
     .btn:focus {
@@ -80,10 +83,42 @@ $pinia-color:rgb(250,217,111);
       width: 100%;
     }
 
+    .clear-btn {
+      display: inline-block;
+      background: $background-color;
+      color: $red-500;
+      border: none;
+      padding: 3px 14px;
+      margin: 3px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+      font-family: inherit;
+      transition:0.25s;
+      border:2px solid $red-500;
+    }
+
+    .clear-btn:hover{
+        background-color:$red-500;
+        color: $background-color;
+    }
+
+    .clear-btn:focus {
+      outline: none;
+    }
+    .clear-btn:active {
+      transform: scale(0.9);
+    }
+    .clear-btn-block {
+      display: block;
+      width: 100%;
+    }
+
     .timestamp-btn {
       display: inline-block;
-      background: $primary-color;
-      color: $background-color;
+      background: $background-color;
+      color: $primary-color;
       border: none;
       padding: 3px 6px;
       margin: 3px;
@@ -97,8 +132,8 @@ $pinia-color:rgb(250,217,111);
     }
 
     .timestamp-btn:hover{
-        background-color:$background-color;
-        color: $primary-color;
+        background-color:$primary-color;
+        color: $background-color;
     }
 
     .timestamp-btn:focus {
@@ -168,13 +203,9 @@ $pinia-color:rgb(250,217,111);
   height:100%;
   padding-top:1rem;
   flex-grow:3;
-  
+  font-family:monospace;
 }
 
-#reset-btn{
-  background-color: $background-color;
-  color: $primary-color;
-}
 .vert-timeline{
   height:90%;
   width:100%;
@@ -210,9 +241,9 @@ $pinia-color:rgb(250,217,111);
     content: '';
     width: 8px;
     height: 8px;
-    background-color: white;
+    background-color: $slate-400;
     border-radius: 25px;
-    border: 1px solid #ddd;
+    border: 1px solid $slate-400;
     position: absolute;
     top: 25%;
     left: -6px;
@@ -220,18 +251,18 @@ $pinia-color:rgb(250,217,111);
   }
 }
 
-.timeline-nodes:hover{
-  background-color:$nav-hover;
-  cursor:pointer;
-}
+// .timeline-nodes:hover{
+//   background-color:$nav-hover;
+//   cursor:pointer;
+// }
 
-.timeline-nodes:focus, .timeline-nodes:active{
-  background-color:$nav-click;
-}
+// .timeline-nodes:focus, .timeline-nodes:active{
+//   background-color:$nav-click;
+// }
 
-.timeline-nodes.clicked{
-  background-color:$nav-click;
-}
+// .timeline-nodes.clicked{
+//   background-color:$nav-click;
+// }
 
 .node{
   display:flex;
@@ -265,6 +296,7 @@ $pinia-color:rgb(250,217,111);
 }
 
 .timeline-nodes.complete{
+      background-color:$slate-800;
       border-left: 2px solid $primary-color;
       color: $store-color;
       &:before{
@@ -282,7 +314,7 @@ $pinia-color:rgb(250,217,111);
 //****************** Below is Animations ***************
 
 .slide-right-enter-active {
-  transition: all 0.4s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .slide-right-leave-active {
@@ -295,7 +327,7 @@ $pinia-color:rgb(250,217,111);
 }
 
 .slide-left-enter-active {
-  transition: all 0.4s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .slide-left-leave-active {

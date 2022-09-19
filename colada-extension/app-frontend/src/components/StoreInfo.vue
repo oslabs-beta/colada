@@ -1,6 +1,6 @@
 <template>
     <div class="individual-store-container">
-        <h5>Store: <span id="curr-store">{{info.key}}</span></h5>
+        <p>Store: <span id="curr-store">{{info.key}}</span></p>
         <p>State: <span id="curr-state">{{info.value}}</span></p>
         <p>Timestamp: <span id="curr-time">{{timestamp}}</span></p>
     </div>
@@ -26,13 +26,13 @@
         methods: {
             convertTime(timestamp){
                 const date = new Date(timestamp)
-                console.log('date: ', date)
-                const startTime = this.startTime
-                console.log('this.startTime: ', this.startTime)
-                //calculate the difference and divide by 1000 to convert from ms to seconds
-                const difference = (date - this.startTime) / 1000
-                const formattedTime = `+${difference}s`
-                console.log("formattedTime: ", formattedTime)
+                const rawHours = date.getHours();
+                const hours = parseInt(rawHours) < 10 ? `0${rawHours}` : rawHours
+                const rawMinutes = date.getMinutes();
+                const minutes = parseInt(rawMinutes) < 10 ? `0${rawMinutes}` : rawMinutes
+                const rawSeconds = date.getSeconds();
+                const seconds = parseInt(rawSeconds) < 10 ? `0${rawSeconds}` : rawSeconds
+                const formattedTime = `${hours}:${minutes}:${seconds}`;
                 return formattedTime
             }
         }

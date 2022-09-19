@@ -71,6 +71,10 @@
     ul{
         list-style:none;
     }
+
+    li{
+        font-size:14px;
+    }
     .icon{
         width:32px;
         height:32px;
