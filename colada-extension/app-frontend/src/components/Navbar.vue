@@ -26,7 +26,10 @@
 </template>
 
 <script>
-    export default {
-        name: "Navbar",
-    }
+export default {
+  name: 'NavBar',
+  mounted(){
+    console.log('NavBar.vue mounted');
+  }
+};
 </script>

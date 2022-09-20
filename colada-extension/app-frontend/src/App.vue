@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <Navbar />
+        <NavBar />
         <router-view v-slot="{Component, route}">
             <transition :name="route.meta.transition || 'fade'">
                 <component :is="Component" />
@@ -12,14 +12,17 @@
 
 
 <script>
-import Navbar from './components/Navbar.vue'
+import NavBar from './components/NavBar.vue';
 
 export default {
-    name: "App",
-    components: {
-        Navbar
-    }
-}
+  name: 'App',
+  components: {
+    NavBar
+  },
+  mounted(){
+    console.log('App.vue mounted');
+  }
+};
 </script>
 
 <style lang="scss">

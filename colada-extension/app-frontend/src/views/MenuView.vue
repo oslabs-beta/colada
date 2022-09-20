@@ -21,22 +21,23 @@
 </template>
 
 <script>
-    export default {
-        name: 'Menu',
-        mounted(){
-            const icons = document.getElementsByClassName('link')
-            for(let i = 0; i < icons.length; i++){
-                icons[i].addEventListener('click', this.openWindow)
-            }
-        },
-        methods:{
-            openWindow(e){
-                const url = e.target.id
-                console.log(url)
-                window.open(url)
-            }
-        }
+export default {
+  name: 'MenuView',
+  mounted(){
+    console.log('MenuView.vue mounted');
+    const icons = document.getElementsByClassName('link');
+    for(let i = 0; i < icons.length; i++){
+      icons[i].addEventListener('click', this.openWindow);
     }
+  },
+  methods:{
+    openWindow(e){
+      const url = e.target.id;
+      console.log(url);
+      window.open(url);
+    }
+  }
+};
 </script>
 
 <style scoped>

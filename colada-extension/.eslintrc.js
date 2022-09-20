@@ -13,6 +13,10 @@ module.exports = {
     'ecmaVersion': 'latest',
     'sourceType': 'module'
   },
+  'globals' : {
+    'chrome' : 'readonly'
+  },
+  'ignorePatterns' : ['dist/'],
   'plugins': [
     'vue'
   ],
