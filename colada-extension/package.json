@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "build": "npm run dev"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",
