@@ -1,11 +1,16 @@
 import { ProxyObject } from '../types';
 
+declare const window: any;
+
 const unsubscribeMethods: Array<() => void> = [];
 const stores: Array<any> = [];
 const piniaProxies: ProxyObject[] = [];
 
 // declare object where methods will be stored and exported
 const piniaStores: any = {};
+
+// add empty store object to window which will get filled with Pinia stores
+window.store = {};
 
 piniaStores.unsubscribe = () => {
   console.log('unsubscribing...');
@@ -45,6 +50,7 @@ const PiniaColadaPlugin = (context: any) => {
   console.log('devtools.js PiniaColadaPlugin context.store: ', context.store);
   const store: any = context.store;
   stores.push(store);
+  window.store[store.$id] = store;
 };
 
 export {
