@@ -22,7 +22,9 @@
   "sideEffects": false,
   "scripts": {
     "dev": "rimraf dist && rollup -c rollup.config.mjs",
-    "ts": "tsc --watch -d"
+    "ts": "tsc --watch -d",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
@@ -46,6 +48,8 @@
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",
-    "eslint-plugin-vue": "^9.5.1"
+    "eslint-plugin-vue": "^9.5.1",
+    "jsdom": "^20.0.0",
+    "vitest": "^0.23.4"
   }
 }

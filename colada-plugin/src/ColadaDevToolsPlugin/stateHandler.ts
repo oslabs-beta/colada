@@ -45,9 +45,11 @@ const outputCombinedSnapshot = _.debounce(() => {
     source: 'colada',
     payload: combinedSnapshot
   };
-  // TODO: change the second argument here to current URL?
+  
   window.postMessage(JSON.stringify(messageObj), window.location.href);
   
+  console.log('storeHistory is:', storeHistory);
+
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10);
