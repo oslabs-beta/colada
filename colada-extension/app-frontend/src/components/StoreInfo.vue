@@ -33,9 +33,13 @@ export default {
       timestamp: ''
     };
   },
-  updated(){
+  mounted(){
+
     this.data = this.info;
     this.timestamp = this.convertTime(this.data.timestamp);
+  },
+  updated(){
+
   },
   methods: {
     convertTime(timestamp){
