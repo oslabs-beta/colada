@@ -45,14 +45,22 @@ const outputCombinedSnapshot = _.debounce(() => {
     source: 'colada',
     payload: combinedSnapshot
   };
-  // TODO: change the second argument here to current URL?
+  
   window.postMessage(JSON.stringify(messageObj), window.location.href);
   
+  console.log('storeHistory is:', storeHistory);
+
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10);
 
+const testFunc = () => {
+  console.log('running testfunc')
+}
+
 const handleStoreChange = (snapshot: any) => {
+
+  testFunc();
   
   const snapshotClone = _.cloneDeep(snapshot)
 
@@ -107,14 +115,13 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 const setAppState = (snapshot: any) => {
   unsubscribe();
   console.log('running setAppState...');
-  console.log('snapshot in setAppState:', snapshot);
   const stores: any = Object.values(snapshot)[0];
   for (const key in stores) {
     console.log('in for loop in setAppState!');
     window.store[key].$state = stores[key].value;
   }
   resubscribe();
-}
+};
 
 /*
  @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
@@ -135,5 +142,6 @@ export {
   getSnapshotbyTimestamp,
   setAppState,
   resubscribe,
-  unsubscribe
+  unsubscribe,
+  handleStoreChange
 };
