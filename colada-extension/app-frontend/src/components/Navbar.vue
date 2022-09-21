@@ -1,6 +1,6 @@
 <template>
     <div class="navbar">
-        <h3>Colada Dev Tool</h3>
+        <h3>Colada DevTools</h3>
         <div class="navbar-icons">
             <router-link class="nav-icon" to="/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">

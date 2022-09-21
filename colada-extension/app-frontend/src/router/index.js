@@ -5,6 +5,10 @@ import MenuView from '../views/MenuView.vue';
 
 const routes = [
   {
+    path: '/index.html',
+    redirect: '/'
+  },
+  {
     path: '/',
     name: 'TimelineView',
     component: TimelineView,

@@ -21,6 +21,7 @@
   "dependencies": {
     "bootstrap-icons": "^1.9.1",
     "dotenv": "^16.0.2",
-    "swiper": "^8.4.2"
+    "swiper": "^8.4.2",
+    "vue-json-pretty": "^2.2.2"
   }
 }
