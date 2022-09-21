@@ -8,18 +8,11 @@
     "48": "./assets/icon-48.png",
     "128": "./assets/icon-128.png"
   },
-  "background": {
-    "service_worker": "./background.js"
-  },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html"
   },
   "devtools_page": "devtools-background.html",
- 
-  "host_permissions": [
-    "*://*/*"
-  ],
    "content_scripts": [
      {
        "matches": [

@@ -1,6 +1,6 @@
 {
   "name": "colada-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A plugin to support Pinia",
   "author": {
     "name": "Team Colada"
@@ -21,6 +21,7 @@
   },
   "sideEffects": false,
   "scripts": {
+    "prepublish": "npm run dev",
     "dev": "rimraf dist && rollup -c rollup.config.mjs",
     "ts": "tsc --watch -d",
     "test": "vitest",

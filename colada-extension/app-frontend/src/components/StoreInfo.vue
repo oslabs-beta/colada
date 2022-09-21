@@ -1,14 +1,28 @@
 <template>
     <div class="individual-store-container">
         <p>Store: <span id="curr-store">{{info.key}}</span></p>
-        <p>State: <span id="curr-state">{{info.value}}</span></p>
+        <p>State:
+          <vue-json-pretty
+            showLength=true
+            showIcon=true
+            selectOnClickNode=false
+            highlightSelectedNode=false
+            showLine=false
+            :data='{ ...info.value }' />
+        </p>
         <p>Timestamp: <span id="curr-time">{{timestamp}}</span></p>
     </div>
 </template>
 
 <script>
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
+
 export default {
   name: 'CurrentStore',
+  components: {
+    VueJsonPretty
+  },
   props:{
     startTime: Number,
     info: Object
@@ -19,9 +33,13 @@ export default {
       timestamp: ''
     };
   },
-  updated(){
+  mounted(){
+
     this.data = this.info;
     this.timestamp = this.convertTime(this.data.timestamp);
+  },
+  updated(){
+
   },
   methods: {
     convertTime(timestamp){
@@ -63,4 +81,19 @@ export default {
     #curr-time{
         color:rgb(96, 202, 140);
     }
+    
+    /*  some overrides for the included vue-json-pretty css  */
+    .vjs-tree {
+      font-family: monospace !important;
+    }
+    .has-line {
+      border-left: none !important;
+    }
+    .vjs-tree-node {
+      line-height: 16px;
+    }
+    .vjs-tree-node:hover {
+      background-color: #1e293b
+    }
+
 </style>
