@@ -92,8 +92,7 @@ const handleStoreChange = (snapshot: any) => {
 // import the subscribe method and implement associated functionality 
 const initializeState = () => {
   console.log('invoking initializeState!');
-  piniaStores.addTwo(3);
-  // piniaStores.subscribe(handleStoreChange, true);
+  piniaStores.subscribe(handleStoreChange, true);
 };
 
 const resubscribe = () => {
