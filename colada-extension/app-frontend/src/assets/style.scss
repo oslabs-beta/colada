@@ -132,6 +132,12 @@ $slate-800:#1e293b;
       border:2px solid $primary-color;
     }
 
+    //hide button with empty id
+
+     .timestamp-btn[id=""] {
+      display: none
+    }
+
     .timestamp-btn:hover{
         background-color:$primary-color;
         color: $background-color;
