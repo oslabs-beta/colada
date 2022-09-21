@@ -40,8 +40,7 @@
 //Import VertTimeline.vue components
 import VertTimeline from '../components/VertTimeline.vue';
 import CurrentNode from '../components/CurrentNode.vue';
-// import { toRaw, ref } from 'vue';
-// import { addListener } from 'process';
+
 
 export default {
   name: 'TimelineView',
@@ -64,13 +63,15 @@ export default {
     console.log('TimelineView.vue mounted');
     //clears chrome local storage
     this.resetTimeline();
+    //add listener for changes in local storage
     this.addListener();
     //get the current time and assign it to startTime to be passed as a prop 
     this.startTime = Date.now();
-    this.fetchNodes(() => {this.index = this.nodes.length - 1});
+    this.fetchNodes(() => {this.index = this.nodes.length - 1;});
   },
 
   methods: {
+    //step back to beginning of timeline
     stepBackToBeginning(){
       //reset the index
       this.index = 0;
@@ -92,6 +93,7 @@ export default {
       this.handleStep();
                 
     },
+    //step back on timeline
     stepBack(){
       if(this.index > 0){
         const nodes = document.querySelectorAll('.complete');
@@ -105,8 +107,8 @@ export default {
                     
       }
     },
+    //step forward on timeline
     stepForward(){
-      //console.log('Step Forward clicked')
       const nodes = document.querySelectorAll('.timeline-nodes');
       //only allow stepForward to execute if the index is less than the total length
       if(this.index < nodes.length - 1){
@@ -123,6 +125,7 @@ export default {
                     
       }
     },
+    //fastforward to end of timeline
     stepForwardToEnd(){
       const nodes = document.querySelectorAll('.timeline-nodes');
       //get the index of the last node
@@ -138,6 +141,7 @@ export default {
       this.currNode = this.nodes[this.index];
       this.handleStep();
     },
+    //select node in current node display
     stepToNode(input){
       this.index = parseInt(input);
       const nodes = document.querySelectorAll('.timeline-nodes');
@@ -155,9 +159,9 @@ export default {
                     
       this.currNode = this.nodes[this.index];
     },
+    //send message to content script to set state of app when user clicks on timestamp button
     handleStep() {
       const timestamp = Object.keys(this.currNode)[0];
-      // console.log('handleStep timestamp: ', timestamp)
       if(timestamp){
         const messageObj = {
           source: 'colada-extension',
@@ -167,14 +171,15 @@ export default {
       }
                 
     },
+    //send message to content script
     sendMsg(message){
       chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
     },
+    //fetch timeline nodes from chrome local storage
 
     fetchNodes(callback){
       let nodeDataObj;
       const nodeData = [];
-      // Get data from chrome local storage
       chrome.storage.local.get(null, (result) => {
         if (result) {
           nodeDataObj = result;
@@ -183,23 +188,19 @@ export default {
           this.currNode = nodeData[nodeData.length - 1];
           if (typeof callback === 'function') { callback(); }
         }
-      });
-      return nodeData;
-    },
+      });}
+  },
+  //add listener for changes in chrome local storage
+  addListener(){
+    chrome.storage.onChanged.addListener(this.fetchNodes);
+  },
 
-    addListener(){
-      chrome.storage.onChanged.addListener(this.fetchNodes);
-    },
-
-    forceRerender(){
-      this.componentKey += 1;
-      this.currNodeKey += 1;      
-    },
-    resetTimeline(){
-      chrome.storage.local.clear();
-    //   const message = {source: 'colada-extension-clear'};
-    //   this.sendMsg(message)
-    }
+  forceRerender(){
+    this.componentKey += 1;
+    this.currNodeKey += 1;      
+  },
+  resetTimeline(){
+    chrome.storage.local.clear();
   }
 };
 </script>
