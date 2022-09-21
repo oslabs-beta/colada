@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { piniaStores } from './src/PiniaColadaPlugin/index.ts';
-import {describe, expect, it, afterEach, vi } from 'vitest';
+import {describe, expect, it, vi } from 'vitest';
 
 describe('piniaStores.subscribe tests', () => {
 
@@ -15,6 +15,8 @@ describe('piniaStores.subscribe tests', () => {
     const testFuncMock = vi.spyOn(testObj, 'testFunc')
     piniaStores.subscribe(testFuncMock, true);
 
-    expect(testFuncMock).toHaveBeenCalled();
+    // const testFuncMock2 = vi.fn(testObj.testFunc)
+
+    expect(testObj.testFunc).toHaveBeenCalled();
   });
 });
