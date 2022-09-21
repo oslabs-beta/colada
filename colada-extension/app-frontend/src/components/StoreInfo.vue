@@ -7,36 +7,40 @@
 </template>
 
 <script>
-    export default {
-        name: "CurrentStore",
-        props:{
-            startTime: Number,
-            info: Object
-        },
-        data(){
-            return{
-                data:{},
-                timestamp: ""
-            }
-        },
-        updated(){
-            this.data = this.info
-            this.timestamp = this.convertTime(this.data.timestamp)
-        },
-        methods: {
-            convertTime(timestamp){
-                const date = new Date(timestamp)
-                const rawHours = date.getHours();
-                const hours = parseInt(rawHours) < 10 ? `0${rawHours}` : rawHours
-                const rawMinutes = date.getMinutes();
-                const minutes = parseInt(rawMinutes) < 10 ? `0${rawMinutes}` : rawMinutes
-                const rawSeconds = date.getSeconds();
-                const seconds = parseInt(rawSeconds) < 10 ? `0${rawSeconds}` : rawSeconds
-                const formattedTime = `${hours}:${minutes}:${seconds}`;
-                return formattedTime
-            }
-        }
+export default {
+  name: 'CurrentStore',
+  props:{
+    startTime: Number,
+    info: Object
+  },
+  data(){
+    return{
+      data:{},
+      timestamp: ''
+    };
+  },
+  mounted(){
+
+    this.data = this.info;
+    this.timestamp = this.convertTime(this.data.timestamp);
+  },
+  updated(){
+
+  },
+  methods: {
+    convertTime(timestamp){
+      const date = new Date(timestamp);
+      const rawHours = date.getHours();
+      const hours = parseInt(rawHours) < 10 ? `0${rawHours}` : rawHours;
+      const rawMinutes = date.getMinutes();
+      const minutes = parseInt(rawMinutes) < 10 ? `0${rawMinutes}` : rawMinutes;
+      const rawSeconds = date.getSeconds();
+      const seconds = parseInt(rawSeconds) < 10 ? `0${rawSeconds}` : rawSeconds;
+      const formattedTime = `${hours}:${minutes}:${seconds}`;
+      return formattedTime;
     }
+  }
+};
 </script>
 
 <style>

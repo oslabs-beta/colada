@@ -9,49 +9,26 @@
 </template>
 
 <script>
-    import TimelineNode from './TimelineNode.vue'
+import TimelineNode from './TimelineNode.vue';
    
-    export default {
-        name: 'VertTimeline',
-        props:{
-            startTime: Number,
-            nodes: Object,
-            stepToNode: Function
-        },
-        data() {
-            return{
+export default {
+  name: 'VertTimeline',
+  props:{
+    startTime: Number,
+    nodes: Object,
+    stepToNode: Function
+  },
+  data() {
+    return{
 
-            }
-        },
-        components: {
-            TimelineNode,
+    };
+  },
+  components: {
+    TimelineNode,
 
-        },
-        methods: {
+  },
+  methods: {
 
-        },
-
-        updated(){
-            // console.log('VertTimeline this.nodes: ', this.nodes)
-
-            // const timelineNodes = document.getElementsByClassName('timeline-node')
-            // //console.log('VertTimeline.vue timelineNodes: ', timelineNodes)
-            // for(let i = 0; i < timelineNodes.length; i++){
-            //     timelineNodes[i].addEventListener("click", (e) => {
-            //         //console.log('clicked on li, e.target.parentNode: ', e.target.parentNode)
-            //         //post a message timestamp string ("1662748551668")
-            //         const timestamp = "1662748551668"
-            //         const messageObj = {
-            //         source: 'colada-extension',
-            //         payload: timestamp
-            //         }
-            //         this.sendMsg(messageObj);
-            //         // console.log('node clicked, messageObj: ', messageObj)
-            //         // window.postMessage(JSON.stringify(messageObj), window.location.href) 
-            //         // console.log('window.location.href: ', window.location.href)
-            //         // chrome.devtools.instpectedWindow.eval("sendMessage()",{useContentScriptContext: true});
-            //     })
-            // }
-        }
-    }
+  },
+};
 </script>
