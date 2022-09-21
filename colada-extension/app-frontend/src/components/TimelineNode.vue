@@ -39,6 +39,7 @@ export default {
     this.formattedTime = this.convertTime(parseInt([Object.keys(this.node)[0]][0]));
   },
   methods: {
+    //send message to content script to update state of app when user clicks on timestamp button
     handleClick(event) {
       const tmstmp = event.target.id;
       const messageObj = {
@@ -50,10 +51,12 @@ export default {
       const index = event.target.parentNode.id;
       this.stepToNode(index);
     },
+    //send message to content script
     sendMsg(message){
       console.log('TimelineNode.vue sendMsg message: ', message);
       chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
     },
+    //convert timestamp to relative time in seconds since beginning of session
     convertTime(timestamp){
       const date = new Date(timestamp);
       //calculate the difference and divide by 1000 to convert from ms to seconds
