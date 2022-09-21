@@ -18,7 +18,7 @@
 
 # What is [Colada](https://colada.dev/)?
 
-## *The perfect companion for [Pinia🍍](https://pinia.vuejs.org/ "Pinia homepage and documentation"), Vue's official state management library*
+## *Time-travel debugging for [Pinia🍍](https://pinia.vuejs.org/ "Pinia homepage and documentation"), Vue's official state management library*
 <br/>
 
 ## Colada offers a suite of tools for Vue developers working with the [Pinia state management library](https://pinia.vuejs.org/):

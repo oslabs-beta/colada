@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A plugin to support Pinia",
   "author": {
-    "name": "Team Colada"
+    "name": "Jonathan Chen, Parker Steinberg, Vaughn Sulit, Dan Steinbrook"
   },
   "main": "dist/colada-plugin.cjs.js",
   "module": "dist/colada-plugin.esm-bundler.js",

@@ -27,7 +27,8 @@ export function setupDevtools(app: any) {
     id: inspectorId,
     label: 'Colada 🥥',
     packageName: 'colada-plugin',
-    homepage: 'https://vuejs.org',
+    homepage: 'https://colada.dev/',
+    logo: 'https://colada.dev/assets/colada-logo.46c683a0.png',
     app,
     enableEarlyProxy: true,
     settings: {}
@@ -112,7 +113,7 @@ export function setupDevtools(app: any) {
       const node = payload.treeNode;
       if (payload.componentInstance.type.meow) {
         node.tags.push({
-          label: 'meow',
+          label: 'colada',
           textColor: 0x000000,
           backgroundColor: 0xff984f
         });
@@ -127,29 +128,8 @@ export function setupDevtools(app: any) {
     api.addInspector({
       id: inspectorId,
       label: 'Colada 🥥',
-      icon: 'sentiment_very_dissatisfied',
+      icon: 'code',
       treeFilterPlaceholder: 'Searching...',
-
-      //Adds
-      actions: [
-        {
-          icon: 'coronavirus',
-          tooltip: 'Step back',
-          action: () => console.log('Step back in the timeline')
-        },
-        {
-          icon: 'star',
-          tooltip: 'Step foward',
-          action: () => console.log('Step forward in the timeline')
-        },
-      ],
-      nodeActions: [
-        {
-          icon: 'sentiment_satisfied',
-          tooltip: 'Have a great day!',
-          action: (nodeId) => console.log('Node action: ', nodeId)
-        }
-      ]
     });
 
     api.on.getInspectorTree((payload: any) => {
