@@ -60,17 +60,19 @@ export default {
   },
 
   async mounted(){
-    console.log('TimelineView.vue mounted');
     //clears chrome local storage
     this.resetTimeline();
     //add listener for changes in local storage
     this.addListener();
     //get the current time and assign it to startTime to be passed as a prop 
     this.startTime = Date.now();
-    this.fetchNodes(() => {this.index = this.nodes.length - 1;});
+    this.fetchNodes(() => {
+      this.index = this.nodes.length - 1;
+    });
   },
 
   methods: {
+    
     //step back to beginning of timeline
     stepBackToBeginning(){
       //reset the index
@@ -91,8 +93,8 @@ export default {
       //set the currNode 
       this.currNode = this.nodes[this.index];
       this.handleStep();
-
     },
+
     //step back on timeline
     stepBack(){
       if(this.index > 0){
@@ -104,9 +106,9 @@ export default {
           this.currNode = this.nodes[this.index];
           this.handleStep();
         }
-
       }
     },
+
     //step forward on timeline
     stepForward(){
       const nodes = document.querySelectorAll('.timeline-nodes');
@@ -120,11 +122,9 @@ export default {
           this.currNode = this.nodes[this.index];
           this.handleStep();
         }
-
-
-
       }
     },
+
     //fastforward to end of timeline
     stepForwardToEnd(){
       const nodes = document.querySelectorAll('.timeline-nodes');
@@ -141,6 +141,7 @@ export default {
       this.currNode = this.nodes[this.index];
       this.handleStep();
     },
+
     //select node in current node display
     stepToNode(input){
       this.index = parseInt(input);
@@ -159,6 +160,7 @@ export default {
 
       this.currNode = this.nodes[this.index];
     },
+
     //send message to content script to set state of app when user clicks on timestamp button
     handleStep() {
       const timestamp = Object.keys(this.currNode)[0];
@@ -169,14 +171,14 @@ export default {
         };
         this.sendMsg(messageObj);
       }
-
     },
+    
     //send message to content script
     sendMsg(message){
       chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
     },
+    
     //fetch timeline nodes from chrome local storage
-
     fetchNodes(callback){
       let nodeDataObj;
       const nodeData = [];
@@ -186,22 +188,22 @@ export default {
           for(let key in nodeDataObj){ nodeData.push(nodeDataObj[key]); }
           this.nodes = nodeData;
           this.currNode = nodeData[nodeData.length - 1];
+          if (nodeData.length === 0) this.startTime = Date.now();
           if (typeof callback === 'function') { callback(); }
         }
-      });},
+      });
+    },
+
     //add listener for changes in chrome local storage
     addListener(){
       chrome.storage.onChanged.addListener(this.fetchNodes);
     },
 
-    forceRerender(){
-      this.componentKey += 1;
-      this.currNodeKey += 1;      
-    },
     resetTimeline(){
       chrome.storage.local.clear();
     }
   }};
+
 </script>
 
 <style scoped>

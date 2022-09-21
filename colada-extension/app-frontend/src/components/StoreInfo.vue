@@ -81,7 +81,8 @@ export default {
     #curr-time{
         color:rgb(96, 202, 140);
     }
-
+    
+    /*  some overrides for the included vue-json-pretty css  */
     .vjs-tree {
       font-family: monospace !important;
     }
