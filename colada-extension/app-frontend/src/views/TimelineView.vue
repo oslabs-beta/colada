@@ -60,9 +60,6 @@ export default {
     CurrentNode,
   },
 
-
-       
-        
   async mounted(){
     console.log('TimelineView.vue mounted');
     //clears chrome local storage
@@ -70,88 +67,7 @@ export default {
     this.addListener();
     //get the current time and assign it to startTime to be passed as a prop 
     this.startTime = Date.now();
-    // this.fetchNodes();
-    // this.currNode =   {
-    //             "1662748551668": {
-    //                 "actions":{},
-    //                 "editable": true,
-    //                 "getters": {},
-    //                 "key": "store",
-    //                 "state": ["myStr","elements"],
-    //                 "timestamp": 1662748551668,
-    //                 "type": "Store: store",
-    //                 "value": {
-    //                     "elements": [],
-    //                     "myStr": "j"
-    //                 }
-    //             }
-    //         }
-
-    //  this.currNode =   {
-    //             "1662748551668": {
-    //                 counter: {
-    //                     "actions":{},
-    //                     "editable": true,
-    //                     "getters": {},
-    //                     "key": "counter",
-    //                     "state": ["count"],
-    //                     "timestamp": 1662748551668,
-    //                     "type": "Store: counter",
-    //                     "value": {
-    //                         "count":0
-    //                     }
-    //                 },
-    //                 store: {
-    //                     "actions":{},
-    //                     "editable": true,
-    //                     "getters": {},
-    //                     "key": "store",
-    //                     "state": ["myStr","elements"],
-    //                     "timestamp": 1662748551668,
-    //                     "type": "Store: store",
-    //                     "value": {
-    //                         "elements": [],
-    //                         "myStr": "j"
-    //                     }
-    //                 },
-
-    //         }
-    //     }
-
-    // console.log('entered mounted');
-    // setTimeout(() => {
-    //     const nodeData = await this.fetchNodes();
-    // }, 150)
-            
-            
-    setTimeout( () => {
-      this.nodes = this.fetchNodes(); 
-      // this.fetchNodes();
-      console.log('timeline.vue mounted this.nodes: ', this.nodes);
-      //set the index to the last node
-      this.index = this.nodes.length - 1;
-    },75);
-
-    // console.log("timeline.vue mounted this.nodes: ", this.nodes)
-
-    // setTimeout(() => {
-    //   // this.currNode = this.nodes[0];
-    //   //set the first timeline node class to complete
-    //   // const firstNode = document.querySelector(".timeline-node")
-    //   // if(firstNode){
-    //   //     firstNode.classList.toggle('complete')
-    //   // }
-
-                
-
-    //   //set the currNode to the last index
-    //   //this.currNode = this.nodes[this.index];
-
-    //   //this.forceRerender()
-    // },500);
-
-    //add listener for chrome storage on change
-    // this.addListener()
+    this.fetchNodes(() => {this.index = this.nodes.length - 1});
   },
 
   methods: {
@@ -254,48 +170,27 @@ export default {
     sendMsg(message){
       chrome.tabs.sendMessage(chrome.devtools.inspectedWindow.tabId, message);
     },
-    fetchNodes(){
+
+    fetchNodes(callback){
       let nodeDataObj;
       const nodeData = [];
       // Get data from chrome local storage
       chrome.storage.local.get(null, (result) => {
-        if (result) {{
-
+        if (result) {
           nodeDataObj = result;
-
-          for(let key in nodeDataObj){
-            nodeData.push(nodeDataObj[key]);
-          }
-        }}
+          for(let key in nodeDataObj){ nodeData.push(nodeDataObj[key]); }
+          this.nodes = nodeData;
+          this.currNode = nodeData[nodeData.length - 1];
+          if (typeof callback === 'function') { callback(); }
+        }
       });
-      //   console.log('fetchNodes nodeData: ', nodeData)
-      setTimeout(() => {
-        this.currNode = nodeData[nodeData.length - 1];
-        console.log('fetchNodes this.currNode: ', this.currNode);
-        console.log('fetchNodes nodeData after timeout', nodeData);
-        // this.nodes = nodeData;
-        // this.forceRerender();
-        // console.log('fetchNodes this.nodes',this.nodes)
-        // return nodeData;
-        // console.log('this.nodes', this.nodes)
-      }, 100);
-
-      //   setTimeout(() => {return nodeData},105);
-
-      console.log('fetchNodes nodeData before timeout', nodeData);
-                
       return nodeData;
     },
+
     addListener(){
-      //console.log('addListener executed')
-      chrome.storage.onChanged.addListener(async () => {
-        //console.log('chrome storage changed')
-        let data = await this.fetchNodes();
-        setTimeout(() => {this.nodes = data; },100);
-        //console.log('chrome store changed this.nodes: ', this.nodes)
-        this.forceRerender();
-      });
+      chrome.storage.onChanged.addListener(this.fetchNodes);
     },
+
     forceRerender(){
       this.componentKey += 1;
       this.currNodeKey += 1;      
