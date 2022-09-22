@@ -26,7 +26,7 @@ export function setupDevtools(app: any) {
     label: 'Colada 🥥',
     packageName: 'colada-plugin',
     homepage: 'https://colada.dev/',
-    logo: 'https://colada.dev/assets/colada-logo.46c683a0.png',
+    logo: 'https://user-images.githubusercontent.com/34523493/191631808-4dee4315-2638-4214-9c4f-c074316d969e.png',
     app,
     enableEarlyProxy: true,
     settings: {}
@@ -57,10 +57,8 @@ export function setupDevtools(app: any) {
       // grab timestamp from eventToAdd
       const currentTimestamp = parseInt(Object.keys(eventToAdd)[0]);
       const currentStores = Object.values(eventToAdd[currentTimestamp]);
-      console.log('currentStores', currentStores);
       // iterate over snapshot associated with that timestamp
       currentStores.forEach((store: any) => {
-        console.log('store in forEach', store);
         // add timelineEvent for each store
         api.addTimelineEvent({
           layerId: timelineLayerId,

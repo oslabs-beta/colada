@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="" target="_blank">
+  <a href="https://colada.dev/" target="_blank">
   <!--TODO: update img src and href's below once our app is live and make sure that the links open in a new tab-->
     <img width="300" src="https://colada.dev/assets/Colada.b6cd244a.png" alt="Colada logo">
   </a>
@@ -8,10 +8,10 @@
 <br/>
 <p align="center">
   <!--TODO: update img src and href's below once our app is live and make sure that the links open in a new tab-->
-  <a href="https://opensource.org/licenses/MIT"><img src="https://badgen.net/badge/license/MIT/green" alt="license MIT"></a>
-  <a href="https://npmjs.com/package/colada-plugin"><img src="https://badgen.net/npm/v/colada-plugin" alt="npm package"></a>
-  <a href="https://chrome.google.com/webstore/category/extensions"><img src="https://badgen.net/chrome-web-store/v/ckkdlimhmcjmikdlpkmbgfkaikojcbjk" alt="chrome web store"></a>
-  <a href="https://www.typescriptlang.org/docs/"><img src="https://badgen.net/badge/icon/typescript?icon=typescript&label" alt="typescript"></a>
+  <a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://badgen.net/badge/license/MIT/green" alt="license MIT"></a>
+  <a href="https://npmjs.com/package/colada-plugin" target="_blank"><img src="https://badgen.net/npm/v/colada-plugin" alt="npm package"></a>
+  <a href="https://chrome.google.com/webstore/category/extensions" target="_blank"><img src="https://badgen.net/badge/icon/chrome?icon=chrome&label" alt="chrome web store"></a>
+  <a href="https://www.typescriptlang.org/docs/" target="_blank"><img src="https://badgen.net/badge/icon/typescript?icon=typescript&label" alt="typescript"></a>
 
 </p>
 <br/>
@@ -22,8 +22,8 @@
 <br/>
 
 ## Colada offers a suite of tools for Vue developers working with the [Pinia state management library](https://pinia.vuejs.org/):
-1. [Chrome DevTool Extension]()
-2. [NPM package](https://www.npmjs.com/package/colada-plugin) that serves as a [plugin](https://devtools.vuejs.org/plugin/plugins-guide.html) for the [Vue.js DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
+1. [Chrome DevTool Extension](https://chrome.google.com/webstore/category/extensions)
+2. [NPM package](https://www.npmjs.com/package/colada-plugin) that serves as a [plugin](https://devtools.vuejs.org/plugin/plugins-guide.html) for the [Vue.js DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) Chrome Extension
 3. [Pinia🍍](https://pinia.vuejs.org/) plugin to directly access and mutate your app's store
 
 <br/>
@@ -31,17 +31,18 @@
 ## Core Features
 
 - ✅  Minimal installation and automatic detection of Vue app in Vue.js DevTools
-- 🔄  Direct integration into [Vue.js DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en), so developers can use Colada without needing to leave their existing devtool configuration
+- 🔄  Direct integration into [Vue.js DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en), so developers can use Colada without leaving their existing devtool configuration
   - 🕰️  Time travel debugging
-  - 🔎  Inspector panel for viewing your Vue app's Pinia state
-- 💻  A [Chrome DevTool Extension]() providing enhanced features, including: 
+  - 🔎  Inspector panel for viewing Pinia state within your Vue app
+- 💻  A [Chrome DevTool Extension](https://chrome.google.com/webstore/category/extensions) providing enhanced features, including: 
   - 🕰️  Time travel debugging
-  - 🔎  Inspector panel for viewing your Vue app's Pinia state
+  - 🔎  Inspector panel for viewing Pinia state within your Vue app
 
 <br/>
 
-## INSERT TIME TRAVEL DEBUGGING GIF HERE
-<img width="800px" src="https://c.tenor.com/KEzW7ALwfUAAAAAM/cat-what.gif" alt="demo gif" />
+# TODO: ADD GIF
+
+<img width="800px" src="https://user-images.githubusercontent.com/34523493/191632177-fe2eaf91-98d0-4589-bad5-8af6ad628e99.png" alt="demo screenshot" />
 
 <br/>
 <br/>
@@ -49,7 +50,7 @@
 # Getting Started
 
 ## Installation: **Vue DevTools Plugin**
-0. Ensure the [Vue.js DevTools extension](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) is installed
+0. Ensure the [Vue.js DevTools Chrome Extension](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) is installed
 1. Install the [Colada npm Package](https://www.npmjs.com/package/colada-plugin) in your app's root directory
 ```bash
 npm install colada-plugin --save-dev
@@ -76,53 +77,73 @@ app.mount('#app');
 ```
 <br/>
 
-## Installation: **Chrome Extension**
-### There are two ways to install the Colada Chrome extension:
+## Installation: **Chrome DevTools Extension**
 
-### Install from the Chrome Web Store (Coming Soon!)
+
+### There are two ways to install the Colada Chrome Extension:
+
+
+### 1. **Install from the Chrome Web Store (Coming Soon!)**
 1. Navigate to [Colada on the Chrome Web Store](https://chrome.google.com/webstore/category/extensions), and click "Add to Chrome"
 
-### Install from source
+### 2. **Install from source**
 
-1. Run the following commands
+1. Clone this repository
+2. Run the following commands
 ```
 cd colada-extension
 npm install
 npm run build
 ```
-2. This will create a new `/dist` directory in `/colada-extension`
-3. In Chrome, navigate to [chrome://extensions](chrome://extensions).
-4. In the top right of the Extensions page, there is a toggle for "Developer Mode." Make sure this is toggled **ON**.
-5. On the top left of the page, select "Load Unpacked", and select the `colada/colada-extension/dist` directory.
+3. This will create a new `/dist` directory in `/colada-extension`
+4. In Chrome, navigate to [chrome://extensions](chrome://extensions).
+5. In the top right of the Extensions page, there is a toggle for "Developer Mode." Make sure this is toggled **ON**.
+6. On the top left of the page, select "Load Unpacked", and select the `colada/colada-extension/dist` directory.
 
 <br/>
 <br/>
 
 # How to Use Colada
 
-## Using the Colada Vue DevTools Plugin
-- Navigate to the Vue Devtools
+## Using the Colada **Vue DevTools Plugin**
+- Navigate to the Vue.js DevTools
+<br/>
 
-### Time Travel Debugging
+### **Time Travel Debugging**
 - Select the "Colada" timeline in the timeline view 
-- **TURN OFF SCREENSHOTS <br/>
-<img width="600px" src="https://mdswanson.com/static/chops-ux-step-4.png" alt="Time travel screenshot for plugin">
-- Click on events automatically tracked on the timeline to travel through time and update your app's state
+- Turn off screenshots <br/>
+<img width=600px src="https://user-images.githubusercontent.com/40417991/191641371-1987ad2a-ca47-4fea-8ed9-8513e4158224.png">
+- Changes in your app's store and state will automatically be tracked on the timeline
+- Click on timeline events to travel through time and update your app's state
+<br/><br/>
 
-### Inspector Panel - View Your Apps State in Real Time!
+### **Inspector Panel** - View Your App's Stores and State in Real Time
 - Select "Colada" in the component menu drop down
 - Click on your Pinia store to view state, actions, and getters, updated in real time
+<br/>
+<img width=800px src="https://user-images.githubusercontent.com/40417991/191645124-67f347a7-e89e-479f-b123-fb56e68d0c7f.png">
 
-## Using the Colada Chrome DevTool Extension
-- STILL NEED TO FILL THIS IN WITH SCREENSHOTS
 
+<br/>
+<hr/>
+<br/>
+
+## Using the Colada **Chrome DevTool Extension**
+- Navigate to Colada DevTools in Chrome 
+<br/>
+<img width=400px src="https://github.com/oslabs-beta/colada/blob/dev/colada-extension/public/assets/chrome-dev-tools.png?raw=true">
+- Changes in your app's store and state will automatically be tracked on the timeline
+- Click on a timestamp or use the arrows to travel through time and update your app's state
+- View your app's state as you time travel in the inspector panel on the right
+<br>
+<img width=1000px src="https://user-images.githubusercontent.com/34523493/191632172-9a2615f9-ac85-4c26-9bcc-14435014c8e1.png">
 
 <br/>
 <br/>
 
 # How to Give Colada a Test Run With Our Demo App
 
-1. Clone this repo
+1. Clone this repository
 2. Navigate to the ```demo-project``` directory
 ```
 cd demo-project
@@ -132,22 +153,23 @@ cd demo-project
 npm install
 npm run dev
 ```
+4. Interact with the app to watch the app's state update in real-time!
 
 <br/>
 <br/>
 
 # Contributing and Issues
-### Interested in conributing to Colada? Reach out to our [core team](https://colada.dev/#contributors) <br/>
-### Feature requests or issues/bugs to report? [Let us know!](https://github.com/oslabs-beta/colada/issues)
+Interested in conributing to Colada? Reach out to our [core team](https://colada.dev/#contributors) <br/>
+Feature requests or issues/bugs to report? [Let us know!](https://github.com/oslabs-beta/colada/issues)
 
 <br/>
 
 # Release Notes
 ## Contributors
-- ### Parker Steinberg • [LinkedIn](https://www.linkedin.com/in/parker-steinberg/) • [Github](https://github.com/parkersteinberg)
-- ### Jonathan Chen • [LinkedIn](https://www.linkedin.com/in/jonathan-hp-chen/) • [Github](https://github.com/JonHPC)
-- ### Vaughn Sulit • [LinkedIn](https://www.linkedin.com/in/bvaughnsulit/) • [Github](https://github.com/bvaughnsulit)
-- ### Dan Steinbrook • [LinkedIn](https://www.linkedin.com/in/daniel-steinbrook/) • [Github](https://github.com/dsteinbrook)
+- Parker Steinberg • [LinkedIn](https://www.linkedin.com/in/parker-steinberg/) • [Github](https://github.com/parkersteinberg)
+- Jonathan Chen • [LinkedIn](https://www.linkedin.com/in/jonathan-hp-chen/) • [Github](https://github.com/JonHPC)
+- Vaughn Sulit • [LinkedIn](https://www.linkedin.com/in/bvaughnsulit/) • [Github](https://github.com/bvaughnsulit)
+- Dan Steinbrook • [LinkedIn](https://www.linkedin.com/in/daniel-steinbrook/) • [Github](https://github.com/dsteinbrook)
 
 <br/>
 0.14.0 | Initial release of Colada, more to come!
