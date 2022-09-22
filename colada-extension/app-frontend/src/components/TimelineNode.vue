@@ -30,10 +30,8 @@ export default {
       formattedTime:''
     };
   },
-  components:{
-    //StoreNode
-  },
-  updated(){
+  components:{},
+  mounted(){
     this.data = this.node[Object.keys(this.node)[0]];
     this.timestamp = Object.keys(this.node)[0];
     this.formattedTime = this.convertTime(parseInt([Object.keys(this.node)[0]][0]));
@@ -60,7 +58,14 @@ export default {
     convertTime(timestamp){
       const date = new Date(timestamp);
       //calculate the difference and divide by 1000 to convert from ms to seconds
-      const difference = ((date - this.startTime) / 1000).toFixed(3);
+      let difference = ((date - this.startTime) / 1000).toFixed(3);
+      // when the page reloads, it sends a new messaage to our extention. since there
+      // is a slight delay between when this message is sent from the page, and
+      // when we declare the 'startTime' const, there is a slight difference
+      // between these timestamps. since it would be weird for the initial state
+      // to have a timestamp of 0.7s or something like that, we'll just convert
+      // it to 0. kinda icky, but it does the job.
+      if (difference < 1) difference = (0).toFixed(3);
       const formattedTime = `+${difference}s`;
       return formattedTime;
     },
