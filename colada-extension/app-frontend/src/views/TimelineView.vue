@@ -1,7 +1,7 @@
 <template>
   <div class="timeline-container">
     <div class="vertical-left">
-      <VertTimeline :startTime="startTime" :key="componentKey" :nodes="nodes" :stepToNode="stepToNode"/>
+      <VertTimeline :startTime="startTime" :nodes="nodes" :stepToNode="stepToNode"/>
       <div class="btn-container">
         <button @click="stepBackToBeginning" id="back-btn-all" class="btn">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-double-up" viewBox="0 0 16 16">
@@ -32,7 +32,7 @@
         </button>
       </div>
     </div>
-    <CurrentNode :startTime="startTime" :key="currNodeKey" :node="currNode"/>
+    <CurrentNode :startTime="startTime" :node="currNode"/>
   </div>
 </template>
 
@@ -49,8 +49,6 @@ export default {
       index: 0,
       nodes: [],
       currNode: {},
-      componentKey: 0,
-      currNodeKey: 0,
       startTime: 0
     };
   },
@@ -60,14 +58,12 @@ export default {
   },
 
   async mounted(){
-    //clears chrome local storage
-    this.resetTimeline();
     //add listener for changes in local storage
     this.addListener();
-    //get the current time and assign it to startTime to be passed as a prop 
-    this.startTime = Date.now();
     this.fetchNodes(() => {
       this.index = this.nodes.length - 1;
+      // set start time to the timstamp of the first saved node
+      this.startTime = Object.keys(this.nodes[0])[0]
     });
   },
 
@@ -188,7 +184,8 @@ export default {
           for(let key in nodeDataObj){ nodeData.push(nodeDataObj[key]); }
           this.nodes = nodeData;
           this.currNode = nodeData[nodeData.length - 1];
-          if (nodeData.length === 0) this.startTime = Date.now();
+          // if nodes are empty, reset start time to current time
+          if (nodeData.length === 0){ this.startTime = Date.now() }
           if (typeof callback === 'function') { callback(); }
         }
       });
