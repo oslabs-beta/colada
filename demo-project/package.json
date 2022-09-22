@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "colada-plugin": "^0.1.0",
+    "colada-plugin": "file:../colada-plugin",
     "pinia": "^2.0.17",
     "vue": "^3.2.37"
   },
