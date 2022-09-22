@@ -1,8 +1,11 @@
 import { piniaStores } from '../PiniaColadaPlugin/index';
 import * as _ from 'lodash';
+import debounce from 'lodash.debounce';
+import cloneDeep from 'lodash.clonedeep';
+import isEmpty from 'lodash.isempty';
 
 // delcare global variables
-let storeHistory: any = [];
+const storeHistory: any = [];
 declare const window: any 
 let combinedSnapshot: any = {};
 const storeLabels: any = [];
@@ -14,8 +17,7 @@ const storeLabels: any = [];
 * emit custom addTimelineEvent event with combinedSnapshot as payload
 * send data to extension via window.postMessage with combinedSnapshot as payload
 */
-const outputCombinedSnapshot = _.debounce(() => {
-  console.log(`outputCombinedSnapshot running at time ${Date.now()}`);
+const outputCombinedSnapshot = debounce(() => {
   // delcare variable missing stores, which will have the labels for the missing stores from snapShot
   const missingStores = storeLabels.filter((label: any) => {
     return !Object.keys(combinedSnapshot[Object.keys(combinedSnapshot)[0]]).includes(label);
@@ -25,7 +27,7 @@ const outputCombinedSnapshot = _.debounce(() => {
     // can replace this with getter function below
     // need to make a deep clone, otherwise we will be udpated the mostRecentSnapshot inadvertently 
     const mostRecentSnapshot = getCurrentStores(true);
-    const mostRecentSnapshotClone: any = _.cloneDeep(mostRecentSnapshot);
+    const mostRecentSnapshotClone: any = cloneDeep(mostRecentSnapshot);
     // get correspong store and have to const
     const mostRecentStore = mostRecentSnapshotClone[Object.keys(mostRecentSnapshotClone)[0]][store];
     // add hasBeenUpdated = false property to snapshot we're adding
@@ -47,34 +49,25 @@ const outputCombinedSnapshot = _.debounce(() => {
   };
   
   window.postMessage(JSON.stringify(messageObj), window.location.href);
-  
-  console.log('storeHistory is:', storeHistory);
 
   // reset combinedSnapshot to empty object
   combinedSnapshot = {};
 }, 10);
 
-const testFunc = () => {
-  console.log('running testfunc')
-}
-
 const handleStoreChange = (snapshot: any) => {
-
-  testFunc();
   
-  const snapshotClone = _.cloneDeep(snapshot)
+  const snapshotClone = cloneDeep(snapshot)
 
   // add hasBeenUpdated property to true on snapshotClone
   snapshotClone.hasBeenUpdated = true;
 
   // add snapshots's label ('key' proprety) to storeLabels if it's not already in there
-  // ! really, this only needs to run on initial page load but it will end up checking the conditional on every trigger of handleStoreChange
   if (!storeLabels.includes(snapshotClone.key)) {
     storeLabels.push(snapshotClone.key);
   }
 
   // if finalSnaphsot has no properites, add initial timestamp property along with associated snapshotClone
-  if (_.isEmpty(combinedSnapshot)) {
+  if (isEmpty(combinedSnapshot)) {
     combinedSnapshot[snapshotClone.timestamp] = {
       [snapshotClone.key]: snapshotClone
     };
@@ -91,7 +84,6 @@ const handleStoreChange = (snapshot: any) => {
 
 // import the subscribe method and implement associated functionality 
 const initializeState = () => {
-  console.log('invoking initializeState!');
   piniaStores.subscribe(handleStoreChange, true);
 };
 
@@ -106,7 +98,6 @@ const unsubscribe = () => {
 
 // NOTE: currently 0(n) ... consider refactoring to use binary search
 const getSnapshotbyTimestamp = (timestamp: number) => {
-  console.log('retrieving snapshot at timestamp ', timestamp);
   for (const e of storeHistory) {
     if (parseInt(Object.keys(e)[0]) === timestamp) return e;
   }
@@ -114,10 +105,8 @@ const getSnapshotbyTimestamp = (timestamp: number) => {
 
 const setAppState = (snapshot: any) => {
   unsubscribe();
-  console.log('running setAppState...');
   const stores: any = Object.values(snapshot)[0];
   for (const key in stores) {
-    console.log('in for loop in setAppState!');
     window.store[key].$state = stores[key].value;
   }
   resubscribe();
@@ -126,7 +115,6 @@ const setAppState = (snapshot: any) => {
 /*
  @param {boolean} [includeTimestamps=false] - To retrieve data with timestamps. Defaults to false.
 */
-// TODO: decide if we want to use cloneDeep here? vs a reference
 const getCurrentStores = (includeTimestamps = false) => {
   if (includeTimestamps) {
     return storeHistory[storeHistory.length - 1];

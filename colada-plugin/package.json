@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A plugin to support Pinia",
   "author": {
-    "name": "Team Colada"
+    "name": "Jonathan Chen, Parker Steinberg, Vaughn Sulit, Dan Steinbrook"
   },
   "main": "dist/colada-plugin.cjs.js",
   "module": "dist/colada-plugin.esm-bundler.js",
@@ -33,7 +33,9 @@
     "@rollup/plugin-replace": "^4.0.0",
     "@types/node": "^18.7.14",
     "@vue/devtools-api": "^6.2.1",
-    "lodash": "^4.17.21",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.isempty": "^4.4.0",
     "pascalcase": "^2.0.0",
     "pinia": "^2.0.22",
     "rimraf": "^3.0.2",
@@ -46,6 +48,9 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.185",
+    "@types/lodash.clonedeep": "^4.5.7",
+    "@types/lodash.debounce": "^4.0.7",
+    "@types/lodash.isempty": "^4.4.7",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.23.1",
