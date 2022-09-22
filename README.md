@@ -30,7 +30,7 @@
 
 ## Core Features
 
-- ✅  Minimal installation and automatic detection of Vue app
+- ✅  Minimal installation and automatic detection of Vue app in Vue.js DevTools
 - 🔄  Direct integration into [Vue.js DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en), so developers can use Colada without needing to leave their existing devtool configuration
   - 🕰️  Time travel debugging
   - 🔎  Inspector panel for viewing your Vue app's Pinia state
