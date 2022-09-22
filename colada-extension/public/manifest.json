@@ -1,0 +1,24 @@
+{
+  "name": "Colada DevTools",
+  "description": "Time-travel debugging for Pinia, Vue's official state management library.",
+  "version": "0.1.2",
+  "manifest_version": 3,
+  "icons": {
+    "16": "./assets/icon-16.png",
+    "48": "./assets/icon-48.png",
+    "128": "./assets/icon-128.png"
+  },
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "devtools_page": "devtools-background.html",
+   "content_scripts": [
+     {
+       "matches": [
+      "*://*/*"
+      ],
+       "js": ["./content-script.js"]
+     }
+  ]
+}

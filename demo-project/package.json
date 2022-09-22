@@ -1,0 +1,31 @@
+{
+  "name": "vue-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "test:unit": "vitest --environment jsdom",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "colada-plugin": "file:../colada-plugin",
+    "pinia": "^2.0.17",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.1.4",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "@vitejs/plugin-vue-jsx": "^2.0.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/test-utils": "^2.0.2",
+    "eslint": "^8.21.0",
+    "eslint-plugin-vue": "^9.5.1",
+    "jsdom": "^20.0.0",
+    "prettier": "^2.7.1",
+    "vite": "^3.0.4",
+    "vitest": "^0.21.0"
+  }
+}
