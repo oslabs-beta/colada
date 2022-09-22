@@ -112,7 +112,7 @@ export function setupDevtools(app: any) {
       const node = payload.treeNode;
       if (payload.componentInstance.type.meow) {
         node.tags.push({
-          label: 'meow',
+          label: 'colada',
           textColor: 0x000000,
           backgroundColor: 0xff984f
         });
