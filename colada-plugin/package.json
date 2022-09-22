@@ -1,6 +1,6 @@
 {
   "name": "colada-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A plugin to support Pinia",
   "author": {
     "name": "Jonathan Chen, Parker Steinberg, Vaughn Sulit, Dan Steinbrook"
