@@ -2,13 +2,7 @@ import { getCurrentStores } from './stateHandler';
 import { StateObject } from '../types';
 
 // add elements (names of stores) to inspector
-// API: api.on.getInspectorTree
-// triggered by: "This hook is called when the devtools wants to load the tree of any custom inspector"
-// iterate over labels for each store to add to inspector
-// make use of getter function exported from stateHandler.ts that grabs the most recent stores from storeHistory
-// QUESTION: do we want it this to run at any other point outside of upon the inspector being loaded for the first time?
 const addPiniaStoreLabels = (payload: any) => {
-  console.log('RUNNING addPiniaStoreLabels');
   // iterate over stores and grab each label 
   const currentStores = getCurrentStores();
   // initialize root node for Colada inspector tree
@@ -22,7 +16,6 @@ const addPiniaStoreLabels = (payload: any) => {
 
   // iterate over currentStores to add children stores to root 
   Object.values(currentStores).forEach((store: any) => {
-    // current label is the zeroth (only) key on obj
     const currentLabel = store.key;
     // push current store label to children array in payload.rootNodes
     payload.rootNodes[0].children.push({
@@ -38,7 +31,6 @@ const addPiniaStoreLabels = (payload: any) => {
 // iterate over most recent versions of stores and add all that data to the inspector 
 // make use of getter function exported from stateHandler.ts that grabs the most recent stores from storeHistory
 const addPiniaStoreData = (payload: any) => {
-  console.log('in addPiniaStoreData');
   // use getCurrentStore from stateHandler to get most recent versions stores
   const currentStores = getCurrentStores();
 
@@ -58,19 +50,19 @@ const addPiniaStoreData = (payload: any) => {
       key: key,
       value: value,
       editable: false
-    }
+    };
 
     const gettersObj: any = {
       key: key,
       value: getters,
       editable: false
-    }
+    };
 
     const actionsObj: any = {
       key: key,
       value: actions,
       editable: false
-    }
+    };
 
     stateArr.push(stateObj);
     gettersArr.push(gettersObj);
@@ -78,23 +70,20 @@ const addPiniaStoreData = (payload: any) => {
 
   });
 
-  // series of conditionals that looks at the nodeId of the payload and sees if it matches the current store
   // if nodeId is root --> add all the data for all stores
   if (payload.nodeId === 'root') {
-    // console.log('root id FOUND')
     payload.state = {
       'state': stateArr,
       'getters': gettersArr,
       'actions': actionsArr,
     };
   } else { // if nodeId is not root
-      // console.log('component selected is NOT root, it is:', payload.nodeId)
-      // use filter to get state, getters, and actionsArr to match the current node id being selected (which is the selected store)
-      const filteredStateArr = stateArr.filter((state) => state.key === payload.nodeId)
-      const filteredGettersArr = gettersArr.filter((getters) => getters.key === payload.nodeId)
-      const filteredActionsArr = actionsArr.filter((actions) => {
-        return actions.key === payload.nodeId
-      })
+    // use filter to get state, getters, and actionsArr to match the current node id being selected (which is the selected store)
+    const filteredStateArr = stateArr.filter((state) => state.key === payload.nodeId);
+    const filteredGettersArr = gettersArr.filter((getters) => getters.key === payload.nodeId);
+    const filteredActionsArr = actionsArr.filter((actions) => {
+      return actions.key === payload.nodeId;
+    });
 
     payload.state = {
       'state': filteredStateArr,
@@ -104,9 +93,6 @@ const addPiniaStoreData = (payload: any) => {
   }
 
 };
-
-// stretch: add tags to component inspector
-// stretch: allow user to edit inspector state with api.on.editInspectorState
 
 export {
   addPiniaStoreLabels,

@@ -1,11 +1,11 @@
-import { setupDevtoolsPlugin } from '@vue/devtools-api'
-import { addPiniaStoreLabels, addPiniaStoreData } from './inspector'
+import { setupDevtoolsPlugin } from '@vue/devtools-api';
+import { addPiniaStoreLabels, addPiniaStoreData } from './inspector';
 import { handleInspectTimelineEvent } from './timeline';
 import { 
   initializeState, 
   setAppState, 
   getSnapshotbyTimestamp
-} from './stateHandler'
+} from './stateHandler';
 
 // declare type for application window
 declare const window: any;
@@ -16,8 +16,6 @@ declare const window: any;
 //*************************************************************************** */
 const inspectorId = 'colada-plugin';
 const timelineLayerId = 'colada-plugin';
-
-
 
 
 export function setupDevtools(app: any) {
@@ -33,53 +31,37 @@ export function setupDevtools(app: any) {
     enableEarlyProxy: true,
     settings: {}
   }, api => {
-    console.log('api in setupDevtools is', api);
     //********************************************************************** */
     // ************ EVENT LISTENERS *****************************************
     //********************************************************************** */
 
-      window.addEventListener("message", (event: any) => {
-        console.log('message received!')
-        console.log('event is: ', event);
-        // parse data from message
-        const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : ''
-        console.log('parsed is (IN PLUGIN):', parsed)
+    window.addEventListener('message', (event: any) => {
+      // parse data from message
+      const parsed = typeof event.data === 'string' ? JSON.parse(event.data) : '';
 
-        // if source is colada extension, set app's state to snapshot that correspodns with payload's timestamp
-        if (parsed.source === 'colada-extension') {
-    
-          const timestamp = parseInt(parsed.payload);
-          console.log('found colada-extension message!')
-          console.log('timestamp FROM EXTENSION MESSAGE', timestamp)
+      // if source is colada extension, set app's state to snapshot that correspodns with payload's timestamp
+      if (parsed.source === 'colada-extension') {
+        const timestamp = parseInt(parsed.payload);
+        setAppState(getSnapshotbyTimestamp(timestamp));
+      }
+    })
 
-          setAppState(getSnapshotbyTimestamp(timestamp))
-        }
-      })
-
-      window.addEventListener("DOMContentLoaded", () => {
-        console.log('dom content has been loaded');
-        setTimeout(initializeState, 1000);
-      })
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initializeState, 1000);
+    });
 
     //add event listener to the window for 'addTimeLineEvent'
     window.addEventListener('addTimelineEvent', (e: any) => {
-      console.log('addTimelineEvent listener has been triggered');
-
-      //console.log('addTimelineEvent e is: ', e)
       const eventToAdd = e.detail;
-      console.log('eventToAdd is:', eventToAdd, 'layer is:', timelineLayerId);
-
-      //Create a timeline event with the eventToAdd emitted in the $subscribe
 
       // grab timestamp from eventToAdd
       const currentTimestamp = parseInt(Object.keys(eventToAdd)[0]);
       const currentStores = Object.values(eventToAdd[currentTimestamp]);
       console.log('currentStores', currentStores);
-      // iterate over the object associated with that timestamp
+      // iterate over snapshot associated with that timestamp
       currentStores.forEach((store: any) => {
         console.log('store in forEach', store);
         // add timelineEvent for each store
-        //If possible, color code/group by store
         api.addTimelineEvent({
           layerId: timelineLayerId,
           event: {
@@ -106,9 +88,7 @@ export function setupDevtools(app: any) {
     //********************************************************************** */
 
     //Adds a tag to next to the component in the Inspector -> Components Tree
-    //NOTE: we had to add export default {meow: true}, to the component we want the tag to show on
     api.on.visitComponentTree((payload) => {
-      console.log('visitComponentTree running');
       //console.log('context is', context);
       const node = payload.treeNode;
       if (payload.componentInstance.type.meow) {
@@ -133,7 +113,6 @@ export function setupDevtools(app: any) {
     });
 
     api.on.getInspectorTree((payload: any) => {
-      console.log('running getInspectorTree');
       // if payload's inspector id matches our custom Colada inspectorId, add our store labels to the inspector
       if (payload.inspectorId === inspectorId) {
         addPiniaStoreLabels(payload);
@@ -149,16 +128,16 @@ export function setupDevtools(app: any) {
     });
 
 
-      //********************************************************************** */
-      // ************ TIMELINE SETTINGS *****************************************
-      //********************************************************************** */
-        //Register a timeline layer
-        api.addTimelineLayer({
-            id: timelineLayerId,
-            color: 0xff984f,
-            label: 'Colada 🥥',
-            skipScreenshots: true, // doesn't work :(
-        })
-      
-    })
+    //********************************************************************** */
+    // ************ TIMELINE SETTINGS *****************************************
+    //********************************************************************** */
+    //Register a timeline layer
+    api.addTimelineLayer({
+      id: timelineLayerId,
+      color: 0xff984f,
+      label: 'Colada 🥥',
+      skipScreenshots: true, // doesn't work :(
+    });
+    
+  });
 }

@@ -13,7 +13,6 @@ const piniaStores: any = {};
 window.store = {};
 
 piniaStores.unsubscribe = () => {
-  console.log('unsubscribing...');
   unsubscribeMethods.forEach(e => e());
 };
 
@@ -22,7 +21,6 @@ piniaStores.getPiniaStores = (): any => {
 };
 
 piniaStores.subscribe = (callback: any, setInitialState = false) => {
-  console.log('subscribing...');
   stores.forEach(store => {
     const snapshot: ProxyObject = {
       timestamp: Date.now(),
@@ -36,7 +34,6 @@ piniaStores.subscribe = (callback: any, setInitialState = false) => {
     };
     const unsubscribeMethod = store.$subscribe(() => {
       snapshot.timestamp = Date.now();
-      console.log('subscribe callback');
       // we can also access mutation and state here
       callback(snapshot);
     });
@@ -47,7 +44,6 @@ piniaStores.subscribe = (callback: any, setInitialState = false) => {
 
 
 const PiniaColadaPlugin = (context: any) => {
-  console.log('devtools.js PiniaColadaPlugin context.store: ', context.store);
   const store: any = context.store;
   stores.push(store);
   window.store[store.$id] = store;
