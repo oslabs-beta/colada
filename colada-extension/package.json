@@ -1,11 +1,14 @@
 {
   "scripts": {
+    "local:chrome": "concurrently \"npm run dev\" \"node ./scripts/launch-chrome.js --start_url=http://localhost:5173\"",
     "dev": "vite build --watch",
     "build": "vite build"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
+    "chrome-launcher": "^0.15.1",
+    "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.23.1",
     "eslint-plugin-vue": "^9.5.1",
@@ -15,7 +18,8 @@
     "vue": "^3.2.39",
     "vue-loader": "^17.0.0",
     "vue-router": "^4.1.5",
-    "vue-template-compiler": "^2.7.10"
+    "vue-template-compiler": "^2.7.10",
+    "yargs": "^17.6.2"
   },
   "dependencies": {
     "bootstrap-icons": "^1.9.1",
