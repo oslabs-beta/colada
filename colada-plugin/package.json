@@ -22,7 +22,7 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "npm run dev",
-    "dev": "rimraf dist && rollup -c rollup.config.mjs",
+    "dev": "rimraf dist && rollup --config rollup.config.mjs --watch",
     "ts": "tsc --watch -d",
     "test": "vitest",
     "coverage": "vitest run --coverage"

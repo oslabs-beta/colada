@@ -85,6 +85,7 @@ function createConfig (format, output, plugins = []) {
   output.banner = banner;
   output.externalLiveBindings = false;
   output.globals = { vue: 'Vue', '@vue/composition-api': 'vueCompositionApi' };
+  output.exports = 'named'
 
   const isProductionBuild = /\.prod\.js$/.test(output.file);
   const isGlobalBuild = format === 'global';

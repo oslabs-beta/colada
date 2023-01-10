@@ -1,5 +1,5 @@
 {
-  "name": "vue-project",
+  "name": "demo-project",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "colada-plugin": "file:../colada-plugin",
+    "colada-plugin": "*",
     "pinia": "^2.0.17",
     "vue": "^3.2.37"
   },

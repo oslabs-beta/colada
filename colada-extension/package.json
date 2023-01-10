@@ -1,4 +1,5 @@
 {
+  "name": "colada-extension",
   "scripts": {
     "local:chrome": "concurrently \"npm run dev\" \"node ./scripts/launch-chrome.js --start_url=http://localhost:5173\"",
     "dev": "vite build --watch",
