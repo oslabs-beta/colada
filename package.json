@@ -8,7 +8,10 @@
   "version": "0.0.2",
   "description": "Monorepo for Colada - time-travel debugging tool for Pinia stores.",
   "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=demo-project\" \"npm run dev --workspace=colada-plugin\" \"npm run dev --workspace=colada-extension\""
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
 }
-
