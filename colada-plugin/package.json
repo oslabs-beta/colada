@@ -5,24 +5,23 @@
   "author": {
     "name": "Jonathan Chen, Parker Steinberg, Vaughn Sulit, Dan Steinbrook"
   },
-  "main": "dist/colada-plugin.cjs.js",
-  "module": "dist/colada-plugin.esm-bundler.js",
-  "unpkg": "dist/colada-plugin.global.js",
-  "jsdelivr": "dist/colada-plugin.global.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/colada-plugin.cjs.js",
-      "browser": "./dist/colada-plugin.esm-browser.js",
-      "import": "./dist/colada-plugin.esm-bundler.js",
-      "module": "./dist/colada-plugin.esm-bundler.js"
+      "browser": "./dist/colada-plugin.esm.js",
+      "import": "./dist/colada-plugin.esm.js",
+      "module": "./dist/colada-plugin.esm.js"
     },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
     "prepublish": "npm run dev",
-    "dev": "rimraf dist && rollup --config rollup.config.mjs --watch",
+    "dev": "npm run dev:vite",
+    "dev:vite": "vite build --watch",
+    "dev:rollup": "rimraf dist && rollup --config rollup.config-new.mjs --watch",
+    "dev:rollup:old": "rimraf dist && rollup --config rollup.config.mjs --watch",
     "ts": "tsc --watch -d",
     "test": "vitest",
     "coverage": "vitest run --coverage"

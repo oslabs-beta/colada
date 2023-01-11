@@ -41,19 +41,19 @@ const outputConfigs = {
   // each file name has the format: `dist/${name}.${format}.js`
   // format being a key of this object
   'esm-bundler': {
-    file: pkg.module,
+    file: 'dist/colada-plugin.esm-bundler.js',
     format: 'es'
   },
   cjs: {
-    file: pkg.main,
+    file: 'dist/colada-plugin.cjs.js',
     format: 'cjs'
   },
   global: {
-    file: pkg.unpkg,
+    file: 'dist/colada-plugin.global.js',
     format: 'iife'
   },
   esm: {
-    file: pkg.module.replace('bundler', 'browser'),
+    file: 'dist/colada-plugin.esm.js',
     format: 'es'
   }
 };
