@@ -84,7 +84,7 @@ app.mount('#app');
 ### There are two ways to install the Colada Chrome Extension:
 
 
-### 1. **Install from the Chrome Web Store**
+### 1. **Install from the Chrome Web Store (Recommended)**
 1. Navigate to [Colada on the Chrome Web Store](https://chrome.google.com/webstore/detail/colada-devtools/icdbaobbeemmhlmjolbkedcneadkfpdl), and click "Add to Chrome"
 
 <a href="https://chrome.google.com/webstore/detail/colada-devtools/icdbaobbeemmhlmjolbkedcneadkfpdl" target="_blank"><img width="200px" src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/mPGKYBIR2uCP0ApchDXE.png" alt="demo screenshot" /></a>
@@ -92,11 +92,10 @@ app.mount('#app');
 ### 2. **Install from source**
 
 1. Clone this repository
-2. Run the following commands
+2. Run the following commands from the repository root
 ```
-cd colada-extension
 npm install
-npm run build
+npm run build:chrome-ext
 ```
 3. This will create a new `/dist` directory in `/colada-extension`
 4. In Chrome, navigate to [chrome://extensions](chrome://extensions).
@@ -148,16 +147,12 @@ npm run build
 # How to Give Colada a Test Run With Our Demo App
 
 1. Clone this repository
-2. Navigate to the ```demo-project``` directory
-```
-cd demo-project
-```
-3. Install packages and run application
+2. From the repository root, install packages and run application
 ```bash
 npm install
 npm run dev
 ```
-4. Interact with the app to watch the app's state update in real-time!
+3. Interact with the app to watch the app's state update in real-time!
 
 <br/>
 <br/>
