@@ -8,7 +8,7 @@ const { resolve } = require('path');
 require('dotenv').config();
 
 const VUE_DEVTOOLS_PATH = process.env.VUE_DEVTOOLS_PATH || ''
-const EXTENSION_PATH = resolve(__dirname, '..', 'colada-extension', 'dist');
+const EXTENSION_PATH = resolve(__dirname, '../packages/colada-extension/dist');
 const START_URL = argv.start_url || '';
 
 // get array of default flags, remove unwanted flags

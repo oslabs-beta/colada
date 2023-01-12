@@ -1,9 +1,9 @@
 {
   "name": "Colada",
   "workspaces": [
-    "colada-extension",
-    "colada-plugin",
-    "demo-project"
+    "packages/colada-extension",
+    "packages/colada-plugin",
+    "packages/demo-project"
   ],
   "version": "0.0.2",
   "description": "Monorepo for Colada - time-travel debugging tool for Pinia stores.",
