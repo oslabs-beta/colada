@@ -159,7 +159,7 @@ This will trigger the following:
 * Build Pinia/Vue Devtools plugin (in watch mode, so any changes to the source will trigger a rebuild)
 * Launch dev instance of a test Vue/Pinia application, with Pinia/Vue Devtools plugin installed (any plugin re-builds will be hot-reloaded)
 * Launch test instance of Chrome with Colada Extension and Vue Devtools installed (see section below on Vue Devtools extension) and loads local Vue/Pinia application
-** Note: Re-building the Chrome extension generally requires reloading DevTools (by closing and re-opening the panel) in order to reflect the changes. However, some changes (such as edits to content scripts or the manifest.json) require reloading the extension from [chrome://extensions](chrome://extensions).
+  * Note: Re-building the Chrome extension generally requires reloading DevTools (by closing and re-opening the panel) in order to reflect any changes. However, some changes (such as edits to content scripts or manifest.json) require fully reloading the extension from [chrome://extensions](chrome://extensions).
 
 3. Interact with the app to watch the app's state update in real-time!
 
@@ -167,7 +167,7 @@ This will trigger the following:
 <br/>
 
 ### Using Vue Devtools in the Chrome test instance
-In order to use the Vue Devtools extension in our local Chrome testing instance, we need to provide the unpacked source of the Vue DevTools extension. See [here](https://gist.github.com/paulirish/78d6c1406c901be02c2d) for several options for getting the extension source. Create a `.env` file in the repository root with the value `'VUE_DEVTOOLS_PATH=[full path to unpacked extension]'`. (Note that this is optional, and probably unnecessary unless you are developing the plugin!)
+(Note that the following is optional, and probably unnecessary unless you are developing the plugin!) In order to use the Vue Devtools extension in your local Chrome testing instance, we need to provide the unpacked source of the Vue DevTools extension. See [here](https://gist.github.com/paulirish/78d6c1406c901be02c2d) for several options for getting the extension source. Create a `.env` file in the repository root with the value `'VUE_DEVTOOLS_PATH=[full path to unpacked extension]'`.
 
 
 # Contributing and Issues
