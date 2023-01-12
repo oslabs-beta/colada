@@ -2,11 +2,17 @@
 
 'use strict';
 
+// launches test instance of Chrome with the Colada and
+// Vue Devtools (optional) extensions automatically loaded
+
+// start page can be set by passing in --start_url=[URL]
+
 const ChromeLauncher = require('chrome-launcher');
 const { argv } = require('yargs');
 const { resolve } = require('path');
 require('dotenv').config();
 
+// specify path to vue devtools source
 const VUE_DEVTOOLS_PATH = process.env.VUE_DEVTOOLS_PATH || ''
 const EXTENSION_PATH = resolve(__dirname, '../packages/colada-extension/dist');
 const START_URL = argv.start_url || '';
