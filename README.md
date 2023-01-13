@@ -84,7 +84,7 @@ app.mount('#app');
 ### There are two ways to install the Colada Chrome Extension:
 
 
-### 1. **Install from the Chrome Web Store**
+### 1. **Install from the Chrome Web Store (Recommended)**
 1. Navigate to [Colada on the Chrome Web Store](https://chrome.google.com/webstore/detail/colada-devtools/icdbaobbeemmhlmjolbkedcneadkfpdl), and click "Add to Chrome"
 
 <a href="https://chrome.google.com/webstore/detail/colada-devtools/icdbaobbeemmhlmjolbkedcneadkfpdl" target="_blank"><img width="200px" src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/mPGKYBIR2uCP0ApchDXE.png" alt="demo screenshot" /></a>
@@ -92,11 +92,10 @@ app.mount('#app');
 ### 2. **Install from source**
 
 1. Clone this repository
-2. Run the following commands
+2. Run the following commands from the repository root
 ```
-cd colada-extension
 npm install
-npm run build
+npm run build:chrome-ext
 ```
 3. This will create a new `/dist` directory in `/colada-extension`
 4. In Chrome, navigate to [chrome://extensions](chrome://extensions).
@@ -148,19 +147,28 @@ npm run build
 # How to Give Colada a Test Run With Our Demo App
 
 1. Clone this repository
-2. Navigate to the ```demo-project``` directory
-```
-cd demo-project
-```
-3. Install packages and run application
+2. Run the following commands from the repository root:
+
 ```bash
 npm install
 npm run dev
 ```
-4. Interact with the app to watch the app's state update in real-time!
+
+This will trigger the following: 
+* Build Chrome Extension (in watch mode, so any changes to the source will trigger a rebuild)
+* Build Pinia/Vue Devtools plugin (in watch mode, so any changes to the source will trigger a rebuild)
+* Launch dev instance of a test Vue/Pinia application, with Pinia/Vue Devtools plugin installed (any plugin re-builds will be hot-reloaded)
+* Launch test instance of Chrome with Colada Extension and Vue Devtools installed (see section below on Vue Devtools extension) and loads local Vue/Pinia application
+  * Note: Re-building the Chrome extension generally requires reloading DevTools (by closing and re-opening the panel) in order to reflect any changes. However, some changes (such as edits to content scripts or manifest.json) require fully reloading the extension from [chrome://extensions](chrome://extensions).
+
+3. Interact with the app to watch the app's state update in real-time!
 
 <br/>
 <br/>
+
+### Using Vue Devtools in the Chrome test instance
+(Note that the following is optional, and probably unnecessary unless you are developing the plugin!) In order to use the Vue Devtools extension in your local Chrome testing instance, we need to provide the unpacked source of the Vue DevTools extension. See [here](https://gist.github.com/paulirish/78d6c1406c901be02c2d) for several options for getting the extension source. Create a `.env` file in the repository root with the value `'VUE_DEVTOOLS_PATH=[full path to unpacked extension]'`.
+
 
 # Contributing and Issues
 Interested in conributing to Colada? Reach out to our [core team](https://colada.dev/#contributors) <br/>

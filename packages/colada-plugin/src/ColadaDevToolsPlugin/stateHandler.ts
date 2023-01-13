@@ -1,8 +1,8 @@
 import { piniaStores } from '../PiniaColadaPlugin/index';
 import * as _ from 'lodash';
-import debounce from 'lodash.debounce';
-import cloneDeep from 'lodash.clonedeep';
-import isEmpty from 'lodash.isempty';
+import debounce from 'lodash/debounce';
+import cloneDeep from 'lodash/clonedeep';
+import isEmpty from 'lodash/isempty';
 
 // delcare global variables
 const storeHistory: any = [];

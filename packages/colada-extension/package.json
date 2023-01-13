@@ -1,4 +1,5 @@
 {
+  "name": "colada-extension",
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build"
@@ -6,10 +7,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
-    "cross-env": "^7.0.3",
     "eslint": "^8.23.1",
     "eslint-plugin-vue": "^9.5.1",
-    "laravel-mix": "^6.0.49",
     "sass": "^1.54.9",
     "sass-loader": "^12.6.0",
     "vite": "^3.1.3",
